@@ -70,7 +70,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<?> search(SearchCondition condition) {
+	public ResponseEntity<?> search(@RequestBody SearchCondition condition) {
 		try {
 			List<Board> boards = boardService.search(condition);
 			if (boards != null && boards.size() > 0)
