@@ -9,7 +9,7 @@
       <b-col style="text-align: left">
         <b-form @submit="onSubmit">
           <b-form-group id="userId-group" label="작성자:" label-for="userId" description="작성자를 입력하세요.">
-            <b-form-input id="userId" :disabled="isUserId" v-model="article.userId" type="text" required placeholder="작성자 입력..."></b-form-input>
+            <b-form-input id="userId" v-model="article.userId" type="text" required placeholder="작성자 입력..."></b-form-input>
           </b-form-group>
 
           <b-form-group id="title-group" label="제목:" label-for="title" description="제목을 입력하세요.">

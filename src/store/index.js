@@ -40,6 +40,9 @@ export default new Vuex.Store({
     SET_SEARCH_CONDITION: function (state, searchCondition) {
       state.searchCondition = searchCondition;
     },
+    SET_CURRENT_PAGE: function (state, currentPage) {
+      state.searchCondition.currentPage = currentPage;
+    },
   },
   actions: {
     // 게시글 등록
@@ -48,7 +51,7 @@ export default new Vuex.Store({
       axios({
         url: API_URL,
         method: "post",
-        params: article,
+        data: article,
       })
         .then(() => {
           // mutation
@@ -128,9 +131,7 @@ export default new Vuex.Store({
         data: searchCondition,
       })
         .then((res) => {
-          console.log(searchCondition);
           commit("SET_SEARCH_CONDITION", searchCondition);
-          console.log(res.data);
           commit("SET_ARTICLES", res.data);
         })
         .catch((err) => {
