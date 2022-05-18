@@ -8,7 +8,8 @@ import java.util.List;
 public interface BoardService {
     boolean insert(Board board);
     boolean update(Board board);
-    boolean delete(String boardNum);
+    boolean delete(int boardNum);
     Board select(int boardNum);
     List<Board> search(SearchCondition condition);
+    void increaseHit(int boardNum);
 }

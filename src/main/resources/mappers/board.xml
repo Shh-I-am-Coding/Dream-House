@@ -4,8 +4,8 @@
 <mapper namespace="com.ssafy.happy.model.repo.BoardRepo">
 
     <insert id="insert" parameterType="Board">
-        insert into board (boardNum, writer, title, text)
-        values (#{boardNum}, #{writer}, #{title}, #{text})
+        insert into board (writer, title, text)
+        values (#{writer}, #{title}, #{text})
     </insert>
 
     <delete id="delete">
@@ -29,7 +29,7 @@
         where boardNum = #{boardNum}
     </select>
 
-    <select id="search" resultType="Book">
+    <select id="search" resultType="Board">
         select * from board
         <if test="key != 'none'">
             where ${key} like concat('%', #{word}, '%')
@@ -42,4 +42,7 @@
         </if>
     </select>
 
+    <update id="increaseHit">
+        update board set hit = hit+1 where boardNum = #{boardNum}
+    </update>
 </mapper>

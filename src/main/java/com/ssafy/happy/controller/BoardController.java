@@ -54,7 +54,7 @@ public class BoardController {
 	}
 
 	@DeleteMapping("/{boardNum}")
-	public ResponseEntity<?> delete(@PathVariable String boardNum) {
+	public ResponseEntity<?> delete(@PathVariable int boardNum) {
 		if (boardService.delete(boardNum)) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
@@ -64,6 +64,7 @@ public class BoardController {
 
 	@GetMapping("/{boardNum}")
 	public ResponseEntity<?> searchBoard(@PathVariable int boardNum) {
+		boardService.increaseHit(boardNum);
 		return new ResponseEntity<>(boardService.select(boardNum), HttpStatus.OK);
 	}
 

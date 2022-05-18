@@ -12,5 +12,5 @@ public class Board {
     private String writer;
     private String title;
     private String text;
-    private int views;
+    private int hit;
 }

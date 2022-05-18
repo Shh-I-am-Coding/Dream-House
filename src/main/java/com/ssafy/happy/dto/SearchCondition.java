@@ -45,4 +45,8 @@ public class SearchCondition {
         this.orderByDir = orderByDir;
         this.currentPage = currentPage;
     }
+
+    public int getOffset() {
+        return (this.currentPage - 1) * countPerPage;
+    }
 }

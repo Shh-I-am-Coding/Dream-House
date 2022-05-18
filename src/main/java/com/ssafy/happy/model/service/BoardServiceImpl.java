@@ -26,7 +26,7 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public boolean delete(String boardNum) {
+    public boolean delete(int boardNum) {
         return boardRepo.delete(boardNum);
     }
 
@@ -38,5 +38,10 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public List<Board> search(SearchCondition condition) {
         return boardRepo.search(condition);
+    }
+
+    @Override
+    public void increaseHit(int boardNum) {
+        boardRepo.increaseHit(boardNum);
     }
 }
