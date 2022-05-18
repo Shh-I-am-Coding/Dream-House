@@ -15,11 +15,10 @@
     </delete>
 
     <update id="update" parameterType="Board">
-        update user
+        update board
         set userId = #{userId},
             title     = #{title},
-            content    = #{content},
-            hit    = #{hit}
+            content    = #{content}
         where articleNo = #{articleNo}
     </update>
 

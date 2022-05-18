@@ -46,8 +46,8 @@ public class BoardController {
 	@PutMapping("/")
 	public ResponseEntity<?> modify(@RequestBody Board board) {
 		try {
-			boardService.insert(board);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			boardService.update(board);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}
@@ -64,6 +64,7 @@ public class BoardController {
 
 	@GetMapping("/{articleNo}")
 	public ResponseEntity<?> searchBoard(@PathVariable int articleNo) {
+		System.out.println(articleNo);
 		boardService.increaseHit(articleNo);
 		return new ResponseEntity<>(boardService.select(articleNo), HttpStatus.OK);
 	}
