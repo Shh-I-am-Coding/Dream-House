@@ -66,6 +66,7 @@
 					</c:if>
 					<li class="nav-item"><a class="nav-link"
 						href="${root}/deal/searchApt">지역 검색</a></li>
+					<li class="nav-item"><a class="nav-link" href="${root}/vue/index.html">이름을 뭐라고 할까요</a></li>
 
 					<c:if test="${empty user}">
 						<li class="nav-item">
