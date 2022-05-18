@@ -26,7 +26,7 @@
             <b-tr v-for="(article, index) in articles" :key="index">
               <b-td>{{ index + 1 }}</b-td>
               <b-th class="text-left">
-                <router-link :to="`/board/${article.articleNo}`">{{ article.title }}</router-link>
+                <router-link :to="`${Number(article.articleNo)}`">{{ article.title }}</router-link>
               </b-th>
               <b-td>{{ article.hit }}</b-td>
               <b-td>{{ article.userId }}</b-td>
@@ -59,7 +59,7 @@ export default {
   },
   filters: {
     dateFormat(regtime) {
-      return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
+      return moment(new Date(regtime)).format("YY.MM.DD HH:mm");
     },
   },
 };

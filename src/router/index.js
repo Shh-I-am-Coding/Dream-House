@@ -21,17 +21,17 @@ const routes = [
         component: () => import("@/components/board/BoardRegister.vue"),
       },
       {
-        path: ":articleno",
+        path: ":articleNo",
         name: "boardDetail",
         component: () => import("@/components/board/BoardDetail.vue"),
       },
       {
-        path: "modify/:articleno",
+        path: "modify/:articleNo",
         name: "boardModify",
         component: () => import("@/components/board/BoardModify.vue"),
       },
       {
-        path: "delete/:articleno",
+        path: "delete/:articleNo",
         name: "boardDelete",
         component: () => import("@/components/board/BoardDelete.vue"),
       },

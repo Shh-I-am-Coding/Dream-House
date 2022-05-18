@@ -9,18 +9,18 @@
       <b-col style="text-align: left">
         <b-form @submit="onSubmit">
           <b-form-group id="userId-group" label="작성자:" label-for="userId" description="작성자를 입력하세요.">
-            <b-form-input id="userId" :disabled="isUserId" v-model="article.userId" type="text" required placeholder="작성자 입력..."></b-form-input>
+            <b-form-input id="userId" v-model="article.userId" type="text" required placeholder="작성자 입력..." ref="userId"></b-form-input>
           </b-form-group>
 
           <b-form-group id="title-group" label="제목:" label-for="title" description="제목을 입력하세요.">
-            <b-form-input id="title" v-model="article.title" type="text" required placeholder="제목 입력..."></b-form-input>
+            <b-form-input id="title" v-model="article.title" type="text" required placeholder="제목 입력..." ref="title"></b-form-input>
           </b-form-group>
 
           <b-form-group id="content-group" label="내용:" label-for="content">
-            <b-form-textarea id="content" v-model="article.content" placeholder="내용 입력..." rows="10" max-rows="15"></b-form-textarea>
+            <b-form-textarea id="content" v-model="article.content" placeholder="내용 입력..." rows="10" max-rows="15" ref="content"></b-form-textarea>
           </b-form-group>
 
-          <b-button type="submit" variant="primary" class="m-1">글수정</b-button>
+          <b-button type="submit" variant="primary" class="m-1">수정</b-button>
         </b-form>
       </b-col>
     </b-row>

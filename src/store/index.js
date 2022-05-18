@@ -54,7 +54,7 @@ export default new Vuex.Store({
     },
     // 게시글 수정
     updateArticle: function ({ state }, article) {
-      const API_URL = `http://localhost:8080/HappyHouse/board/${article.articleNo}`;
+      const API_URL = `http://localhost:8080/HappyHouse/board/`;
       axios({
         url: API_URL,
         method: "put",
