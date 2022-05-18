@@ -44,7 +44,7 @@ export default new Vuex.Store({
   actions: {
     // 게시글 등록
     createArticle: function ({ commit }, article) {
-      const API_URL = `http://localhost:8080/HappyHouse/board/`;
+      const API_URL = `http://localhost:8080/HappyHouse/board/create`;
       axios({
         url: API_URL,
         method: "post",
@@ -124,10 +124,13 @@ export default new Vuex.Store({
       const API_URL = `http://localhost:8080/HappyHouse/board/`;
       axios({
         url: API_URL,
-        method: "get",
+        method: "post",
         data: searchCondition,
       })
         .then((res) => {
+          console.log(searchCondition);
+          commit("SET_SEARCH_CONDITION", searchCondition);
+          console.log(res.data);
           commit("SET_ARTICLES", res.data);
         })
         .catch((err) => {

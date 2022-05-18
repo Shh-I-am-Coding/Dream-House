@@ -16,7 +16,7 @@
         <b-table-simple hover responsive>
           <b-thead head-variant="dark">
             <b-tr>
-              <b-th>글번호</b-th>
+              <b-th>번호</b-th>
               <b-th>제목</b-th>
               <b-th>조회수</b-th>
               <b-th>작성자</b-th>
@@ -26,7 +26,7 @@
           <tbody>
             <b-tr v-for="(article, index) in articles" :key="index">
               <b-td>{{ index + 1 }}</b-td>
-              <b-th class="text-left">
+              <b-th>
                 <router-link :to="`${Number(article.articleNo)}`">{{ article.title }}</router-link>
               </b-th>
               <b-td>{{ article.hit }}</b-td>
