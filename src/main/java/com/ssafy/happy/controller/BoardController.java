@@ -53,19 +53,19 @@ public class BoardController {
 		}
 	}
 
-	@DeleteMapping("/{boardNum}")
-	public ResponseEntity<?> delete(@PathVariable int boardNum) {
-		if (boardService.delete(boardNum)) {
+	@DeleteMapping("/{articleNo}")
+	public ResponseEntity<?> delete(@PathVariable int articleNo) {
+		if (boardService.delete(articleNo)) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
 
-	@GetMapping("/{boardNum}")
-	public ResponseEntity<?> searchBoard(@PathVariable int boardNum) {
-		boardService.increaseHit(boardNum);
-		return new ResponseEntity<>(boardService.select(boardNum), HttpStatus.OK);
+	@GetMapping("/{articleNo}")
+	public ResponseEntity<?> searchBoard(@PathVariable int articleNo) {
+		boardService.increaseHit(articleNo);
+		return new ResponseEntity<>(boardService.select(articleNo), HttpStatus.OK);
 	}
 
 	@GetMapping("/")
