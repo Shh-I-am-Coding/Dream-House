@@ -18,7 +18,7 @@
       <b-col>
         <b-card
           :header-html="`<h3>${article.articleNo}.
-          ${article.title} [${article.hit}]</h3><div><h6>${article.userId}</div><div>${article.regTime}</h6></div>`"
+          ${article.title} [${article.hit}]</h3><div><h6>${article.userId}</div><div>${dateFormat(article.regTime)}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -41,14 +41,12 @@ export default {
   computed: {
     ...mapState(["article"]),
     message() {
-      //TODO this.article인지 article인지 확인!
-      if (this.article.content) return this.article.content.split("\n").join("<br>");
+      if (String(this.article.content)) return String(this.article.content).split("\n").join("<br>");
       return "";
     },
   },
   created() {
-    const articleNo = this.$route.params.articleNo; //  <- Null?
-    console.log(articleNo);
+    const articleNo = this.$route.params.articleNo;
     this.$store.dispatch("setArticle", articleNo);
   },
   methods: {
@@ -57,24 +55,14 @@ export default {
     },
     moveModifyArticle() {
       this.$router.push({ name: "boardModify" });
-      // this.$router.replace({
-      //   name: "boardModify",
-      //   params: { articleNo: this.article.articleNo },
-      // });
     },
     deleteArticle() {
       if (confirm("삭제하시겠습니까?")) {
         this.$router.push({ name: "boardDelete" });
-        // this.$router.replace({
-        //   name: "boardDelete",
-        //   params: { articleNo: this.article.articleNo },
-        // });
       }
     },
-  },
-  filters: {
     dateFormat(regtime) {
-      return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
+      return moment(new Date(regtime)).format("YY.MM.DD HH:mm");
     },
   },
 };
