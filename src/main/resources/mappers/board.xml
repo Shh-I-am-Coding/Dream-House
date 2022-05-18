@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happy.model.repo.BoardRepo">
+
+    <insert id="insert" parameterType="Board">
+        insert into board (boardNum, writer, title, text)
+        values (#{boardNum}, #{writer}, #{title}, #{text})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from board
+        where boardNum = #{boardNum}
+    </delete>
+
+    <update id="update" parameterType="Board">
+        update user
+        set writer = #{writer},
+            title     = #{title},
+            text    = #{text},
+            views    = #{views}
+        where boardNum = #{boardNum}
+    </update>
+
+    <select id="select" resultType="Board">
+        select *
+        from board
+        where boardNum = #{boardNum}
+    </select>
+
+    <select id="search" resultType="Book">
+        select * from board
+        <if test="key != 'none'">
+            where ${key} like concat('%', #{word}, '%')
+        </if>
+        <if test="orderBy != 'none'">
+            order by ${orderBy} ${orderByDir}
+        </if>
+        <if test="limit">
+            limit #{offset}, #{countPerPage}
+        </if>
+    </select>
+
+</mapper>
