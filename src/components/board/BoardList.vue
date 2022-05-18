@@ -1,5 +1,6 @@
 <template>
   <b-container class="bv-example-row mt-3">
+    <board-search></board-search>
     <b-row>
       <b-col>
         <b-alert show><h3>글목록</h3></b-alert>
@@ -36,21 +37,28 @@
         </b-table-simple>
       </b-col>
     </b-row>
+    <board-paging></board-paging>
   </b-container>
 </template>
 
 <script>
 import moment from "moment";
+import BoardSearch from "@/components/board/item/BoardSearch.vue";
+import BoardPaging from "@/components/board/item/BoardPaging.vue";
 
 import { mapState } from "vuex";
 
 export default {
   name: "BoardList",
+  components: {
+    BoardSearch,
+    BoardPaging,
+  },
   computed: {
-    ...mapState(["articles"]),
+    ...mapState(["articles", "searchCondition"]),
   },
   created() {
-    this.$store.dispatch("setArticles");
+    this.$store.dispatch("setArticles", this.searchCondition);
   },
   methods: {
     moveWrite() {

@@ -16,11 +16,16 @@ export default new Vuex.Store({
       hit: Number,
       regTime: String,
     },
+    searchCondition: {
+      key: String,
+      word: String,
+      currentPage: Number,
+    },
   },
   getters: {
-    searchUserCnt: function (state) {
-      return state.searchUsers.length > 0 ? state.searchUsers.length : null;
-    },
+    // searchUserCnt: function (state) {
+    //   return state.searchUsers.length > 0 ? state.searchUsers.length : null;
+    // },
   },
   mutations: {
     SET_ARTICLES: function (state, articles) {
@@ -31,6 +36,9 @@ export default new Vuex.Store({
     },
     SET_ARTICLE: function (state, article) {
       state.article = article;
+    },
+    SET_SEARCH_CONDITION: function (state, searchCondition) {
+      state.searchCondition = searchCondition;
     },
   },
   actions: {
