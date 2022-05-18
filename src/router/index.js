@@ -11,13 +11,54 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/user",
+    name: "user",
+    component: () => import("@/views/MemberView.vue"),
+    children: [
+      {
+        path: "singin",
+        name: "signIn",
+        component: () => import("@/components/user/MemberLogin.vue"),
+      },
+      {
+        path: "singup",
+        name: "signUp",
+        component: () => import("@/components/user/MemberRegister.vue"),
+      },
+    ],
+  },
+  {
+    path: "/board",
+    name: "board",
+    component: () => import("@/views/BoardView.vue"),
+    redirect: "/board/list",
+    children: [
+      {
+        path: "list",
+        name: "boardList",
+        component: () => import("@/components/board/BoardList.vue"),
+      },
+      {
+        path: "write",
+        name: "boardRegister",
+        component: () => import("@/components/board/BoardRegister.vue"),
+      },
+      {
+        path: "detail/:articleno",
+        name: "boardDetail",
+        component: () => import("@/components/board/BoardDetail.vue"),
+      },
+      {
+        path: "modify/:articleno",
+        name: "boardModify",
+        component: () => import("@/components/board/BoardModify.vue"),
+      },
+      {
+        path: "delete/:articleno",
+        name: "boardDelete",
+        component: () => import("@/components/board/BoardDelete.vue"),
+      },
+    ],
   },
 ];
 
