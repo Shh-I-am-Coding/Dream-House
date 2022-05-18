@@ -8,7 +8,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     articles: [],
-    article: null,
+    article: {
+      articleNo: Number,
+      userId: String,
+      title: String,
+      content: String,
+      hit: Number,
+      regTime: String,
+    },
   },
   getters: {
     searchUserCnt: function (state) {
@@ -29,7 +36,7 @@ export default new Vuex.Store({
   actions: {
     // 게시글 등록
     createArticle: function ({ commit }, article) {
-      const API_URL = `http://localhost:8080/HappyHouse/board`;
+      const API_URL = `http://localhost:8080/HappyHouse/board/`;
       axios({
         url: API_URL,
         method: "post",
@@ -106,7 +113,7 @@ export default new Vuex.Store({
     },
     // 전체 게시판 글 목록 가져오기
     setArticles: function ({ commit }, searchCondition) {
-      const API_URL = `http://localhost:8080/HappyHouse/board`;
+      const API_URL = `http://localhost:8080/HappyHouse/board/`;
       axios({
         url: API_URL,
         method: "get",

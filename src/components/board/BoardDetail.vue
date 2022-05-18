@@ -33,7 +33,7 @@
 </template>
 
 <script>
-// import moment from "moment";
+import moment from "moment";
 import { mapState } from "vuex";
 
 export default {
@@ -47,7 +47,8 @@ export default {
     },
   },
   created() {
-    const articleNo = this.$route.params.articleNo;
+    const articleNo = this.$route.params.articleNo; //  <- Null?
+    console.log(articleNo);
     this.$store.dispatch("setArticle", articleNo);
   },
   methods: {
@@ -71,11 +72,11 @@ export default {
       }
     },
   },
-  // filters: {
-  //   dateFormat(regtime) {
-  //     return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
-  //   },
-  // },
+  filters: {
+    dateFormat(regtime) {
+      return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
+    },
+  },
 };
 </script>
 

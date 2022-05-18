@@ -26,7 +26,7 @@
             <b-tr v-for="(article, index) in articles" :key="index">
               <b-td>{{ index + 1 }}</b-td>
               <b-th class="text-left">
-                <router-link :to="`/${article.articleNo}`">{{ article.title }}</router-link>
+                <router-link :to="`/board/${article.articleNo}`">{{ article.title }}</router-link>
               </b-th>
               <b-td>{{ article.hit }}</b-td>
               <b-td>{{ article.userId }}</b-td>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 import { mapState } from "vuex";
 
 export default {
@@ -53,6 +55,11 @@ export default {
   methods: {
     moveWrite() {
       this.$router.push({ name: "boardRegister" });
+    },
+  },
+  filters: {
+    dateFormat(regtime) {
+      return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
     },
   },
 };

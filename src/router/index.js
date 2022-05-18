@@ -21,7 +21,7 @@ const routes = [
         component: () => import("@/components/board/BoardRegister.vue"),
       },
       {
-        path: "detail/:articleno",
+        path: ":articleno",
         name: "boardDetail",
         component: () => import("@/components/board/BoardDetail.vue"),
       },
