@@ -5,6 +5,10 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "/",
+    redirect: "/board",
+  },
+  {
     path: "/board",
     name: "board",
     component: () => import("@/views/BoardView.vue"),
