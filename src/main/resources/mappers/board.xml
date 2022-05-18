@@ -4,29 +4,29 @@
 <mapper namespace="com.ssafy.happy.model.repo.BoardRepo">
 
     <insert id="insert" parameterType="Board">
-        insert into board (writer, title, text)
-        values (#{writer}, #{title}, #{text})
+        insert into board (userId, title, content)
+        values (#{userId}, #{title}, #{content})
     </insert>
 
     <delete id="delete">
         delete
         from board
-        where boardNum = #{boardNum}
+        where articleNo = #{articleNo}
     </delete>
 
     <update id="update" parameterType="Board">
         update user
-        set writer = #{writer},
+        set userId = #{userId},
             title     = #{title},
-            text    = #{text},
-            views    = #{views}
-        where boardNum = #{boardNum}
+            content    = #{content},
+            hit    = #{hit}
+        where articleNo = #{articleNo}
     </update>
 
     <select id="select" resultType="Board">
         select *
         from board
-        where boardNum = #{boardNum}
+        where articleNo = #{articleNo}
     </select>
 
     <select id="search" resultType="Board">
@@ -43,6 +43,6 @@
     </select>
 
     <update id="increaseHit">
-        update board set hit = hit+1 where boardNum = #{boardNum}
+        update board set hit = hit+1 where articleNo = #{articleNo}
     </update>
 </mapper>

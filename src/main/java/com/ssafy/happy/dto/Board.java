@@ -8,9 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class Board {
-    private int boardNum;
-    private String writer;
+    private int articleNo;
+    private String userId;
     private String title;
-    private String text;
+    private String content;
     private int hit;
+    private String regTime;
 }

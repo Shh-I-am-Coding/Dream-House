@@ -26,13 +26,13 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public boolean delete(int boardNum) {
-        return boardRepo.delete(boardNum);
+    public boolean delete(int articleNo) {
+        return boardRepo.delete(articleNo);
     }
 
     @Override
-    public Board select(int boardNum) {
-        return boardRepo.select(boardNum);
+    public Board select(int articleNo) {
+        return boardRepo.select(articleNo);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void increaseHit(int boardNum) {
-        boardRepo.increaseHit(boardNum);
+    public void increaseHit(int articleNo) {
+        boardRepo.increaseHit(articleNo);
     }
 }

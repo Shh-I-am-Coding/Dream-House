@@ -6,10 +6,10 @@ import com.ssafy.happy.dto.SearchCondition;
 import java.util.List;
 
 public interface BoardRepo {
-    boolean insert(Board board);
-    boolean update(Board board);
-    boolean delete(int boardNum);
-    Board select(int boardNum);
+    boolean insert(Board articleNo);
+    boolean update(Board articleNo);
+    boolean delete(int articleNo);
+    Board select(int articleNo);
     List<Board> search(SearchCondition condition);
-    void increaseHit(int boardNum);
+    void increaseHit(int articleNo);
 }
