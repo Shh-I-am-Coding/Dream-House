@@ -17,8 +17,8 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.articleno}.
-          ${article.subject} [${article.hit}]</h3><div><h6>${article.userid}</div><div>${article.regtime}</h6></div>`"
+          :header-html="`<h3>${article.articleNo}.
+          ${article.title} [${article.hit}]</h3><div><h6>${article.userId}</div><div>${article.regTime}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -34,43 +34,40 @@
 
 <script>
 // import moment from "moment";
-import http from "@/api/http";
+import { mapState } from "vuex";
 
 export default {
   name: "BoardDetail",
-  data() {
-    return {
-      article: {},
-    };
-  },
   computed: {
+    ...mapState(["article"]),
     message() {
+      //TODO this.article인지 article인지 확인!
       if (this.article.content) return this.article.content.split("\n").join("<br>");
       return "";
     },
   },
   created() {
-    http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
-      this.article = data;
-    });
+    const articleNo = this.$route.params.articleNo;
+    this.$store.dispatch("setArticle", articleNo);
   },
   methods: {
     listArticle() {
       this.$router.push({ name: "boardList" });
     },
     moveModifyArticle() {
-      this.$router.replace({
-        name: "boardModify",
-        params: { articleno: this.article.articleno },
-      });
-      //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
+      this.$router.push({ name: "boardModify" });
+      // this.$router.replace({
+      //   name: "boardModify",
+      //   params: { articleNo: this.article.articleNo },
+      // });
     },
     deleteArticle() {
-      if (confirm("정말로 삭제?")) {
-        this.$router.replace({
-          name: "boardDelete",
-          params: { articleno: this.article.articleno },
-        });
+      if (confirm("삭제하시겠습니까?")) {
+        this.$router.push({ name: "boardDelete" });
+        // this.$router.replace({
+        //   name: "boardDelete",
+        //   params: { articleNo: this.article.articleNo },
+        // });
       }
     },
   },

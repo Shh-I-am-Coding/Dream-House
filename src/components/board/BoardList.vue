@@ -23,34 +23,32 @@
             </b-tr>
           </b-thead>
           <tbody>
-            <!-- 하위 component인 ListRow에 데이터 전달(props) -->
-            <board-list-item v-for="article in articles" :key="article.articleno" v-bind="article" />
+            <b-tr v-for="(article, index) in articles" :key="index">
+              <b-td>{{ index + 1 }}</b-td>
+              <b-th class="text-left">
+                <router-link :to="`/${article.articleNo}`">{{ article.title }}</router-link>
+              </b-th>
+              <b-td>{{ article.hit }}</b-td>
+              <b-td>{{ article.userId }}</b-td>
+              <b-td>{{ article.regTime | dateFormat }}</b-td>
+            </b-tr>
           </tbody>
         </b-table-simple>
       </b-col>
-      <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
     </b-row>
   </b-container>
 </template>
 
 <script>
-import http from "@/api/http";
-import BoardListItem from "@/components/board/item/BoardListItem";
+import { mapState } from "vuex";
 
 export default {
   name: "BoardList",
-  components: {
-    BoardListItem,
-  },
-  data() {
-    return {
-      articles: [],
-    };
+  computed: {
+    ...mapState(["articles"]),
   },
   created() {
-    http.get(`/board`).then(({ data }) => {
-      this.articles = data;
-    });
+    this.$store.dispatch("setArticles");
   },
   methods: {
     moveWrite() {
