@@ -21,6 +21,14 @@ export default new Vuex.Store({
       word: String,
       currentPage: Number,
     },
+    pageNavigation: {
+      startRange: Boolean,
+      startPage: Number,
+      endPage: Number,
+      endRange: Boolean,
+      currentPage: Number,
+      totalPageCount: Number,
+    },
   },
   getters: {
     // searchUserCnt: function (state) {
@@ -42,6 +50,9 @@ export default new Vuex.Store({
     },
     SET_CURRENT_PAGE: function (state, currentPage) {
       state.searchCondition.currentPage = currentPage;
+    },
+    SET_PAGE_NAVIGATION: function (state, pageNavigation) {
+      state.pageNavigation = pageNavigation;
     },
   },
   actions: {
@@ -132,7 +143,10 @@ export default new Vuex.Store({
       })
         .then((res) => {
           commit("SET_SEARCH_CONDITION", searchCondition);
-          commit("SET_ARTICLES", res.data);
+          commit("SET_ARTICLES", res.data.articles);
+          commit("SET_PAGE_NAVIGATION", res.data.pageNavigation);
+          console.log(res.data.articles);
+          console.log(res.data.pageNavigation);
         })
         .catch((err) => {
           console.log(err);
