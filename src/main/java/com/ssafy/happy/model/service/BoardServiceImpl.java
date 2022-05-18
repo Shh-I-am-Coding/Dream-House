@@ -16,27 +16,27 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void insert(Board board) {
-
+    public boolean insert(Board board) {
+        return boardRepo.insert(board);
     }
 
     @Override
-    public void delete(String boardNum) {
-
+    public boolean update(Board board) {
+        return boardRepo.update(board);
     }
 
     @Override
-    public void update(Board board) {
-
+    public boolean delete(String boardNum) {
+        return boardRepo.delete(boardNum);
     }
 
     @Override
     public Board select(int boardNum) {
-        return null;
+        return boardRepo.select(boardNum);
     }
 
     @Override
     public List<Board> search(SearchCondition condition) {
-        return null;
+        return boardRepo.search(condition);
     }
 }
