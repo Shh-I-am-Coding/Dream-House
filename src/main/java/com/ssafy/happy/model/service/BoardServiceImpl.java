@@ -3,9 +3,12 @@ package com.ssafy.happy.model.service;
 import com.ssafy.happy.dto.Board;
 import com.ssafy.happy.dto.SearchCondition;
 import com.ssafy.happy.model.repo.BoardRepo;
+import com.ssafy.happy.util.PageNavigation;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -36,8 +39,13 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<Board> search(SearchCondition condition) {
-        return boardRepo.search(condition);
+    public Map<String, Object> search(SearchCondition condition) {
+        int totalCount = boardRepo.getTotalSearchCount(condition);
+        PageNavigation pageNavigation = new PageNavigation(condition.getCurrentPage() ,totalCount);
+        Map<String, Object> map = new HashMap<>();
+        map.put("articles", boardRepo.search(condition));
+        map.put("pageNavigation", pageNavigation);
+        return map;
     }
 
     @Override

@@ -12,4 +12,5 @@ public interface BoardRepo {
     Board select(int articleNo);
     List<Board> search(SearchCondition condition);
     void increaseHit(int articleNo);
+    int getTotalSearchCount(SearchCondition condition);
 }

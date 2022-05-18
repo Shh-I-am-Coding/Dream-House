@@ -1,6 +1,7 @@
 package com.ssafy.happy.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,7 +75,7 @@ public class BoardController {
 	public ResponseEntity<?> search(@RequestBody SearchCondition searchCondition) {
 		System.out.println(searchCondition);
 		try {
-			List<Board> boards = boardService.search(searchCondition);
+			Map<String, Object> boards = boardService.search(searchCondition);
 			if (boards != null && boards.size() > 0)
 				return new ResponseEntity<>(boards, HttpStatus.OK);
 			else

@@ -38,6 +38,13 @@
         </if>
     </select>
 
+    <select id="getTotalSearchCount" resultType="int">
+        select count(*) from board
+        <if test="key != 'none'">
+            where ${key} like concat('%', #{word}, '%')
+        </if>
+    </select>
+
     <update id="increaseHit">
         update board set hit = hit+1 where articleNo = #{articleNo}
     </update>
