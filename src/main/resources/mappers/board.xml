@@ -33,9 +33,6 @@
         <if test="key != 'none'">
             where ${key} like concat('%', #{word}, '%')
         </if>
-        <if test="orderBy != 'none'">
-            order by ${orderBy} ${orderByDir}
-        </if>
         <if test="limit">
             limit #{offset}, #{countPerPage}
         </if>

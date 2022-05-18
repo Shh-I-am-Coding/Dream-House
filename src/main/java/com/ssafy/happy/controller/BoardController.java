@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happy.dto.Board;
@@ -33,8 +34,8 @@ public class BoardController {
 		return new ResponseEntity<>("Exception: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@PostMapping("/")
-	public ResponseEntity<?> write(@RequestBody Board board) {
+	@PostMapping("/create")
+	public ResponseEntity<?> create(@RequestBody Board board) {
 		try {
 			boardService.insert(board);
 			return new ResponseEntity<>(HttpStatus.CREATED);
@@ -69,10 +70,11 @@ public class BoardController {
 		return new ResponseEntity<>(boardService.select(articleNo), HttpStatus.OK);
 	}
 
-	@GetMapping("/")
-	public ResponseEntity<?> search(@RequestBody SearchCondition condition) {
+	@PostMapping("/")
+	public ResponseEntity<?> search(@RequestBody SearchCondition searchCondition) {
+		System.out.println(searchCondition);
 		try {
-			List<Board> boards = boardService.search(condition);
+			List<Board> boards = boardService.search(searchCondition);
 			if (boards != null && boards.size() > 0)
 				return new ResponseEntity<>(boards, HttpStatus.OK);
 			else

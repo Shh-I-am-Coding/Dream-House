@@ -5,6 +5,7 @@ import lombok.*;
 @Setter
 @Getter
 @NoArgsConstructor
+@ToString
 public class SearchCondition {
     // 한 페이지에 몇개나 보여줄 것인지 결정한다.
     public final int countPerPage = 10;
