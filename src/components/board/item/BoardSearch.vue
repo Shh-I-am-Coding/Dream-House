@@ -10,7 +10,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
+
+const boardStore = "boardStore";
 
 export default {
   name: "BoardSearch",
@@ -28,9 +30,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(["searchCondition"]),
+    ...mapState(boardStore, ["searchCondition"]),
   },
   methods: {
+    ...mapActions(boardStore, ["setArticles"]),
+
     onSubmit(event) {
       event.preventDefault();
       this.search();
@@ -42,7 +46,7 @@ export default {
         currentPage: 1,
       };
 
-      this.$store.dispatch("setArticles", searchCondition);
+      this.setArticles(searchCondition);
     },
   },
 };

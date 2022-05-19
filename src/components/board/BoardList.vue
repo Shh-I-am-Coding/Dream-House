@@ -46,7 +46,9 @@ import moment from "moment";
 import BoardSearch from "@/components/board/item/BoardSearch.vue";
 import BoardPaging from "@/components/board/item/BoardPaging.vue";
 
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
+
+const boardStore = "boardStore";
 
 export default {
   name: "BoardList",
@@ -55,12 +57,13 @@ export default {
     BoardPaging,
   },
   computed: {
-    ...mapState(["articles", "searchCondition"]),
+    ...mapState(boardStore, ["articles", "searchCondition"]),
   },
   created() {
-    this.$store.dispatch("setArticles", this.searchCondition);
+    this.setArticles(this.searchCondition);
   },
   methods: {
+    ...mapActions(boardStore, ["setArticles"]),
     moveWrite() {
       this.$router.push({ name: "boardRegister" });
     },

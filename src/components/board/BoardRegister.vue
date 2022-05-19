@@ -28,6 +28,10 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
+const boardStore = "boardStore";
+
 export default {
   name: "BoardWrite",
   data() {
@@ -39,11 +43,8 @@ export default {
       },
     };
   },
-  created() {
-    // const articleNo = this.$route.params.articleNo;
-    // this.$store.dispatch("setArticle", articleNo);
-  },
   methods: {
+    ...mapActions(boardStore, ["createArticle"]),
     onSubmit(event) {
       event.preventDefault();
 
@@ -56,7 +57,7 @@ export default {
       else this.createArticle();
     },
     createArticle() {
-      this.$store.dispatch("createArticle", this.article);
+      this.createArticle(this.article);
     },
   },
 };

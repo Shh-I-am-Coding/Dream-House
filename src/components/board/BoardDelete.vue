@@ -12,16 +12,21 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
+
+const boardStore = "boardStore";
 
 export default {
   name: "BoardDelete",
   computed: {
-    ...mapState(["article"]),
+    ...mapState(boardStore, ["article"]),
   },
   created() {
     const articleNo = this.$route.params.articleNo;
-    this.$store.dispatch("deleteArticle", articleNo);
+    this.deleteArticle(articleNo);
+  },
+  methods: {
+    ...mapActions(boardStore, ["deleteArticle"]),
   },
 };
 </script>

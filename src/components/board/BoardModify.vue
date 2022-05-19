@@ -28,18 +28,21 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
+
+const boardStore = "boardStore";
 
 export default {
   name: "BoardModify",
   computed: {
-    ...mapState(["article"]),
+    ...mapState(boardStore, ["article"]),
   },
   created() {
     const articleNo = this.$route.params.articleNo;
-    this.$store.dispatch("setArticle", articleNo);
+    this.setArticle(articleNo);
   },
   methods: {
+    ...mapActions(boardStore, ["setArticle", "updateArticle"]),
     onSubmit(event) {
       event.preventDefault();
 
@@ -53,7 +56,7 @@ export default {
       else this.modifyArticle();
     },
     modifyArticle() {
-      this.$store.dispatch("updateArticle", this.article);
+      this.updateArticle(this.article);
     },
   },
 };

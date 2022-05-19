@@ -21,7 +21,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
+
+const boardStore = "boardStore";
 
 export default {
   name: "BoardPaging",
@@ -29,12 +31,14 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["articles", "searchCondition", "pageNavigation"]),
+    ...mapState(boardStore, ["articles", "searchCondition", "pageNavigation"]),
   },
   methods: {
+    ...mapMutations(boardStore, ["SET_CURRENT_PAGE"]),
+    ...mapActions(boardStore, ["setArticles"]),
     movePage(page) {
-      this.$store.commit("SET_CURRENT_PAGE", page);
-      this.$store.dispatch("setArticles", this.searchCondition);
+      this.SET_CURRENT_PAGE(page);
+      this.setArticles(this.searchCondition);
     },
     range(start, end) {
       let list = [];

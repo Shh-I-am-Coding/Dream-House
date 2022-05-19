@@ -34,12 +34,14 @@
 
 <script>
 import moment from "moment";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
+
+const boardStore = "boardStore";
 
 export default {
   name: "BoardDetail",
   computed: {
-    ...mapState(["article"]),
+    ...mapState(boardStore, ["article"]),
     message() {
       if (String(this.article.content)) return String(this.article.content).split("\n").join("<br>");
       return "";
@@ -47,9 +49,10 @@ export default {
   },
   created() {
     const articleNo = this.$route.params.articleNo;
-    this.$store.dispatch("setArticle", articleNo);
+    this.setArticle(articleNo);
   },
   methods: {
+    ...mapActions(boardStore, ["setArticle"]),
     listArticle() {
       this.$router.push({ name: "boardList" });
     },
