@@ -1,15 +1,16 @@
 <template>
   <div id="app">
+    <navi-bar />
     <router-view />
   </div>
 </template>
 
 <script>
-//import NaviBar from "@/components/layout/HeaderNaviBar.vue";
+import NaviBar from "@/components/layout/HeaderNaviBar.vue";
 
 export default {
   name: "App",
-  components: {},
+  components: { NaviBar },
 };
 </script>
 
