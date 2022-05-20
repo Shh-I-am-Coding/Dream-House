@@ -6,7 +6,15 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/board",
+    name: "home",
+    component: () => import("@/views/HomeView.vue"),
+    children: [
+      {
+        path: "login",
+        name: "login",
+        component: () => import("@/components/user/UserLogin.vue"),
+      },
+    ],
   },
   {
     path: "/board",
