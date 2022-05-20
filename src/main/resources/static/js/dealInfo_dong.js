@@ -38,15 +38,16 @@ $(document).ready(function() {
 });
 
 function callAptFromDb(dong) {
+	console.log(dong);
 	$("#sortBy").off();
 	$("#sortOrder").off();
 	$("#sortBy").change(function(){
 		sortBy = $("#sortBy option:selected").val();
-		callAptFromDb(selectDong, false);
+		callAptFromDb(selectDong);
 	});
 	$("#sortOrder").change(function(){
 		sortOrder = $("#sortOrder option:selected").val();
-		callAptFromDb(selectDong, false);
+		callAptFromDb(selectDong);
 	});
 	$.ajax({
 		url: "/HappyHouse/deal/getAptList",
@@ -56,7 +57,7 @@ function callAptFromDb(dong) {
 		success: function(response) {
 			makeListByJson(response);
 			setMarkers(null);
-			setCenter()
+			setCenter(address);
 		},
 		error: function(xhr, status, msg) {
 			console.log("상태값 : " + status + " Http에러메시지 : " + msg);
@@ -80,7 +81,8 @@ function makeListByJson(data) {
 		address = current + " " + data[i].jibun.trim();
 		addressSearch(address, data[i].aptName);
 	}
-	setCenter(data[0].dongName + " " + data[0].jibun.trim());
+	if(data.length > 0) setCenter(data[0].dongName + " " + data[0].jibun.trim());
+	else setCenter(address);
 	$("#aptinfo").empty().append(aptlist);
 	$("tr:first").css("background", "darkgray").css("color", "white");
 	$("tr:even").css("background", "lightgray");

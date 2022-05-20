@@ -213,5 +213,5 @@ $(document).on("change", "#dong", function() {
 		" " +
 		selectDong;
 	console.log(address);
-	callAptFromDb(selectDong, true);
+	callAptFromDb(selectDong);
 });
