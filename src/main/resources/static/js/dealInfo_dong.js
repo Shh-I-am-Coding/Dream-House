@@ -29,15 +29,15 @@ $(document).ready(function() {
 	callAptFromDb("숭인동", true);
 	$("#sortBy").change(function(){
 		sortBy = $("#sortBy option:selected").val();
-		callAptFromDb(selectDong, false);
+		callAptFromDb(selectDong);
 	});
 	$("#sortOrder").change(function(){
 		sortOrder = $("#sortOrder option:selected").val();
-		callAptFromDb(selectDong, false);
+		callAptFromDb(selectDong,);
 	});
 });
 
-function callAptFromDb(dong, setCenter) {
+function callAptFromDb(dong) {
 	$("#sortBy").off();
 	$("#sortOrder").off();
 	$("#sortBy").change(function(){
@@ -54,8 +54,9 @@ function callAptFromDb(dong, setCenter) {
 		dataType: "json",
 		data: { "dong" : dong, "sortBy" : sortBy, "sortOrder" : sortOrder },
 		success: function(response) {
-			makeListByJson(response, setCenter);
+			makeListByJson(response);
 			setMarkers(null);
+			setCenter()
 		},
 		error: function(xhr, status, msg) {
 			console.log("상태값 : " + status + " Http에러메시지 : " + msg);
@@ -63,9 +64,10 @@ function callAptFromDb(dong, setCenter) {
 	});
 }
 
-function makeListByJson(data, setCenter) {
+function makeListByJson(data) {
 	let aptlist = ``;
-	
+	let address;
+
 	for(var i=0; i<data.length; i++) {
 		let current = data[i].dongName;
 		aptlist += `<tr>
@@ -75,9 +77,10 @@ function makeListByJson(data, setCenter) {
 				<td>${data[i].dealAmount}</td>
 				<td>${data[i].dealYear}`+"/"+`${data[i].dealMonth}`+"/"+`${data[i].dealDay}</td>
 				</tr>`;
-		let address = current + " " + data[i].jibun.trim();
-		addressSearch(address, data[i].aptName, setCenter);
+		address = current + " " + data[i].jibun.trim();
+		addressSearch(address, data[i].aptName);
 	}
+	setCenter(data[0].dongName + " " + data[0].jibun.trim());
 	$("#aptinfo").empty().append(aptlist);
 	$("tr:first").css("background", "darkgray").css("color", "white");
 	$("tr:even").css("background", "lightgray");

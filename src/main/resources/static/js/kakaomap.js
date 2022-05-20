@@ -17,11 +17,11 @@ $(function() {
 	geocoder = new kakao.maps.services.Geocoder();
 });
 
-function addressSearch(address, aptName, setCenter) {
+function addressSearch(address, aptName) {
 	geocoder.addressSearch(address, function(result, status) {
 		// 정상적으로 검색이 완료됐으면
 		if (status === kakao.maps.services.Status.OK) {
-			var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
 			// 결과값으로 받은 위치를 마커로 표시합니다
 			var marker = new kakao.maps.Marker({
@@ -39,18 +39,22 @@ function addressSearch(address, aptName, setCenter) {
 				getApt(aptName);
 
 			});
+		}
+	});
+}
 
-			if(setCenter){
-				// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-				map.setCenter(coords);
-			}
+function setCenter(address) {
+	geocoder.addressSearch(address, function(result, status) {
+		// 정상적으로 검색이 완료됐으면
+		if (status === kakao.maps.services.Status.OK) {
+			let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+			map.setCenter(coords);
 		}
 	});
 }
 
 function getApt(aptName){
-	console.log(sortBy);
-	console.log(sortOrder);
 	$.ajax({
 		url: "/HappyHouse/deal/getApt",
 		type: "get",
@@ -111,6 +115,7 @@ $(document).on("change", "#sido", function() {
 	address = $("#sido option:selected").text();
 	console.log(address);
 	addressSearch(address);
+	setCenter(address);
 	$.ajax({
 		url: aptUrl,
 		type: "GET",
@@ -165,7 +170,8 @@ $(document).on("change", "#gugun", function() {
 	address =
 		address.split(" ")[0] + " " + $("#gugun option:selected").text();
 	console.log(address);
-	addressSearch(address, "",true);
+	addressSearch(address, "");
+	setCenter(address);
 	selectDong = "nothing";
 	$.ajax({
 		url: aptUrl,
@@ -207,6 +213,5 @@ $(document).on("change", "#dong", function() {
 		" " +
 		selectDong;
 	console.log(address);
-	//addressSearch(address);
 	callAptFromDb(selectDong, true);
 });
