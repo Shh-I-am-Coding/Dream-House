@@ -55,10 +55,9 @@ export default {
     ...mapState(userStore, ["isLogin", "userInfo"]),
   },
   methods: {
-    ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    ...mapMutations(userStore, ["SET_LOGOUT"]),
     logout() {
-      this.SET_IS_LOGIN(false);
-      this.SET_USER_INFO(null);
+      this.SET_LOGOUT();
       sessionStorage.removeItem("access-token");
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },
