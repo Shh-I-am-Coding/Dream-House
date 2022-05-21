@@ -1,17 +1,15 @@
 package com.ssafy.happy.model.repo;
 
-import java.sql.SQLException;
-
 import com.ssafy.happy.dto.User;
 
 public interface UserRepo {
-	void insert(User user) throws SQLException;
+	int insert(User user);
 
-	User select(String id) throws SQLException;
+	User select(String id);
 
-	void delete(String id) throws SQLException;
+	int delete(String id);
 
-	void update(User user) throws SQLException;
+	int update(User user);
 
 	String findPasswordByPhone(String id, String name, String phone);
 

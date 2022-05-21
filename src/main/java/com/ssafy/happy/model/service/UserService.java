@@ -1,17 +1,15 @@
 package com.ssafy.happy.model.service;
 
-import java.sql.SQLException;
-
 import com.ssafy.happy.dto.User;
 
 public interface UserService {
-	void register(User user) throws SQLException;
+	int register(User user);
 
-	User login(String id) throws SQLException;
+	User login(String id);
 
-	void deleteAccount(String id) throws SQLException;
+	int deleteAccount(String id);
 
-	void updateAccount(User user) throws SQLException;
+	int updateAccount(User user);
 
 	String findPasswordByPhone(String id, String name, String phone);
 
