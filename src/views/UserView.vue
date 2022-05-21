@@ -1,15 +1,13 @@
 <template>
-  <div class="">
-    <h1>HAPPY HOUSE <b-img :src="require('@/assets/house.png')" style="width: 70px"></b-img></h1>
-  </div>
+  <b-container class="bv-example-row mt-3 text-center">
+    <h3 class="underline-steelblue"><b-icon icon="person-lines-fill"></b-icon> Member Service</h3>
+    <router-view></router-view>
+  </b-container>
 </template>
 
 <script>
 export default {
-  name: "HomeView",
-  props: {
-    msg: String,
-  },
+  name: "UserView",
 };
 </script>
 
