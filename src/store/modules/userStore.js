@@ -1,17 +1,20 @@
-// import jwt_decode from "jwt-decode";
-import { login } from "@/api/user.js";
-// import { findById } from "../../api/member";
+import jwt_decode from "jwt-decode";
+import { searchId, login, findById, update, register, withdraw } from "@/api/user.js";
 
-const memberStore = {
+const userStore = {
   namespaced: true,
   state: {
     isLogin: false,
     isLoginError: false,
+    isDuplicated: false,
     userInfo: null,
   },
   getters: {
     checkUserInfo: function (state) {
       return state.userInfo;
+    },
+    isIdDuplicated: function (state) {
+      return state.isDuplicated;
     },
   },
   mutations: {
@@ -21,12 +24,28 @@ const memberStore = {
     SET_IS_LOGIN_ERROR: (state, isLoginError) => {
       state.isLoginError = isLoginError;
     },
+    SET_IS_DUPLICATED: (state, isDuplicated) => {
+      state.isDuplicated = isDuplicated;
+    },
     SET_USER_INFO: (state, userInfo) => {
       state.isLogin = true;
       state.userInfo = userInfo;
     },
   },
   actions: {
+    async checkIdDuplicated({ commit }, id) {
+      await searchId(id, (response) => {
+        if (response.data === "success") {
+          commit("SET_IS_DUPLICATED", true);
+          console.log("success");
+          return true;
+        } else {
+          commit("SET_IS_DUPLICATED", false);
+          console.log("fail");
+          return false;
+        }
+      });
+    },
     async userConfirm({ commit }, user) {
       await login(
         user,
@@ -44,23 +63,74 @@ const memberStore = {
         () => {}
       );
     },
-    // getUserInfo({ commit }, token) {
-    //   let decode_token = jwt_decode(token);
-    //   findById(
-    //     decode_token.userid,
-    //     (response) => {
-    //       if (response.data.message === "success") {
-    //         commit("SET_USER_INFO", response.data.userInfo);
-    //       } else {
-    //         console.log("유저 정보 없음!!");
-    //       }
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   );
-    // },
+    getUserInfo({ commit }, token) {
+      let decode_token = jwt_decode(token);
+      findById(
+        decode_token.id,
+        (response) => {
+          if (response.data.message === "success") {
+            commit("SET_USER_INFO", response.data.userInfo);
+          } else {
+            console.log("유저 정보 없음!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async join({ commit }, user) {
+      await register(
+        user,
+        (response) => {
+          if (response.data == "success") {
+            commit("SET_IS_LOGIN", false);
+            alert("회원가입에 성공하였습니다.");
+          } else {
+            console.log("회원가입 실패!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async updateUserInfo({ commit }, user) {
+      await update(
+        user,
+        (response) => {
+          if (response.data == "success") {
+            commit("SET_USER_INFO", user);
+            alert("회원정보가 수정되었습니다.");
+          } else {
+            console.log("수정 실패!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async deleteUserInfo(userId) {
+      await withdraw(
+        userId,
+        (response) => {
+          if (response.data == "success") {
+            this.SET_IS_LOGIN(false);
+            this.SET_USER_INFO(null);
+            sessionStorage.removeItem("access-token");
+            if (this.$route.path != "/") this.$router.push({ name: "home" });
+            alert("탈퇴되었습니다.");
+          } else {
+            console.log("탈퇴 불가!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
   },
 };
 
-export default memberStore;
+export default userStore;

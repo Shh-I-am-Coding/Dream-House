@@ -8,13 +8,6 @@ const routes = [
     path: "/",
     name: "home",
     component: () => import("@/views/HomeView.vue"),
-    children: [
-      {
-        path: "login",
-        name: "login",
-        component: () => import("@/components/user/UserLogin.vue"),
-      },
-    ],
   },
   {
     path: "/board",
@@ -46,6 +39,28 @@ const routes = [
         path: "delete/:articleNo",
         name: "boardDelete",
         component: () => import("@/components/board/BoardDelete.vue"),
+      },
+    ],
+  },
+  {
+    path: "/user",
+    name: "user",
+    component: () => import("@/views/UserView.vue"),
+    children: [
+      {
+        path: "login",
+        name: "userLogin",
+        component: () => import("@/components/user/UserLogin.vue"),
+      },
+      {
+        path: "join",
+        name: "userJoin",
+        component: () => import("@/components/user/UserJoin.vue"),
+      },
+      {
+        path: "myInfo",
+        name: "userMyInfo",
+        component: () => import("@/components/user/UserMyInfo.vue"),
       },
     ],
   },
