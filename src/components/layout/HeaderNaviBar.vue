@@ -10,7 +10,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item href="#" class="link">
-            <router-link :to="{ name: 'house' }">매매가 검색</router-link>
+            <router-link :to="{ name: 'deal' }">매매가 검색</router-link>
           </b-nav-item>
           <b-nav-item href="#">
             <router-link :to="{ name: 'home' }">관심지역 설정</router-link>
