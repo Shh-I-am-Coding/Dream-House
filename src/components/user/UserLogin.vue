@@ -7,7 +7,7 @@
             <div class="card-body p-5 text-center">
               <h3 class="mb-5">로그인</h3>
               <b-form id="login-form">
-                <b-alert show variant="danger" v-if="isLoginError">아이디 또는 비밀번호를 확인하세요.</b-alert>
+                <b-alert variant="danger" v-show="isLoginError">아이디 또는 비밀번호를 확인하세요.</b-alert>
                 <div class="form-outline mb-4">
                   <input type="text" id="id" v-model="user.id" class="form-control form-control-lg" name="id" placeholder="아이디" required />
                 </div>
