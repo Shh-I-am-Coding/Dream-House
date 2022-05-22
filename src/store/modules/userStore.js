@@ -31,12 +31,6 @@ const userStore = {
       state.isLogin = true;
       state.userInfo = userInfo;
     },
-    SET_LOGOUT: (state) => {
-      this.SET_IS_LOGIN(false);
-      this.SET_USER_INFO(null);
-      state.isDuplicated = true;
-      sessionStorage.removeItem("access-token");
-    },
   },
   actions: {
     async checkIdDuplicated({ commit }, id) {
@@ -113,14 +107,17 @@ const userStore = {
         }
       );
     },
-    async deleteUserInfo(userId) {
+    async deleteUserInfo({ commit }, userId) {
       await withdraw(
         userId,
         (response) => {
           if (response.data == "success") {
-            this.SET_LOGOUT();
-            if (this.$route.path != "/") this.$router.push({ name: "home" });
+            commit("SET_IS_LOGIN", false);
+            commit("SET_USER_INFO", null);
+            commit("SET_IS_DUPLICATED", true);
+            sessionStorage.removeItem("access-token");
             alert("탈퇴되었습니다.");
+            if (this.$route.path != "/") this.$router.push({ name: "home" });
           } else {
             console.log("탈퇴 불가!");
           }
