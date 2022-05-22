@@ -2,12 +2,12 @@
   <b-container>
     <div id="map"></div>
     <ul id="category">
-      <li v-html="placeHolder[0].tags" @click="onClickCategory(placeHolder[0].id)" />
-      <li v-html="placeHolder[1].tags" @click="onClickCategory(placeHolder[1].id)" />
-      <li v-html="placeHolder[2].tags" @click="onClickCategory(placeHolder[2].id)" />
-      <li v-html="placeHolder[3].tags" @click="onClickCategory(placeHolder[3].id)" />
-      <li v-html="placeHolder[4].tags" @click="onClickCategory(placeHolder[4].id)" />
-      <li v-html="placeHolder[5].tags" @click="onClickCategory(placeHolder[5].id)" />
+      <li v-html="placeHolder[0].tags" @click="onClickCategory(placeHolder[0].id)" :class="[currCategory === placeHolder[0].id ? 'on' : 'off']" />
+      <li v-html="placeHolder[1].tags" @click="onClickCategory(placeHolder[1].id)" :class="[currCategory === placeHolder[1].id ? 'on' : 'off']" />
+      <li v-html="placeHolder[2].tags" @click="onClickCategory(placeHolder[2].id)" :class="[currCategory === placeHolder[2].id ? 'on' : 'off']" />
+      <li v-html="placeHolder[3].tags" @click="onClickCategory(placeHolder[3].id)" :class="[currCategory === placeHolder[3].id ? 'on' : 'off']" />
+      <li v-html="placeHolder[4].tags" @click="onClickCategory(placeHolder[4].id)" :class="[currCategory === placeHolder[4].id ? 'on' : 'off']" />
+      <li v-html="placeHolder[5].tags" @click="onClickCategory(placeHolder[5].id)" :class="[currCategory === placeHolder[5].id ? 'on' : 'off']" />
     </ul>
     <b-container v-if="deal" class="bv-example-row">
       <b-row>
@@ -121,6 +121,7 @@ export default {
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
+        draggable: true,
         level: 1,
       };
       //지도 객체를 등록합니다.
@@ -234,8 +235,10 @@ export default {
     addEventHandle(target, type, callback) {
       // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
       if (target.addEventListener) {
+        console.log("OK");
         target.addEventListener(type, callback);
       } else {
+        console.log("FAIL");
         target.attachEvent("on" + type, callback);
       }
     },
@@ -334,6 +337,7 @@ export default {
       content += '    <span class="tel">' + place.phone + "</span>" + "</div>" + '<div class="after"></div>';
 
       this.contentNode.innerHTML = content;
+      this.contentNode.set;
       this.placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
       this.placeOverlay.setMap(this.map);
     },
