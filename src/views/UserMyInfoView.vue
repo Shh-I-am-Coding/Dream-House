@@ -2,7 +2,7 @@
   <div class="h-100">
     <b-row class="m-5">
       <b-col
-        ><div class="float-left text-left p-3">
+        ><div class="float-left text-left p-5">
           <br /><br /><br />
           <p><router-link :to="{ name: 'userMyInfoHome' }" class="link">마이페이지</router-link></p>
           <p><router-link :to="{ name: 'userModify' }" class="link">회원정보 수정</router-link></p>

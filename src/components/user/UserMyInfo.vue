@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="m-5">
     <h1 class="m-2">안녕하세요, {{ userInfo.name }} 님 👋</h1>
     <div>
       <b-img :src="require('@/assets/img/myinfo_home.png')" rounded fluid alt="Responsive image" width="1000"></b-img>
