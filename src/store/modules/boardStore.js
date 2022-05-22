@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "@/router";
+import Swal from "sweetalert2";
 
 const boardStore = {
   namespaced: true,
@@ -64,7 +65,12 @@ const boardStore = {
         .then(() => {
           // mutation
           commit("CREATE_ARTICLE", article);
-          alert("등록되었습니다.");
+          Swal.fire({
+            title: "게시글 등록! 😆",
+            text: "글을 등록하였습니다.",
+            icon: "success",
+            confirmButtonText: "확인",
+          });
           router.push("/board");
         })
         .catch((err) => {
@@ -80,7 +86,12 @@ const boardStore = {
         data: article,
       })
         .then(() => {
-          alert("수정 완료!");
+          Swal.fire({
+            title: "게시글 수정! ☺️",
+            text: "글을 수정하였습니다.",
+            icon: "success",
+            confirmButtonText: "확인",
+          });
           let index;
           for (let i = 0; i < state.articles.length; i++) {
             if ((state.articles[i].articleNo = article.articleNo)) {
@@ -102,7 +113,12 @@ const boardStore = {
         method: "delete",
       })
         .then(() => {
-          alert("삭제 완료!");
+          Swal.fire({
+            title: "게시글 삭제! 👍",
+            text: "글을 삭제하였습니다.",
+            icon: "success",
+            confirmButtonText: "확인",
+          });
           let index;
           for (let i = 0; i < state.articles.length; i++) {
             if ((state.articles[i].articleNo = articleNo)) {

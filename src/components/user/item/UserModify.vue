@@ -144,9 +144,6 @@ export default {
     modify() {
       this.updateUserInfo(this.user);
     },
-    // withdraw() {
-    //   this.deleteUserInfo(this.userInfo.id);
-    // },
   },
 };
 </script>

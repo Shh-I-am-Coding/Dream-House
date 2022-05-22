@@ -46,6 +46,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import Swal from "sweetalert2";
 
 const userStore = "userStore";
 
@@ -61,7 +62,12 @@ export default {
       this.SET_USER_INFO(null);
       this.SET_IS_DUPLICATED(true);
       sessionStorage.removeItem("access-token");
-      alert("로그아웃 되었습니다.");
+      Swal.fire({
+        title: "로그아웃 성공! 🙋‍♀️",
+        text: "로그아웃 되었습니다.",
+        icon: "success",
+        confirmButtonText: "확인",
+      });
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },
   },

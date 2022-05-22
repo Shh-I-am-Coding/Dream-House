@@ -17,6 +17,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
+import Swal from "sweetalert2";
 
 const userStore = "userStore";
 
@@ -45,15 +46,37 @@ export default {
       await this.checkPassword(this.user);
       if (!this.getPasswordConfirmed()) {
         this.password_confirm = false;
-        alert("비밀번호가 틀립니다.");
+        Swal.fire({
+          title: "틀렸어요! 🥴",
+          text: "비밀번호를 다시 확인해주세요.",
+          icon: "error",
+          confirmButtonText: "확인",
+        });
       } else {
         this.password_confirm = true;
-        alert("비밀번호를 확인했습니다.");
+        Swal.fire({
+          title: "확인 성공!",
+          text: "비밀번호 확인에 성공하였습니다.",
+          icon: "success",
+          confirmButtonText: "확인",
+        });
       }
     },
     withdraw() {
-      let isWithDraw = confirm("탈퇴하시겠습니까?");
-      if (isWithDraw) this.deleteUserInfo(this.userInfo.id);
+      Swal.fire({
+        title: "탈퇴하시겠습니까? 🤔",
+        text: "한번 탈퇴하면, 되돌릴 수 없습니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "네",
+        cancelButtonText: "아니오",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteUserInfo(this.userInfo.id);
+        }
+      });
     },
   },
 };
