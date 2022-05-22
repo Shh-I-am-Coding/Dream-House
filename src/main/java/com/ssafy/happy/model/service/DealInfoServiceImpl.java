@@ -16,13 +16,13 @@ public class DealInfoServiceImpl implements DealInfoService {
 	}
 
 	@Override
-	public List<DealInfo> getByDongName(String dongName, String sortBy, String sortOrder) {
-		return dealInfoRepo.selectAllByDongName(dongName, sortBy, sortOrder);
+	public List<DealInfo> getByDongCode(String dongCode, String sortBy, String sortOrder) {
+		return dealInfoRepo.selectAllByDongCode(dongCode, sortBy, sortOrder);
 	}
 
 	@Override
-	public List<DealInfo> getApt(String aptName, String sortBy, String sortOrder) {
-		return dealInfoRepo.selectApt(aptName, sortBy, sortOrder);
+	public List<DealInfo> getApt(String aptName, String dongCode, String sortBy, String sortOrder) {
+		return dealInfoRepo.selectApt(aptName, dongCode, sortBy, sortOrder);
 	}
 
 }

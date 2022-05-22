@@ -3,10 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.happy.model.repo.DealInfoRepo">
 
-    <select id="selectAllByDongName" resultType="DealInfo">
+    <select id="selectAllByDongCode" resultType="DealInfo">
         SELECT *
         FROM dealInfo
-        WHERE dongName = #{dongName}
+        WHERE dongCode = #{dongCode}
         <if test="sortBy.equals('date')">
             ORDER BY dealYear ${sortOrder}, dealMonth ${sortOrder}, dealDay ${sortOrder}
         </if>
@@ -19,6 +19,7 @@
         select *
         from dealInfo
         where aptName = #{aptName}
+        and dongCode = #{dongCode}
         <if test="sortBy.equals('date')">
             ORDER BY dealYear ${sortOrder}, dealMonth ${sortOrder}, dealDay ${sortOrder}
         </if>

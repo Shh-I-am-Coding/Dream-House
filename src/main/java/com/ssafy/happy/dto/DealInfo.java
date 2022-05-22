@@ -19,4 +19,5 @@ public class DealInfo {
     private String aptName;
     private String dongName;
     private String jibun;
+    private String dongCode;
 }

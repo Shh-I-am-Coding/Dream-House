@@ -24,12 +24,12 @@ public class DealController {
 	@GetMapping("/getAptList")
 	public List<DealInfo> getAptList(String dong, String sortBy, String sortOrder) {
 		System.out.println(sortBy + " " + sortOrder);
-		return dealInfoService.getByDongName(dong, sortBy, sortOrder);
+		return dealInfoService.getByDongCode(dong, sortBy, sortOrder);
 	}
 
 	@GetMapping("/getApt")
-	public List<DealInfo> getApt(String aptName, String sortBy, String sortOrder) {
+	public List<DealInfo> getApt(String aptName, String dongCode, String sortBy, String sortOrder) {
 		System.out.println(sortBy + " " + sortOrder);
-		return dealInfoService.getApt(aptName, sortBy, sortOrder);
+		return dealInfoService.getApt(aptName, dongCode, sortBy, sortOrder);
 	}
 }
