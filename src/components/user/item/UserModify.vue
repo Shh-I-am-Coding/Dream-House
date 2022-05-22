@@ -1,11 +1,11 @@
 <template>
   <div class="container mt-5 px-5 mb-lg-5">
-    <h3>회원정보 수정</h3>
+    <h3 class="p-3">회원정보 수정</h3>
 
     <validation-observer ref="observer" v-slot="{ handleSubmit }">
       <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <b-input-group class="form-input" id="id">
-          <b-form-input id="id" name="id" v-model="userInfo.id" placeholder="아이디" readonly></b-form-input>
+          <b-form-input id="id" name="id" v-model="user.id" placeholder="아이디" readonly></b-form-input>
         </b-input-group>
 
         <validation-provider name="비밀번호" :rules="{ required: true, regex: '^(?=.*[a-zA-Z])(?=.*[0-9]).{7,44}$' }" v-slot="validationContext">
@@ -14,7 +14,7 @@
               id="password"
               name="password"
               type="password"
-              v-model="userInfo.password"
+              v-model="user.password"
               :state="getValidationState(validationContext)"
               placeholder="비밀번호 (영문,숫자 포함 7자리 이상)"
               aria-describedby="password-feedback"
@@ -40,7 +40,7 @@
 
         <validation-provider name="이름" :rules="{ required: true, max: 44 }" v-slot="validationContext">
           <b-input-group class="form-input" id="name">
-            <b-form-input id="name" name="name" v-model="userInfo.name" :state="getValidationState(validationContext)" placeholder="이름" aria-describedby="name-feedback"></b-form-input>
+            <b-form-input id="name" name="name" v-model="user.name" :state="getValidationState(validationContext)" placeholder="이름" aria-describedby="name-feedback"></b-form-input>
             <b-form-invalid-feedback class="feedback" id="name-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </b-input-group>
         </validation-provider>
@@ -55,7 +55,7 @@
               id="email"
               name="email"
               type="email"
-              v-model="userInfo.email"
+              v-model="user.email"
               :state="getValidationState(validationContext)"
               placeholder="이메일"
               aria-describedby="email-feedback"
@@ -69,17 +69,17 @@
             <b-form-input
               id="phone"
               name="phone"
-              v-model="userInfo.phone"
+              v-model="user.phone"
               :state="getValidationState(validationContext)"
               placeholder="휴대폰번호 (010-xxxx-xxxx)"
               aria-describedby="phone-feedback"
-              @keyup="getPhoneMask(user.phone)"
+              @keyup="getPhoneMask()"
             ></b-form-input>
             <b-form-invalid-feedback class="feedback" id="phone-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </b-input-group>
         </validation-provider>
 
-        <b-button type="submit" variant="warning">수정</b-button>
+        <b-button type="submit" class="p-2" variant="warning">수정</b-button>
         <!-- <b-button type="button" variant="danger" @click="withdraw">탈퇴</b-button> -->
       </b-form>
     </validation-observer>
@@ -101,9 +101,16 @@ Object.keys(rules).forEach((rule) => {
 const userStore = "userStore";
 
 export default {
-  name: "UserMyInfo",
+  name: "UserModify",
   data() {
     return {
+      user: {
+        id: null,
+        password: null,
+        name: null,
+        email: null,
+        phone: null,
+      },
       password_confirm: null,
     };
   },
@@ -112,6 +119,11 @@ export default {
     ValidationProvider,
   },
   created() {
+    this.user.id = this.userInfo.id;
+    this.user.password = this.userInfo.password;
+    this.user.name = this.userInfo.name;
+    this.user.email = this.userInfo.email;
+    this.user.phone = this.userInfo.phone;
     this.password_confirm = this.userInfo.password;
   },
   computed: {
@@ -122,15 +134,15 @@ export default {
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
     },
-    getPhoneMask(phone) {
-      this.user.phone = phone.replace(/[^0-9]/g, "").replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
+    getPhoneMask() {
+      this.user.phone = this.user.phone.replace(/[^0-9]/g, "").replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
     },
     onSubmit() {
       this.modify();
       this.$router.push({ name: "home" });
     },
     modify() {
-      this.updateUserInfo(this.userInfo);
+      this.updateUserInfo(this.user);
     },
     // withdraw() {
     //   this.deleteUserInfo(this.userInfo.id);
