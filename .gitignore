@@ -202,4 +202,7 @@ fabric.properties
 hs_err_pid*
 replay_pid*
 
+src/main/resources/application.properties
+
+
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java,intellij
