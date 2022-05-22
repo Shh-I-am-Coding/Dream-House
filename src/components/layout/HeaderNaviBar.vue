@@ -55,10 +55,13 @@ export default {
     ...mapState(userStore, ["isLogin", "userInfo"]),
   },
   methods: {
-    ...mapMutations(userStore, ["SET_LOGOUT"]),
+    ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO", "SET_IS_DUPLICATED"]),
     logout() {
-      this.SET_LOGOUT();
+      this.SET_IS_LOGIN(false);
+      this.SET_USER_INFO(null);
+      this.SET_IS_DUPLICATED(true);
       sessionStorage.removeItem("access-token");
+      alert("로그아웃 되었습니다.");
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },
   },
