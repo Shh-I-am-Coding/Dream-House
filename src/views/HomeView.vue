@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <h1>HAPPY HOUSE <b-img :src="require('@/assets/house.png')" style="width: 70px"></b-img></h1>
+    <h1>HAPPY HOUSE <b-img :src="require('@/assets/img/house.png')" style="width: 70px"></b-img></h1>
   </div>
 </template>
 

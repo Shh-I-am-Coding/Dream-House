@@ -1,5 +1,6 @@
 import jwt_decode from "jwt-decode";
 import { searchId, login, findById, update, register, withdraw } from "@/api/user.js";
+import router from "@/router";
 
 const userStore = {
   namespaced: true,
@@ -117,7 +118,7 @@ const userStore = {
             commit("SET_IS_DUPLICATED", true);
             sessionStorage.removeItem("access-token");
             alert("탈퇴되었습니다.");
-            if (this.$route.path != "/") this.$router.push({ name: "home" });
+            router.push({ name: "home" });
           } else {
             console.log("탈퇴 불가!");
           }

@@ -32,11 +32,11 @@
 
         <b-navbar-nav class="ml-auto" v-else>
           <b-nav-item class="align-self-center"
-            ><router-link :to="{ name: 'userMyInfo' }" class="link align-self-center">
-              <b-avatar variant="primary" v-text="userInfo ? userInfo.id.charAt(0).toUpperCase() : ''"></b-avatar>{{ userInfo.name }}({{ userInfo.id }})님 환영합니다.</router-link
+            ><router-link :to="{ name: 'userMyInfoHome' }" class="link align-self-center">
+              <b-avatar variant="primary" v-text="userInfo.id.charAt(0).toUpperCase()"></b-avatar>{{ userInfo.name }} 님 환영합니다.</router-link
             >
           </b-nav-item>
-          <b-nav-item class="align-self-center"><router-link :to="{ name: 'userMyInfo' }" class="link align-self-center">마이페이지</router-link></b-nav-item>
+          <b-nav-item class="align-self-center"><router-link :to="{ name: 'userMyInfoHome' }" class="link align-self-center">마이페이지</router-link></b-nav-item>
           <b-nav-item class="link align-self-center" @click.prevent="logout">로그아웃</b-nav-item>
         </b-navbar-nav>
       </b-collapse>

@@ -16,11 +16,35 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "netmarble", Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+@font-face {
+  font-family: "BMJUA_ttf";
+  src: url("assets/fonts/BMJUA_ttf.ttf") format("truetype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "NEXON";
+  src: url("assets/fonts/NEXON.otf") format("truetype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "CookieRun";
+  src: url("assets/fonts/CookieRun Regular.ttf") format("truetype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "netmarble";
+  src: url("assets/fonts/netmarbleL.ttf") format("truetype");
+  font-weight: 300;
 }
 
 nav {

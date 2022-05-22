@@ -60,7 +60,24 @@ const routes = [
       {
         path: "myInfo",
         name: "userMyInfo",
-        component: () => import("@/components/user/UserMyInfo.vue"),
+        component: () => import("@/views/UserMyInfoView.vue"),
+        children: [
+          {
+            path: "home",
+            name: "userMyInfoHome",
+            component: () => import("@/components/user/UserMyInfo.vue"),
+          },
+          {
+            path: "modify",
+            name: "userModify",
+            component: () => import("@/components/user/item/UserModify.vue"),
+          },
+          {
+            path: "withdraw",
+            name: "userWithdraw",
+            component: () => import("@/components/user/item/UserWithdraw.vue"),
+          },
+        ],
       },
     ],
   },
