@@ -95,6 +95,7 @@
 import { mapActions, mapGetters } from "vuex";
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import * as rules from "vee-validate/dist/rules";
+import Swal from "sweetalert2";
 
 Object.keys(rules).forEach((rule) => {
   extend(rule, {
@@ -133,10 +134,20 @@ export default {
     async checkDuplicated() {
       await this.checkIdDuplicated(this.user.id);
       if (this.isIdDuplicated()) {
-        alert("이미 존재하는 아이디입니다.");
+        Swal.fire({
+          title: "아이디 중복! 🥲",
+          text: "이미 존재하는 아이디입니다.",
+          icon: "warning",
+          confirmButtonText: "확인",
+        });
         this.id_confirm = false;
       } else {
-        alert("사용가능한 아이디입니다.");
+        Swal.fire({
+          title: "사용 가능! 😸",
+          text: "사용 가능한 아이디입니다.",
+          icon: "success",
+          confirmButtonText: "확인",
+        });
         this.id_confirm = true;
       }
     },
@@ -145,7 +156,12 @@ export default {
     },
     onSubmit() {
       if (this.isIdDuplicated() || !this.id_confirm) {
-        alert("아이디 중복 여부를 확인해주세요.");
+        Swal.fire({
+          title: "실패! 😵",
+          text: "아이디 중복 여부를 확인해주세요.",
+          icon: "error",
+          confirmButtonText: "확인",
+        });
         return;
       }
       this.join(this.user);

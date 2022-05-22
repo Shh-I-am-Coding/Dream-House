@@ -1,6 +1,7 @@
 import jwt_decode from "jwt-decode";
 import { searchId, confirmPassword, login, findById, update, register, withdraw } from "@/api/user.js";
 import router from "@/router";
+import Swal from "sweetalert2";
 
 const userStore = {
   namespaced: true,
@@ -98,9 +99,19 @@ const userStore = {
         (response) => {
           if (response.data == "success") {
             commit("SET_IS_LOGIN", false);
-            alert("회원가입에 성공하였습니다.");
+            Swal.fire({
+              title: "안녕하세요! 🙋‍♂️",
+              text: "회원가입에 성공하였습니다.",
+              icon: "success",
+              confirmButtonText: "확인",
+            });
           } else {
-            console.log("회원가입 실패!");
+            Swal.fire({
+              title: "실패! 😨",
+              text: "회원가입에 실패하였습니다.",
+              icon: "error",
+              confirmButtonText: "확인",
+            });
           }
         },
         (error) => {
@@ -114,7 +125,12 @@ const userStore = {
         (response) => {
           if (response.data == "success") {
             commit("SET_USER_INFO", user);
-            alert("회원정보가 수정되었습니다.");
+            Swal.fire({
+              title: "성공! 🎉",
+              text: "회원정보가 수정되었습니다.",
+              icon: "success",
+              confirmButtonText: "확인",
+            });
           } else {
             console.log("수정 실패!");
           }
@@ -133,7 +149,12 @@ const userStore = {
             commit("SET_USER_INFO", null);
             commit("SET_IS_DUPLICATED", true);
             sessionStorage.removeItem("access-token");
-            alert("탈퇴되었습니다.");
+            Swal.fire({
+              title: "성공! 👏",
+              text: "회원탈퇴가 완료되었습니다.",
+              icon: "success",
+              confirmButtonText: "확인",
+            });
             router.push({ name: "home" });
           } else {
             console.log("탈퇴 불가!");
