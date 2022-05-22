@@ -1,0 +1,386 @@
+<template>
+  <b-container>
+    <div id="map"></div>
+    <ul id="category">
+      <li v-html="placeHolder[0].tags" @click="onClickCategory(placeHolder[0].id)" />
+      <li v-html="placeHolder[1].tags" @click="onClickCategory(placeHolder[1].id)" />
+      <li v-html="placeHolder[2].tags" @click="onClickCategory(placeHolder[2].id)" />
+      <li v-html="placeHolder[3].tags" @click="onClickCategory(placeHolder[3].id)" />
+      <li v-html="placeHolder[4].tags" @click="onClickCategory(placeHolder[4].id)" />
+      <li v-html="placeHolder[5].tags" @click="onClickCategory(placeHolder[5].id)" />
+    </ul>
+    <b-container v-if="deal" class="bv-example-row">
+      <b-row>
+        <b-col>
+          <h3>{{ deal.aptName }}</h3>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="4">
+          <b-alert show variant="secondary">거래 일 : {{ deal.dealYear }}.{{ deal.dealMonth }}.{{ deal.dealDay }}</b-alert>
+        </b-col>
+        <b-col cols="4">
+          <b-alert show variant="primary">이름 : {{ deal.aptName }} </b-alert>
+        </b-col>
+        <b-col cols="4">
+          <b-alert show variant="info">법정동 : {{ deal.dongName }} </b-alert>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="4">
+          <b-alert show variant="success">평수 : {{ deal.area }} m<sup>2</sup></b-alert>
+        </b-col>
+        <b-col cols="4">
+          <b-alert show variant="warning">층수 : {{ deal.floor }}층</b-alert>
+        </b-col>
+        <b-col cols="4">
+          <b-alert show variant="danger">거래금액 : {{ deal.dealAmount | price }} 원</b-alert>
+        </b-col>
+      </b-row>
+    </b-container>
+  </b-container>
+</template>
+
+<script>
+import { mapState, mapActions } from "vuex";
+// import { mapState, mapActions, mapMutations } from "vuex";
+
+const dealStore = "dealStore";
+
+export default {
+  name: "DealDetail",
+  data() {
+    return {
+      markerPositions1: [
+        //[37.5037779, 127.043148],   //서울 멀캠
+        //[36.355314, 127.298203],    //대전 연수원
+        [37.499590490909185, 127.0263723554437], //강남역 근처 핀
+        [37.499427948430814, 127.02794423197847],
+        [37.498553760499505, 127.02882598822454],
+        [37.497625593121384, 127.02935713582038],
+        [37.49629291770947, 127.02587362608637],
+        [37.49754540521486, 127.02546694890695],
+        [37.49646391248451, 127.02675574250912],
+      ],
+      markers: [],
+      placeMarkers: [],
+      geocoder: null,
+      ps: null,
+      currCategory: "",
+      placeOverlay: null,
+      contentNode: null,
+      map: null,
+      change: false,
+      count: 0,
+      placeHolder: [
+        {
+          id: "BK9",
+          tags: '<span class="category_bg bank"></span>은행',
+        },
+        {
+          id: "MT1",
+          tags: '<span class="category_bg mart"></span>마트',
+        },
+        {
+          id: "PM9",
+          tags: '<span class="category_bg pharmacy"></span>약국',
+        },
+        {
+          id: "OL7",
+          tags: '<span class="category_bg oil"></span>주유소',
+        },
+        {
+          id: "CE7",
+          tags: '<span class="category_bg cafe"></span>카페',
+        },
+        {
+          id: "CS2",
+          tags: '<span class="category_bg store"></span>편의점',
+        },
+      ],
+    };
+  },
+  computed: {
+    ...mapState(dealStore, ["deal", "deals", "sortBy", "sortOrder"]),
+  },
+  mounted() {
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
+    } else {
+      const script = document.createElement("script");
+      const SERVICE_KEY = process.env.VUE_APP_KAKAO_MAP_API_KEY;
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + decodeURIComponent(SERVICE_KEY) + "&libraries=services";
+      document.head.appendChild(script);
+    }
+  },
+  methods: {
+    ...mapActions(dealStore, ["getAptList"]),
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 1,
+      };
+      //지도 객체를 등록합니다.
+      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
+      this.map = new kakao.maps.Map(container, options);
+      this.geocoder = new kakao.maps.services.Geocoder();
+      this.displayMarker(this.markerPositions1);
+
+      this.placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 }); // 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
+      this.contentNode = document.createElement("div"); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다
+      this.ps = new kakao.maps.services.Places(this.map);
+
+      // 지도에 idle 이벤트를 등록합니다
+      kakao.maps.event.addListener(this.map, "idle", this.searchPlaces);
+
+      this.contentNode.className = "placeinfo_wrap";
+
+      // 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
+      // 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다
+      this.addEventHandle(this.contentNode, "mousedown", kakao.maps.event.preventMap);
+      this.addEventHandle(this.contentNode, "touchstart", kakao.maps.event.preventMap);
+
+      // 커스텀 오버레이 컨텐츠를 설정합니다
+      this.placeOverlay.setContent(this.contentNode);
+    },
+    displayMarker(markerPositions) {
+      const positions = markerPositions.map((position) => new kakao.maps.LatLng(...position));
+
+      if (positions.length > 0) {
+        this.markers = positions.map(
+          (position) =>
+            new kakao.maps.Marker({
+              map: this.map,
+              position,
+            })
+        );
+
+        const bounds = positions.reduce((bounds, latlng) => bounds.extend(latlng), new kakao.maps.LatLngBounds());
+
+        this.map.setBounds(bounds);
+        console.log(bounds);
+      }
+    },
+    addressSearch(address) {
+      return new Promise((resolve, reject) => {
+        this.geocoder.addressSearch(address, function (result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            resolve(result);
+          } else {
+            reject(status);
+          }
+        });
+      });
+    },
+    async mkMarker(deal) {
+      let address = deal.dongName + " " + deal.jibun;
+      const result = await this.addressSearch(address);
+      const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+      console.log(address, " ", coords + " " + deal.dongName);
+      this.count++;
+      // 결과값으로 받은 위치를 마커로 표시합니다
+      const marker = new kakao.maps.Marker({
+        map: this.map,
+        position: coords,
+      });
+      this.markers.push(marker);
+      if (this.center == true) {
+        this.map.setCenter(coords);
+        this.center = false;
+      }
+      kakao.maps.event.addListener(marker, "click", () => {
+        // 마커 위에 인포윈도우를 표시합니다
+        console.log("아파트명 : " + deal.aptName);
+        console.log("동코드 : " + deal.dongCode);
+        //아파트명을 통해 아파트 검색
+        this.searchByAptName(deal.aptName, deal.dongCode);
+      });
+      if (this.deals.length == this.count) {
+        this.setCenter();
+      }
+    },
+    mkMarkers(deals) {
+      this.count = 0;
+      deals.forEach((deal) => {
+        this.mkMarker(deal);
+      });
+    },
+    removePins() {
+      if (this.markers.length > 0) {
+        this.markers.forEach((marker) => marker.setMap(null));
+      }
+      this.markers = [];
+    },
+    setCenter() {
+      const positions = this.markers.map((marker) => marker.getPosition());
+
+      const bounds = positions.reduce((bounds, latlng) => bounds.extend(latlng), new kakao.maps.LatLngBounds());
+
+      this.map.setBounds(bounds);
+    },
+    searchByAptName(aptName, dongCode) {
+      const params = {
+        aptName,
+        dongCode,
+        sortBy: this.sortBy,
+        sortOrder: this.sortOrder,
+      };
+      console.log(params);
+      this.getAptList(params);
+    },
+    addEventHandle(target, type, callback) {
+      // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
+      if (target.addEventListener) {
+        target.addEventListener(type, callback);
+      } else {
+        target.attachEvent("on" + type, callback);
+      }
+    },
+    searchPlaces() {
+      if (!this.currCategory) {
+        console.log("currCategory is ", this.currCategory);
+        return;
+      }
+
+      // 커스텀 오버레이를 숨깁니다
+      this.placeOverlay.setMap(null);
+
+      // 지도에 표시되고 있는 마커를 제거합니다
+      this.removePlaceMarker();
+
+      this.ps.categorySearch(this.currCategory, this.placesSearchCB, { useMapBounds: true });
+    },
+    placesSearchCB(data, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        // 정상적으로 검색이 완료됐으면 지도에 마커를 표출합니다
+        this.displayPlaces(data);
+      } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+        // 검색결과가 없는경우 해야할 처리가 있다면 이곳에 작성해 주세요
+      } else if (status === kakao.maps.services.Status.ERROR) {
+        // 에러로 인해 검색결과가 나오지 않은 경우 해야할 처리가 있다면 이곳에 작성해 주세요
+        console.log(status);
+      }
+    },
+    displayPlaces(places) {
+      // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
+      // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
+      let order = 0;
+      for (let i = 0; i < this.placeHolder.length; i++) {
+        if (this.placeHolder[i].id == this.currCategory) {
+          order = i;
+          break;
+        }
+      }
+      for (var i = 0; i < places.length; i++) {
+        // 마커를 생성하고 지도에 표시합니다
+        let marker = this.addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+
+        // 마커와 검색결과 항목을 클릭 했을 때
+        // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
+        ((marker, place) => {
+          kakao.maps.event.addListener(marker, "click", () => {
+            this.displayPlaceInfo(place);
+          });
+        })(marker, places[i]);
+      }
+    },
+    addMarker(position, order) {
+      let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        imageSize = new kakao.maps.Size(27, 28), // 마커 이미지의 크기
+        imgOptions = {
+          spriteSize: new kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기
+          spriteOrigin: new kakao.maps.Point(46, order * 36), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+          offset: new kakao.maps.Point(11, 28), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        },
+        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+        marker = new kakao.maps.Marker({
+          position: position, // 마커의 위치
+          image: markerImage,
+        });
+
+      marker.setMap(this.map); // 지도 위에 마커를 표출합니다
+      this.placeMarkers.push(marker); // 배열에 생성된 마커를 추가합니다
+
+      return marker;
+    },
+    removePlaceMarker() {
+      for (let i = 0; i < this.placeMarkers.length; i++) {
+        this.placeMarkers[i].setMap(null);
+      }
+      this.placeMarkers = [];
+    },
+    displayPlaceInfo(place) {
+      let content = '<div class="placeinfo">' + '   <a class="title" href="' + place.place_url + '" target="_blank" title="' + place.place_name + '">' + place.place_name + "</a>";
+
+      if (place.road_address_name) {
+        content +=
+          '    <span title="' +
+          place.road_address_name +
+          '">' +
+          place.road_address_name +
+          "</span>" +
+          '  <span class="jibun" title="' +
+          place.address_name +
+          '">(지번 : ' +
+          place.address_name +
+          ")</span>";
+      } else {
+        content += '    <span title="' + place.address_name + '">' + place.address_name + "</span>";
+      }
+
+      content += '    <span class="tel">' + place.phone + "</span>" + "</div>" + '<div class="after"></div>';
+
+      this.contentNode.innerHTML = content;
+      this.placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
+      this.placeOverlay.setMap(this.map);
+    },
+    onClickCategory(id) {
+      console.log(id);
+      this.placeOverlay.setMap(null);
+
+      if (this.currCategory === id) {
+        this.currCategory = "";
+        this.removePlaceMarker();
+      } else {
+        this.currCategory = id;
+        this.searchPlaces();
+      }
+    },
+  },
+  watch: {
+    deal(newValue) {
+      if (newValue) {
+        this.center = true;
+        this.removePins();
+        this.mkMarker(newValue);
+        this.map.setLevel(5);
+      }
+    },
+    deals(newValue) {
+      if (newValue.length > 0) {
+        this.removePins();
+        this.mkMarkers(newValue);
+      }
+    },
+  },
+  filters: {
+    price(value) {
+      if (!value) return value;
+      let rst = "";
+      value.split(",").forEach((i) => {
+        rst += i;
+      });
+      rst += "0000";
+      return rst.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+  },
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+@import "@/assets/css/DealDetail.css";
+</style>
