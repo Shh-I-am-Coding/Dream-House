@@ -37,10 +37,20 @@ public class UserController {
 		this.jwtService = jwtService;
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<String> search(@PathVariable String id) {
+		User searchedUser = userService.search(id);
+		System.out.println(searchedUser);
+		if(searchedUser != null) {
+			return new ResponseEntity<>("success", HttpStatus.OK);
+		}
+		return new ResponseEntity<>("fail", HttpStatus.OK);
+	}
+
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
 		System.out.println("user = " + user);
-		User searchedUser = userService.login(user.getId());
+		User searchedUser = userService.search(user.getId());
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 		try {
@@ -61,14 +71,14 @@ public class UserController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/info/{id}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable String id, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 		if (jwtService.isUsable(request.getHeader("access-token"))) {
 			log.info("사용 가능한 토큰!!!");
 			try {
-				User user = userService.login(id);
+				User user = userService.search(id);
 				resultMap.put("userInfo", user);
 				resultMap.put("message", "success");
 				status = HttpStatus.ACCEPTED;
@@ -115,6 +125,8 @@ public class UserController {
 		}
 		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@GetMapping("/")
 
 	@PostMapping("/findPasswordByPhone")
 	public String findPasswordByPhone(String id, String name, String phone, Model model) {

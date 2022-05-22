@@ -5,7 +5,7 @@ import com.ssafy.happy.dto.User;
 public interface UserService {
 	int register(User user);
 
-	User login(String id);
+	User search(String id);
 
 	int deleteAccount(String id);
 

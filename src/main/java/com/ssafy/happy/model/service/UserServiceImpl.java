@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User login(String id) {
+	public User search(String id) {
 		return userRepo.select(id);
 	}
 
