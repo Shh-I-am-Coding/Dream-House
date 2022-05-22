@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { searchId, login, findById, update, register, withdraw } from "@/api/user.js";
+import { searchId, confirmPassword, login, findById, update, register, withdraw } from "@/api/user.js";
 import router from "@/router";
 
 const userStore = {
@@ -8,14 +8,18 @@ const userStore = {
     isLogin: false,
     isLoginError: false,
     isDuplicated: true,
+    isPasswordConfirmed: false,
     userInfo: null,
   },
   getters: {
-    checkUserInfo: function (state) {
+    getUserInfo: function (state) {
       return state.userInfo;
     },
     isIdDuplicated: function (state) {
       return state.isDuplicated;
+    },
+    getPasswordConfirmed: function (state) {
+      return state.isPasswordConfirmed;
     },
   },
   mutations: {
@@ -27,6 +31,9 @@ const userStore = {
     },
     SET_IS_DUPLICATED: (state, isDuplicated) => {
       state.isDuplicated = isDuplicated;
+    },
+    SET_IS_PASSWORD_CONFIRMED: (state, isPasswordConfirmed) => {
+      state.isPasswordConfirmed = isPasswordConfirmed;
     },
     SET_USER_INFO: (state, userInfo) => {
       state.isLogin = true;
@@ -40,6 +47,15 @@ const userStore = {
           commit("SET_IS_DUPLICATED", true);
         } else {
           commit("SET_IS_DUPLICATED", false);
+        }
+      });
+    },
+    async checkPassword({ commit }, user) {
+      await confirmPassword(user, (response) => {
+        if (response.data === "success") {
+          commit("SET_IS_PASSWORD_CONFIRMED", true);
+        } else {
+          commit("SET_IS_PASSWORD_CONFIRMED", false);
         }
       });
     },

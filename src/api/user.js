@@ -6,6 +6,10 @@ async function searchId(id, success, fail) {
   await api.get(`/user/${id}`).then(success).catch(fail);
 }
 
+async function confirmPassword(user, success, fail) {
+  await api.post(`/user/confirmPassword`, user).then(success).catch(fail);
+}
+
 async function login(user, success, fail) {
   await api.post(`/user/login`, user).then(success).catch(fail);
 }
@@ -27,4 +31,4 @@ async function withdraw(id, success, fail) {
   await api.delete(`/user/${id}`).then(success).catch(fail);
 }
 
-export { searchId, login, findById, register, update, withdraw };
+export { searchId, confirmPassword, login, findById, register, update, withdraw };
