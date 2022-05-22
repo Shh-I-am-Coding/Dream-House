@@ -40,8 +40,17 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<String> search(@PathVariable String id) {
 		User searchedUser = userService.search(id);
-		System.out.println(searchedUser);
 		if(searchedUser != null) {
+			return new ResponseEntity<>("success", HttpStatus.OK);
+		}
+		return new ResponseEntity<>("fail", HttpStatus.OK);
+	}
+
+	@PostMapping("/confirmPassword")
+	public ResponseEntity<String> confirmPassword(@RequestBody User user) {
+		log.debug(user.toString());
+		User searchedUser = userService.search(user.getId());
+		if(searchedUser != null && searchedUser.getPassword().equals(user.getPassword())) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
 		}
 		return new ResponseEntity<>("fail", HttpStatus.OK);
@@ -49,7 +58,6 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
-		System.out.println("user = " + user);
 		User searchedUser = userService.search(user.getId());
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
@@ -125,8 +133,6 @@ public class UserController {
 		}
 		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
-	@GetMapping("/")
 
 	@PostMapping("/findPasswordByPhone")
 	public String findPasswordByPhone(String id, String name, String phone, Model model) {
