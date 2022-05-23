@@ -75,7 +75,7 @@ export default {
   height: 78vh;
   max-height: 78vh;
   position: sticky;
-  top: 195px;
+  top: 10vh;
 }
 .b-sidebar-body {
   height: 300px;

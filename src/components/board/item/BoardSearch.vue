@@ -4,10 +4,10 @@
       <b-container fluid>
         <b-row class="my-1">
           <b-col sm="2">
-            <b-form-select class="search" name="key" id="key" v-model="key" :options="keyOptions"></b-form-select>
+            <b-form-select class="search" name="key" id="key" v-model="searchCondition.key" :options="keyOptions"></b-form-select>
           </b-col>
           <b-col sm="8">
-            <b-form-input class="search" type="text" name="word" id="word" v-model="word" />
+            <b-form-input class="search" type="text" name="word" id="word" v-model="searchCondition.word" />
           </b-col>
           <b-button type="submit" variant="secondary">검색</b-button>
         </b-row>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 const boardStore = "boardStore";
 
@@ -26,33 +26,35 @@ export default {
 
   data() {
     return {
-      key: "title",
       keyOptions: [
         { value: "title", text: "제목" },
         { value: "userId", text: "작성자" },
         { value: "content", text: "내용" },
       ],
-      word: "",
     };
   },
+  created() {
+    if (!this.isReaminSearchCondition) {
+      this.searchCondition.key = "title";
+      this.searchCondition.word = "";
+      this.searchCondition.currentPage = 1;
+      console.log(this.searchCondition);
+    }
+  },
   computed: {
-    ...mapState(boardStore, ["searchCondition"]),
+    ...mapState(boardStore, ["searchCondition", "isReaminSearchCondition"]),
   },
   methods: {
     ...mapActions(boardStore, ["setArticles"]),
+    ...mapMutations(boardStore, ["SET_IS_REMAIN_SEARCH_CONDITION"]),
 
     onSubmit(event) {
       event.preventDefault();
       this.search();
     },
     search() {
-      const searchCondition = {
-        key: this.key,
-        word: this.word,
-        currentPage: 1,
-      };
-
-      this.setArticles(searchCondition);
+      this.SET_IS_REMAIN_SEARCH_CONDITION(true);
+      this.setArticles(this.searchCondition);
     },
   },
 };

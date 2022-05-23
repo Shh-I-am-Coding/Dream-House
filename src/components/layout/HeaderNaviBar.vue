@@ -15,9 +15,11 @@
           <b-nav-item href="#">
             <router-link :to="{ name: 'home' }" class="menuItem">관심지역 설정</router-link>
           </b-nav-item>
-          <b-nav-item href="#">
+          <b-nav-item class="link align-self-center menuItem" @click.prevent="qna">문의게시판</b-nav-item>
+
+          <!-- <b-nav-item href="#">
             <router-link :to="{ name: 'board' }" class="menuItem">문의게시판</router-link>
-          </b-nav-item>
+          </b-nav-item> -->
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -33,7 +35,7 @@
         <b-navbar-nav class="ml-auto" v-else>
           <b-nav-item class="align-self-center"
             ><router-link :to="{ name: 'userMyInfoHome' }" class="link align-self-center">
-              <b-avatar variant="primary" v-text="userInfo.id.charAt(0).toUpperCase()"></b-avatar>{{ userInfo.name }} 님 환영합니다.</router-link
+              <b-avatar variant="primary" v-text="userInfo.id.charAt(0).toUpperCase()"></b-avatar> {{ userInfo.name }} 님 환영합니다.</router-link
             >
           </b-nav-item>
           <b-nav-item class="align-self-center"><router-link :to="{ name: 'userMyInfoHome' }" class="link align-self-center menuItem">마이페이지</router-link></b-nav-item>
@@ -49,6 +51,7 @@ import { mapState, mapMutations } from "vuex";
 import Swal from "sweetalert2";
 
 const userStore = "userStore";
+const boardStore = "boardStore";
 
 export default {
   name: "HeaderNaviBar",
@@ -57,6 +60,7 @@ export default {
   },
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO", "SET_IS_DUPLICATED"]),
+    ...mapMutations(boardStore, ["SET_IS_REMAIN_SEARCH_CONDITION"]),
     logout() {
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);
@@ -70,16 +74,30 @@ export default {
       });
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },
+    async qna() {
+      this.SET_IS_REMAIN_SEARCH_CONDITION(false);
+      this.$router.push({ name: "board" });
+    },
   },
 };
 </script>
 
 <style scoped>
 .menuItem {
+  color: #2c3e50;
   font-size: 1.1em;
 }
 
-a :hover {
+a:hover {
+  text-decoration: none;
+  color: rgb(255, 178, 70);
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #2c3e50;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
   text-decoration: none;
   color: rgb(255, 178, 70);
 }
