@@ -42,10 +42,10 @@ export default {
 }
 
 #sidebar-aptList {
-  height: 85vh;
-  max-height: 85vh;
+  height: 80vh;
+  max-height: 80vh;
   position: sticky;
-  top: 195px;
+  top: 10vh;
 }
 .b-sidebar-body {
   height: 300px;
