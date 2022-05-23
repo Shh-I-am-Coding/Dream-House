@@ -48,8 +48,21 @@ export default {
   },
 };
 </script>
-<style>
+<style scope>
+.page-link:hover {
+  background-color: rgb(255, 235, 208);
+  color: orange;
+  cursor: pointer;
+}
+
+.page-link {
+  color: rgb(252, 181, 0);
+  font-weight: bold;
+}
+
 .active {
   font-size: 1.2rem;
+  background-color: rgb(255, 211, 90);
+  color: white;
 }
 </style>

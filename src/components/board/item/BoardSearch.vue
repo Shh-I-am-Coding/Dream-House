@@ -1,10 +1,17 @@
 <template>
-  <div>
+  <div class="m-5">
     <b-form @submit="onSubmit">
-      <!-- <b-form-input type="hidden" name="currentPage" id="currentPage" /> -->
-      <b-form-select name="key" id="key" v-model="key" :options="keyOptions" size="sm"></b-form-select>
-      <b-form-input type="text" name="word" id="word" v-model="word" />
-      <b-button type="submit" variant="primary" class="m-1">검색</b-button>
+      <b-container fluid>
+        <b-row class="my-1">
+          <b-col sm="2">
+            <b-form-select class="search" name="key" id="key" v-model="key" :options="keyOptions"></b-form-select>
+          </b-col>
+          <b-col sm="8">
+            <b-form-input class="search" type="text" name="word" id="word" v-model="word" />
+          </b-col>
+          <b-button type="submit" variant="secondary">검색</b-button>
+        </b-row>
+      </b-container>
     </b-form>
   </div>
 </template>
@@ -19,9 +26,8 @@ export default {
 
   data() {
     return {
-      key: "none",
+      key: "title",
       keyOptions: [
-        { value: "none", text: "선택해주세요." },
         { value: "title", text: "제목" },
         { value: "userId", text: "작성자" },
         { value: "content", text: "내용" },
@@ -51,3 +57,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search {
+  display: inline;
+}
+</style>
