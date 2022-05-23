@@ -17,7 +17,8 @@
                 </div>
 
                 <button type="button" class="btn btn-warning btn-lg btn-block" id="loginBtn" @click="confirm">로그인</button><br /><br />
-                <a href="${root}/user/findPassword">비밀번호 찾기</a> //TODO 비밀번호찾기 라우터링크로
+                <!--TODO 비밀번호찾기 라우터링크로-->
+                <a href="${root}/user/findPassword">비밀번호 찾기</a>
               </b-form>
             </div>
           </div>

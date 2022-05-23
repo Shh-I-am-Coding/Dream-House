@@ -1,5 +1,5 @@
 <template>
-  <div class="bv-example-row mt-3 text-center">
+  <div class="bv-example-row m-5 p-3 text-center">
     <!-- <h3 class="underline-steelblue"><b-icon icon="person-lines-fill"></b-icon> Member Service</h3> -->
     <router-view></router-view>
   </div>
