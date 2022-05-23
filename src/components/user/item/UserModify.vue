@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5 px-5 mb-lg-5">
+  <div class="container mt-2 px-5 mb-lg-5">
     <h3 class="p-3">회원정보 수정</h3>
 
     <validation-observer ref="observer" v-slot="{ handleSubmit }">

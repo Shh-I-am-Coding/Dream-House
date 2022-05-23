@@ -33,7 +33,7 @@
         <b-navbar-nav class="ml-auto" v-else>
           <b-nav-item class="align-self-center"
             ><router-link :to="{ name: 'userMyInfoHome' }" class="link align-self-center">
-              <b-avatar variant="primary" v-text="userInfo.id.charAt(0).toUpperCase()"></b-avatar>{{ userInfo.name }} 님 환영합니다.</router-link
+              <b-avatar variant="primary" v-text="userInfo.id.charAt(0).toUpperCase()"></b-avatar> {{ userInfo.name }} 님 환영합니다.</router-link
             >
           </b-nav-item>
           <b-nav-item class="align-self-center"><router-link :to="{ name: 'userMyInfoHome' }" class="link align-self-center menuItem">마이페이지</router-link></b-nav-item>
@@ -76,10 +76,20 @@ export default {
 
 <style scoped>
 .menuItem {
+  color: #2c3e50;
   font-size: 1.1em;
 }
 
-a :hover {
+a:hover {
+  text-decoration: none;
+  color: rgb(255, 178, 70);
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #2c3e50;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
   text-decoration: none;
   color: rgb(255, 178, 70);
 }
