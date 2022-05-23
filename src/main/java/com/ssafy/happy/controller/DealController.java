@@ -31,9 +31,9 @@ public class DealController {
 	}
 
 	@GetMapping("/getApt")
-	public List<DealInfo> getApt(String aptName, String dongCode, String sortBy, String sortOrder) {
-		System.out.println(aptName+" "+dongCode+" "+sortBy + " " + sortOrder);
-		return dealInfoService.getApt(aptName, dongCode, sortBy, sortOrder);
+	public List<DealInfo> getApt(String aptName, String dongCode) {
+		System.out.println(aptName+" "+dongCode);
+		return dealInfoService.getApt(aptName, dongCode);
 	}
 
 	@GetMapping("/getAptNameList")

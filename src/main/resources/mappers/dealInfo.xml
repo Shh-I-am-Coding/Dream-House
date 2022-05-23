@@ -37,6 +37,6 @@
                houseinfo.roadNameBubun as roadNameBubun,
                houseinfo.jibun, houseinfo.dongCode, houseinfo.lng, houseinfo.lat
         FROM housedeal INNER JOIN houseinfo on housedeal.aptCode= houseinfo.aptCode and housedeal.cancelDealType != 'O' and houseinfo.dongCode=#{dongCode} and houseinfo.apartmentName=#{aptName}
-        ORDER BY dealDay desc, dealMonth desc, dealYear desc
+        ORDER BY dealYear desc, dealMonth desc, dealDay desc
     </select>
 </mapper>

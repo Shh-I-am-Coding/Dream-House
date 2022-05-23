@@ -21,8 +21,8 @@ public class DealInfoServiceImpl implements DealInfoService {
 	}
 
 	@Override
-	public List<DealInfo> getApt(String aptName, String dongCode, String sortBy, String sortOrder) {
-		return dealInfoRepo.selectApt(aptName, dongCode, sortBy, sortOrder);
+	public List<DealInfo> getApt(String aptName, String dongCode) {
+		return dealInfoRepo.selectApt(aptName, dongCode);
 	}
 
 }
