@@ -15,9 +15,11 @@
           <b-nav-item href="#">
             <router-link :to="{ name: 'home' }" class="menuItem">관심지역 설정</router-link>
           </b-nav-item>
-          <b-nav-item href="#">
+          <b-nav-item class="link align-self-center menuItem" @click.prevent="qna">문의게시판</b-nav-item>
+
+          <!-- <b-nav-item href="#">
             <router-link :to="{ name: 'board' }" class="menuItem">문의게시판</router-link>
-          </b-nav-item>
+          </b-nav-item> -->
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -49,6 +51,7 @@ import { mapState, mapMutations } from "vuex";
 import Swal from "sweetalert2";
 
 const userStore = "userStore";
+const boardStore = "boardStore";
 
 export default {
   name: "HeaderNaviBar",
@@ -57,6 +60,7 @@ export default {
   },
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO", "SET_IS_DUPLICATED"]),
+    ...mapMutations(boardStore, ["SET_IS_REMAIN_SEARCH_CONDITION"]),
     logout() {
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);
@@ -69,6 +73,10 @@ export default {
         confirmButtonText: "확인",
       });
       if (this.$route.path != "/") this.$router.push({ name: "home" });
+    },
+    async qna() {
+      this.SET_IS_REMAIN_SEARCH_CONDITION(false);
+      this.$router.push({ name: "board" });
     },
   },
 };

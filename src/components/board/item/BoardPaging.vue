@@ -30,6 +30,9 @@ export default {
   data() {
     return {};
   },
+  created() {
+    this.pageNavigation.currentPage = this.searchCondition.currentPage;
+  },
   computed: {
     ...mapState(boardStore, ["articles", "searchCondition", "pageNavigation"]),
   },
@@ -38,6 +41,7 @@ export default {
     ...mapActions(boardStore, ["setArticles"]),
     movePage(page) {
       this.SET_CURRENT_PAGE(page);
+      console.log(page);
       this.setArticles(this.searchCondition);
     },
     range(start, end) {
