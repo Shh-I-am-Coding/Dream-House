@@ -1,20 +1,22 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center" fluid>
-    <h3 class="underline-orange"><b-icon icon="house-fill"></b-icon> Deal Service</h3>
+  <!-- <b-container class="text-center" fluid>
     <b-row>
       <b-col>
         <deal-search-bar></deal-search-bar>
       </b-col>
     </b-row>
     <b-row>
-      <b-col cols="4" align="left">
-        <deal-list />
-      </b-col>
-      <b-col cols="8">
+      <b-col style="width: 100vh">
         <deal-detail />
       </b-col>
+      <deal-list />
     </b-row>
-  </b-container>
+  </b-container> -->
+  <div>
+    <deal-search-bar></deal-search-bar>
+    <deal-list />
+    <deal-detail />
+  </div>
 </template>
 <script>
 import DealSearchBar from "@/components/deal/DealSearchBar.vue";

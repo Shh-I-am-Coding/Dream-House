@@ -19,7 +19,7 @@ function dongList(params, sucess, fail) {
 }
 
 function dealList(params, sucess, fail) {
-  api.get(`/deal/getAptList`, { params: params }).then(sucess).catch(fail);
+  api.get(`/deal/getAptNameList`, { params: params }).then(sucess).catch(fail);
 }
 
 function APTList(params, sucess, fail) {

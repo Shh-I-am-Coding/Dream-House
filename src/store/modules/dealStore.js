@@ -3,25 +3,22 @@ import { sidoList, gugunList, dongList, dealList, APTList } from "@/api/deal.js"
 const dealStore = {
   namespaced: true,
   state: {
-    sidos: [{ value: null, text: "선택하세요" }],
-    guguns: [{ value: null, text: "선택하세요" }],
-    dongs: [{ value: null, text: "선택하세요" }],
+    sidos: [{ value: null, text: "시,도 선택" }],
+    guguns: [{ value: null, text: "구, 군 선택" }],
+    dongs: [{ value: null, text: "동 선택" }],
     deals: [],
     deal: null,
     sortOrder: "asc",
     sortBy: "aptName",
     // deal: {
-    //   idx: Number,
-    //   dealYear: Number,
-    //   dealMouth: Number,
-    //   dealDay: Number,
-    //   area: String,
-    //   floor: String,
-    //   aptCode: Number,
-    //   dealAmount: String,
-    //   aptName: String,
-    //   dongName: String,
-    //   jibun: String,
+    // private int dealNum;
+    // private String aptCode;
+    // private String aptName;
+    // private String dongName;
+    // private String dongCode;
+    // private String lng;
+    // private String lat;
+    // private String avgAmount;
     // },
   },
 
@@ -65,15 +62,16 @@ const dealStore = {
       });
     },
     CLEAR_SIDO_LIST: (state) => {
-      state.sidos = [{ value: null, text: "선택하세요" }];
+      state.sidos = [{ value: null, text: "시,도 선택" }];
     },
     CLEAR_GUGUN_LIST: (state) => {
-      state.guguns = [{ value: null, text: "선택하세요" }];
+      state.guguns = [{ value: null, text: "구, 군 선택" }];
     },
     CLEAR_DONG_LIST: (state) => {
-      state.dongs = [{ value: null, text: "선택하세요" }];
+      state.dongs = [{ value: null, text: "동 선택" }];
     },
     SET_DEAL_LIST: (state, deals) => {
+      console.log("SET_DEAL_LIST");
       state.deals = deals;
     },
     CLEAR_DEAL_LIST: (state) => {
@@ -144,7 +142,7 @@ const dealStore = {
       dealList(
         params,
         (response) => {
-          //console.log(response.data);
+          console.log("GET_DEAL_LIST");
           commit("SET_DEAL_LIST", response.data);
         },
         (error) => {

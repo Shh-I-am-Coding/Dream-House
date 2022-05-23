@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <div>
     <div id="map"></div>
     <ul id="category">
       <li v-html="placeHolder[0].tags" @click="onClickCategory(placeHolder[0].id)" :class="[currCategory === placeHolder[0].id ? 'on' : 'off']" />
@@ -9,7 +9,7 @@
       <li v-html="placeHolder[4].tags" @click="onClickCategory(placeHolder[4].id)" :class="[currCategory === placeHolder[4].id ? 'on' : 'off']" />
       <li v-html="placeHolder[5].tags" @click="onClickCategory(placeHolder[5].id)" :class="[currCategory === placeHolder[5].id ? 'on' : 'off']" />
     </ul>
-    <b-container v-if="deal" class="bv-example-row">
+    <!-- <b-container v-if="deal" class="bv-example-row">
       <b-row>
         <b-col>
           <h3>{{ deal.aptName }}</h3>
@@ -37,8 +37,8 @@
           <b-alert show variant="danger">거래금액 : {{ deal.dealAmount | price }} 원</b-alert>
         </b-col>
       </b-row>
-    </b-container>
-  </b-container>
+    </b-container> -->
+  </div>
 </template>
 
 <script>
@@ -70,7 +70,6 @@ export default {
       placeOverlay: null,
       contentNode: null,
       map: null,
-      change: false,
       count: 0,
       placeHolder: [
         {
@@ -98,6 +97,7 @@ export default {
           tags: '<span class="category_bg store"></span>편의점',
         },
       ],
+      isInMarker: null,
     };
   },
   computed: {
@@ -165,49 +165,76 @@ export default {
         console.log(bounds);
       }
     },
-    addressSearch(address) {
-      return new Promise((resolve, reject) => {
-        this.geocoder.addressSearch(address, function (result, status) {
-          if (status === kakao.maps.services.Status.OK) {
-            resolve(result);
-          } else {
-            reject(status);
-          }
+    // addressSearch(address) {
+    //   return new Promise((resolve, reject) => {
+    //     this.geocoder.addressSearch(address, function (result, status) {
+    //       if (status === kakao.maps.services.Status.OK) {
+    //         resolve(result);
+    //       } else {
+    //         reject(status);
+    //       }
+    //     });
+    //   });
+    // },
+    // async mkMarker(deal) {
+    //   let address = deal.dongName + " " + deal.jibun;
+    //   const result = await this.addressSearch(address);
+    //   const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+    //   console.log(address, " ", coords + " " + deal.dongName);
+    //   this.count++;
+    //   // 결과값으로 받은 위치를 마커로 표시합니다
+    //   const marker = new kakao.maps.Marker({
+    //     map: this.map,
+    //     position: coords,
+    //   });
+    //   this.markers.push(marker);
+    //   if (this.center == true) {
+    //     this.map.setCenter(coords);
+    //     this.center = false;
+    //   }
+    //   kakao.maps.event.addListener(marker, "click", () => {
+    //     // 마커 위에 인포윈도우를 표시합니다
+    //     console.log("아파트명 : " + deal.aptName);
+    //     console.log("동코드 : " + deal.dongCode);
+    //     //아파트명을 통해 아파트 검색
+    //     this.searchByAptName(deal.aptName, deal.dongCode);
+    //   });
+    //   if (this.deals.length == this.count) {
+    //     this.setCenter();
+    //   }
+    // },
+    // mkMarkers(deals) {
+    //   this.count = 0;
+    //   deals.forEach((deal) => {
+    //     this.mkMarker(deal);
+    //   });
+    // },
+    mkMarker(deal) {
+      if (!this.isInMarker.has(deal.aptCode)) {
+        this.isInMarker.add(deal.aptCode);
+        console.log(deal.aptCode, " ", deal.aptName);
+        const coords = new kakao.maps.LatLng(deal.lat, deal.lng);
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        const marker = new kakao.maps.Marker({
+          map: this.map,
+          position: coords,
         });
-      });
-    },
-    async mkMarker(deal) {
-      let address = deal.dongName + " " + deal.jibun;
-      const result = await this.addressSearch(address);
-      const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-      console.log(address, " ", coords + " " + deal.dongName);
-      this.count++;
-      // 결과값으로 받은 위치를 마커로 표시합니다
-      const marker = new kakao.maps.Marker({
-        map: this.map,
-        position: coords,
-      });
-      this.markers.push(marker);
-      if (this.center == true) {
-        this.map.setCenter(coords);
-        this.center = false;
-      }
-      kakao.maps.event.addListener(marker, "click", () => {
-        // 마커 위에 인포윈도우를 표시합니다
-        console.log("아파트명 : " + deal.aptName);
-        console.log("동코드 : " + deal.dongCode);
-        //아파트명을 통해 아파트 검색
-        this.searchByAptName(deal.aptName, deal.dongCode);
-      });
-      if (this.deals.length == this.count) {
-        this.setCenter();
+        this.markers.push(marker);
+        kakao.maps.event.addListener(marker, "click", () => {
+          // 마커 위에 인포윈도우를 표시합니다
+          console.log("아파트명 : " + deal.aptName);
+          console.log("동코드 : " + deal.dongCode);
+          //아파트명을 통해 아파트 검색
+          this.searchByAptName(deal.aptName, deal.dongCode);
+        });
       }
     },
     mkMarkers(deals) {
-      this.count = 0;
+      this.isInMarker = new Set();
       deals.forEach((deal) => {
         this.mkMarker(deal);
       });
+      this.setCenter();
     },
     removePins() {
       if (this.markers.length > 0) {
@@ -244,7 +271,6 @@ export default {
     },
     searchPlaces() {
       if (!this.currCategory) {
-        console.log("currCategory is ", this.currCategory);
         return;
       }
 
@@ -357,10 +383,10 @@ export default {
   watch: {
     deal(newValue) {
       if (newValue) {
-        this.center = true;
+        this.isInMarker.clear();
         this.removePins();
         this.mkMarker(newValue);
-        this.map.setLevel(5);
+        this.setCenter();
       }
     },
     deals(newValue) {

@@ -10,8 +10,6 @@
       <b-col class="sm-3">
         <b-form-select v-model="dongCode" :options="dongs" @change="searchApt"></b-form-select>
       </b-col>
-    </b-row>
-    <b-row class="mt-4 mb-4 text-center">
       <b-col class="sm-3">
         <b-form-select v-model="sortBy" :options="sortByslt" @change="searchApt"></b-form-select>
       </b-col>
@@ -36,14 +34,14 @@ export default {
       dongCode: null,
       sortBy: "aptName",
       sortByslt: [
-        { value: "dealAmount", text: "금액 순" },
-        { value: "date", text: "날짜 순" },
-        { value: "aptName", text: "이름 순" },
+        { value: "dealAmount", text: "금액순 정렬" },
+        { value: "date", text: "날짜순 정렬" },
+        { value: "aptName", text: "이름순 정렬" },
       ],
       sortOrder: "asc",
       sortOrderslt: [
-        { value: "asc", text: "오름차 순" },
-        { value: "desc", text: "내림차 순" },
+        { value: "asc", text: "오름차순 정렬" },
+        { value: "desc", text: "내림차순 정렬" },
       ],
     };
   },
@@ -77,7 +75,7 @@ export default {
     },
     searchApt() {
       const params = {
-        dong: this.dongCode,
+        dongCode: this.dongCode,
         sortBy: this.sortBy,
         sortOrder: this.sortOrder,
       };
