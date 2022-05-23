@@ -26,6 +26,7 @@
         select *
         from board
         where articleNo = #{articleNo}
+        order by regtime desc
     </select>
 
     <select id="search" resultType="Board">
@@ -33,6 +34,7 @@
         <if test="key != 'none'">
             where ${key} like concat('%', #{word}, '%')
         </if>
+            order by regtime desc
         <if test="limit">
             limit #{offset}, #{countPerPage}
         </if>

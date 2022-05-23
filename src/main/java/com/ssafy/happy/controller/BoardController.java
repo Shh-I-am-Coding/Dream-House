@@ -47,9 +47,9 @@ public class BoardController {
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<?> modify(@RequestBody Board board) {
+	public ResponseEntity<?> modify(@RequestBody Board article) {
 		try {
-			boardService.update(board);
+			boardService.update(article);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -73,7 +73,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<?> search(@RequestParam SearchCondition searchCondition) {
+	public ResponseEntity<?> search(@ModelAttribute SearchCondition searchCondition) {
 		System.out.println(searchCondition);
 		try {
 			Map<String, Object> boards = boardService.search(searchCondition);

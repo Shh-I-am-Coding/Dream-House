@@ -2,9 +2,7 @@ package com.ssafy.happy.model.service;
 
 import com.ssafy.happy.dto.Board;
 import com.ssafy.happy.dto.SearchCondition;
-import com.ssafy.happy.util.PageNavigation;
 
-import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
