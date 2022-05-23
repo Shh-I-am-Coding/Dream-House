@@ -25,14 +25,14 @@ public class DealController {
 	}
 
 	@GetMapping("/getAptList")
-	public List<DealInfo> getAptList(String dong, String sortBy, String sortOrder) {
-		System.out.println(sortBy + " " + sortOrder);
-		return dealInfoService.getByDongCode(dong, sortBy, sortOrder);
+	public List<DealInfo> getAptList(String dongCode, String sortBy, String sortOrder) {
+		System.out.println(dongCode+" "+sortBy + " " + sortOrder);
+		return dealInfoService.getByDongCode(dongCode, sortBy, sortOrder);
 	}
 
 	@GetMapping("/getApt")
 	public List<DealInfo> getApt(String aptName, String dongCode, String sortBy, String sortOrder) {
-		System.out.println(sortBy + " " + sortOrder);
+		System.out.println(aptName+" "+dongCode+" "+sortBy + " " + sortOrder);
 		return dealInfoService.getApt(aptName, dongCode, sortBy, sortOrder);
 	}
 

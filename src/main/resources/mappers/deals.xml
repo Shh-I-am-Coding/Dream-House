@@ -4,11 +4,16 @@
 <mapper namespace="com.ssafy.happy.model.repo.DealsRepo">
 
     <select id="selectAptName" resultType="Deals">
-        SELECT count(*) as dealNum, aptCode, aptName, dongName, dongCode, lng, lat, avg(dealAmount) avgAmount
-        FROM dealInfo
-        GROUP BY AptCode
-        HAVING dongCode = #{dongCode}
-        ORDER BY ${sortBy} ${sortOrder}
+        SELECT count(*) as dealNum,
+               housedeal.aptCode,
+               houseinfo.apartmentName as aptName,
+               houseinfo.dong as dongName,
+               houseinfo.dongCode as dongCode,
+               houseinfo.lng,
+               houseinfo.lat,
+               avg((SUBSTRING_INDEX(housedeal.dealAmount, ',', 1)*1000+SUBSTRING_INDEX(housedeal.dealAmount, ',', -1))) as avgAmount
+        FROM housedeal INNER JOIN houseinfo on housedeal.aptCode= houseinfo.aptCode and dongCode = #{dongCode}
+        GROUP BY houseinfo.aptCode ORDER BY ${sortBy} ${sortOrder}
     </select>
 
 </mapper>
