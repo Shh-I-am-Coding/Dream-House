@@ -7,11 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happy.dto.Board;
@@ -33,10 +36,10 @@ public class BoardController {
 		return new ResponseEntity<>("Exception: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@PostMapping("/create")
-	public ResponseEntity<?> create(@RequestBody Board board) {
+	@PostMapping("/")
+	public ResponseEntity<?> create(@RequestBody Board article) {
 		try {
-			boardService.insert(board);
+			boardService.insert(article);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -69,8 +72,8 @@ public class BoardController {
 		return new ResponseEntity<>(boardService.select(articleNo), HttpStatus.OK);
 	}
 
-	@PostMapping("/")
-	public ResponseEntity<?> search(@RequestBody SearchCondition searchCondition) {
+	@GetMapping("/")
+	public ResponseEntity<?> search(@RequestParam SearchCondition searchCondition) {
 		System.out.println(searchCondition);
 		try {
 			Map<String, Object> boards = boardService.search(searchCondition);
