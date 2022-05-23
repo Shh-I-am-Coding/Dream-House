@@ -23,9 +23,18 @@ export default {
     deal: Object,
   },
   methods: {
-    ...mapActions(dealStore, ["detailDeal"]),
+    ...mapActions(dealStore, ["detailDeal", "getAptList"]),
     selectDeal() {
       this.detailDeal(this.deal);
+      this.searchByAptName(this.deal.aptName, this.deal.dongCode);
+    },
+    searchByAptName(aptName, dongCode) {
+      const params = {
+        aptName,
+        dongCode,
+      };
+      console.log(params);
+      this.getAptList(params);
     },
     colorChange(flag) {
       this.isColor = flag;

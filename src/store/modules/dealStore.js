@@ -8,6 +8,7 @@ const dealStore = {
     dongs: [{ value: null, text: "동 선택" }],
     deals: [],
     deal: null,
+    dealInfos: [],
     sortOrder: "asc",
     sortBy: "aptName",
     // deal: {
@@ -90,6 +91,14 @@ const dealStore = {
     CHANGE_SORTORDER: (state, sortOrder) => {
       state.sortOrder = sortOrder;
     },
+    SET_DEALINFO_LIST: (state, dealInfos) => {
+      console.log("dd", dealInfos);
+      state.dealInfos = dealInfos;
+    },
+    CLEAR_DEALINFO_LIST: (state) => {
+      state.dealInfos = [];
+      //state.deal.splice(0, state.deal.length);
+    },
   },
   actions: {
     getSido: ({ commit }) => {
@@ -160,7 +169,7 @@ const dealStore = {
         params,
         (response) => {
           //console.log(response.data);
-          commit("SET_DEAL_LIST", response.data);
+          commit("SET_DEALINFO_LIST", response.data);
         },
         (error) => {
           console.log(error);

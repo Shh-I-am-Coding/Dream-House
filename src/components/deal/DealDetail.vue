@@ -9,41 +9,11 @@
       <li v-html="placeHolder[4].tags" @click="onClickCategory(placeHolder[4].id)" :class="[currCategory === placeHolder[4].id ? 'on' : 'off']" />
       <li v-html="placeHolder[5].tags" @click="onClickCategory(placeHolder[5].id)" :class="[currCategory === placeHolder[5].id ? 'on' : 'off']" />
     </ul>
-    <!-- <b-container v-if="deal" class="bv-example-row">
-      <b-row>
-        <b-col>
-          <h3>{{ deal.aptName }}</h3>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="4">
-          <b-alert show variant="secondary">거래 일 : {{ deal.dealYear }}.{{ deal.dealMonth }}.{{ deal.dealDay }}</b-alert>
-        </b-col>
-        <b-col cols="4">
-          <b-alert show variant="primary">이름 : {{ deal.aptName }} </b-alert>
-        </b-col>
-        <b-col cols="4">
-          <b-alert show variant="info">법정동 : {{ deal.dongName }} </b-alert>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="4">
-          <b-alert show variant="success">평수 : {{ deal.area }} m<sup>2</sup></b-alert>
-        </b-col>
-        <b-col cols="4">
-          <b-alert show variant="warning">층수 : {{ deal.floor }}층</b-alert>
-        </b-col>
-        <b-col cols="4">
-          <b-alert show variant="danger">거래금액 : {{ deal.dealAmount | price }} 원</b-alert>
-        </b-col>
-      </b-row>
-    </b-container> -->
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-// import { mapState, mapActions, mapMutations } from "vuex";
 
 const dealStore = "dealStore";
 
@@ -165,50 +135,6 @@ export default {
         console.log(bounds);
       }
     },
-    // addressSearch(address) {
-    //   return new Promise((resolve, reject) => {
-    //     this.geocoder.addressSearch(address, function (result, status) {
-    //       if (status === kakao.maps.services.Status.OK) {
-    //         resolve(result);
-    //       } else {
-    //         reject(status);
-    //       }
-    //     });
-    //   });
-    // },
-    // async mkMarker(deal) {
-    //   let address = deal.dongName + " " + deal.jibun;
-    //   const result = await this.addressSearch(address);
-    //   const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-    //   console.log(address, " ", coords + " " + deal.dongName);
-    //   this.count++;
-    //   // 결과값으로 받은 위치를 마커로 표시합니다
-    //   const marker = new kakao.maps.Marker({
-    //     map: this.map,
-    //     position: coords,
-    //   });
-    //   this.markers.push(marker);
-    //   if (this.center == true) {
-    //     this.map.setCenter(coords);
-    //     this.center = false;
-    //   }
-    //   kakao.maps.event.addListener(marker, "click", () => {
-    //     // 마커 위에 인포윈도우를 표시합니다
-    //     console.log("아파트명 : " + deal.aptName);
-    //     console.log("동코드 : " + deal.dongCode);
-    //     //아파트명을 통해 아파트 검색
-    //     this.searchByAptName(deal.aptName, deal.dongCode);
-    //   });
-    //   if (this.deals.length == this.count) {
-    //     this.setCenter();
-    //   }
-    // },
-    // mkMarkers(deals) {
-    //   this.count = 0;
-    //   deals.forEach((deal) => {
-    //     this.mkMarker(deal);
-    //   });
-    // },
     mkMarker(deal) {
       if (!this.isInMarker.has(deal.aptCode)) {
         this.isInMarker.add(deal.aptCode);
@@ -253,8 +179,6 @@ export default {
       const params = {
         aptName,
         dongCode,
-        sortBy: this.sortBy,
-        sortOrder: this.sortOrder,
       };
       console.log(params);
       this.getAptList(params);
@@ -262,10 +186,8 @@ export default {
     addEventHandle(target, type, callback) {
       // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
       if (target.addEventListener) {
-        console.log("OK");
         target.addEventListener(type, callback);
       } else {
-        console.log("FAIL");
         target.attachEvent("on" + type, callback);
       }
     },

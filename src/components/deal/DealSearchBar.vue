@@ -34,8 +34,7 @@ export default {
       dongCode: null,
       sortBy: "aptName",
       sortByslt: [
-        { value: "dealAmount", text: "금액순 정렬" },
-        { value: "date", text: "날짜순 정렬" },
+        { value: "dealAmount", text: "평균 금액순 정렬" },
         { value: "aptName", text: "이름순 정렬" },
       ],
       sortOrder: "asc",
