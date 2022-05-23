@@ -37,6 +37,16 @@ export default {
 </script>
 
 <style>
+.b-sidebar-outer {
+  position: relative;
+}
+
+#sidebar-aptList {
+  height: 85vh;
+  max-height: 85vh;
+  position: sticky;
+  top: 195px;
+}
 .b-sidebar-body {
   height: 300px;
 }
