@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class DealInfo {
-    private String idx;
     private int dealYear;
     private int dealMonth;
     private int dealDay;
