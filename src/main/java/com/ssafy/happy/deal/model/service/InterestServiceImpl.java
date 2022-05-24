@@ -2,6 +2,7 @@ package com.ssafy.happy.deal.model.service;
 
 import java.util.List;
 
+import com.ssafy.happy.deal.dto.Deals;
 import com.ssafy.happy.deal.dto.Interest;
 import com.ssafy.happy.user.dto.User;
 import com.ssafy.happy.deal.model.repo.InterestRepo;
@@ -18,7 +19,7 @@ public class InterestServiceImpl implements InterestService {
 	}
 
 	@Override
-	public List<Interest> getInterests(String id) {
+	public List<Deals> getInterests(String id) {
 		return interestRepo.selectAllInterests(id);
 	}
 
@@ -26,5 +27,11 @@ public class InterestServiceImpl implements InterestService {
 	@Transactional
 	public int registerInterests(Interest interest) {
 		return interestRepo.insertInterest(interest);
+	}
+
+	@Override
+	@Transactional
+	public int deleteInterests(Interest interest) {
+		return interestRepo.deleteInterests(interest);
 	}
 }

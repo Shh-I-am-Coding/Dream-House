@@ -1,5 +1,6 @@
 package com.ssafy.happy.deal.controller;
 
+import com.ssafy.happy.deal.dto.Deals;
 import com.ssafy.happy.deal.dto.Interest;
 import com.ssafy.happy.deal.model.service.InterestService;
 import com.ssafy.happy.user.dto.User;
@@ -19,15 +20,24 @@ public class InterestController {
     }
 
     @GetMapping("/")
-    public List<Interest> getInterests(String id) {
+    public List<Deals> getInterests(String id) {
         System.out.println(id);
         return interestService.getInterests(id);
     }
 
     @PutMapping("/")
     public ResponseEntity<String> registerInterests(@RequestBody Interest interest) {
-        System.out.println(interest);
+        System.out.println("register" + interest);
         if(interestService.registerInterests(interest) > 0) {
+            return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<String> deleteInterests(Interest interest) {
+        System.out.println("delete" + interest);
+        if(interestService.deleteInterests(interest) > 0) {
             return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
