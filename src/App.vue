@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navi-bar />
+    <navi-bar></navi-bar>
     <router-view />
   </div>
 </template>
@@ -10,7 +10,9 @@ import NaviBar from "@/components/layout/HeaderNaviBar.vue";
 
 export default {
   name: "App",
-  components: { NaviBar },
+  components: {
+    NaviBar,
+  },
 };
 </script>
 
