@@ -1,16 +1,22 @@
 <template>
   <div>
     <div style="position: absolute; top: 210px; left: 10px; z-index: 3">
-      <b-button v-b-toggle.sidebar-aptList variant="warning">아파트 리스트</b-button>
+      <b-button v-b-toggle.sidebar-aptList class="mr-2 yBtn">아파트 리스트</b-button>
+      <b-button v-b-toggle.sidebar-interestList class="interBtn" @click="isLogin">관심지역</b-button>
     </div>
     <b-sidebar id="sidebar-aptList" title="아파트 리스트" shadow>
       <b-container v-if="deals && deals.length != 0" class="bv-example-row mt-3 overflow-auto">
-        <deal-list-item v-for="(deal, index) in deals" :key="index" :deal="deal" v-b-toggle="['sidebar-dealInfo', 'sidebar-aptList']" />
+        <deal-list-item v-for="(deal, index) in deals" :key="index" :deal="deal" :interested="0" v-b-toggle="['sidebar-dealInfo']" />
       </b-container>
       <b-container v-else class="bv-example-row mt-3">
         <b-row>
-          <b-col><b-alert show>검색된 주택 목록이 없습니다.</b-alert></b-col>
+          <b-col><b-alert variant="danger" style="font-size: 1.1rem" show>조건에 맞는 매매 내역이 없습니다.</b-alert></b-col>
         </b-row>
+      </b-container>
+    </b-sidebar>
+    <b-sidebar v-if="userInfo" id="sidebar-interestList" :title="userInfo.name + '님의 관심지역'" shadow>
+      <b-container class="bv-example-row mt-3 overflow-auto interestInfoContainer">
+        <deal-list-item v-for="(interest, index) in interests" :deal="interest" :key="index" :interested="1" v-b-toggle="['sidebar-dealInfo']" />
       </b-container>
     </b-sidebar>
     <b-sidebar id="sidebar-dealInfo" title="아파트 정보" right shadow>
@@ -28,16 +34,11 @@
         <div style="border-top: 1px solid; margin-top: 5px; padding-top: 5px">거래 정보</div>
         <b-container class="bv-example-row mt-3 overflow-auto dealInfoContainer">
           <div v-for="(dealInfo, index) in dealInfos" :key="index">
-            <b-button v-b-toggle="'collaspe-' + index" class="infoBtn" variant="warning">
-              {{ dealInfo.dealYear }}/{{ dealInfo.dealMonth }}/{{ dealInfo.dealDay }} : {{ dealInfo.dealAmount | price }}
-            </b-button>
-            <b-collapse :id="'collaspe-' + index" class="mt-2">
-              <b-card class="infoCard">HELLO WORLD!</b-card>
-            </b-collapse>
+            <deal-info-list-item :dealInfo="dealInfo" :index="index" />
           </div>
         </b-container>
       </b-container>
-      <b-button variant="warning" v-b-toggle="['sidebar-dealInfo', 'sidebar-aptList']">아파트 리스트로 돌아가기</b-button>
+      <b-button class="yBtn" v-b-toggle="['sidebar-dealInfo']">돌아가기</b-button>
     </b-sidebar>
   </div>
 </template>
@@ -45,19 +46,39 @@
 <script>
 import DealListItem from "@/components/deal/DealListItem.vue";
 import { mapState } from "vuex";
+import Swal from "sweetalert2";
+import DealInfoListItem from "./DealInfoListItem.vue";
 
 const dealStore = "dealStore";
+const userStore = "userStore";
+const interestStore = "interestStore";
 
 export default {
   name: "DealList",
   components: {
     DealListItem,
+    DealInfoListItem,
   },
   data() {
     return {};
   },
   computed: {
     ...mapState(dealStore, ["deals", "deal", "dealInfos"]),
+    ...mapState(userStore, ["userInfo"]),
+    ...mapState(interestStore, ["interests"]),
+  },
+  methods: {
+    isLogin() {
+      if (this.userInfo == null) {
+        console.log("NeedLogin");
+        Swal.fire({
+          title: "로그인이 필요합니다! 💦",
+          text: "회원가입을 하고 관심지역을 등록해 보세요.",
+          icon: "warning",
+          confirmButtonText: "확인",
+        });
+      }
+    },
   },
   filters: {
     price(value) {
@@ -99,10 +120,17 @@ export default {
   position: sticky;
   top: 195px;
 }
+#sidebar-interestList {
+  height: 80vh;
+  max-height: 80vh;
+  position: sticky;
+  top: 195px;
+}
 .card_body {
   margin: 10px;
 }
 .infoBtn {
+  color: black;
   width: 25vh;
   margin-bottom: 0.25rem;
 }
@@ -119,5 +147,61 @@ export default {
 .dealInfoContainer {
   max-height: 300px;
   margin-bottom: 1rem;
+}
+.yBtn {
+  color: black;
+  background-color: #ffd071;
+}
+.yBtn:hover {
+  color: black;
+  background-color: #ffc756;
+}
+.yBtn:not(:disabled):not(.disabled):active {
+  color: black;
+  background-color: #ffd071;
+}
+.yBtn:not(:disabled):not(.disabled).active {
+  color: black;
+  background-color: #ffd071;
+}
+.yBtn:focus {
+  color: black;
+  background-color: #ffd071;
+}
+.yBtn.focus {
+  color: black;
+  background-color: #ffd071;
+}
+.show > .yBtn.dropdown-toggle {
+  color: black;
+  background-color: #ffd071;
+}
+.interBtn {
+  background-color: #fcb666;
+  color: black;
+}
+.interBtn:hover {
+  color: black;
+  background-color: #fda846;
+}
+.interBtn:not(:disabled):not(.disabled):active {
+  color: black;
+  background-color: #fcb666;
+}
+.interBtn:not(:disabled):not(.disabled).active {
+  color: black;
+  background-color: #fcb666;
+}
+.interBtn:focus {
+  color: black;
+  background-color: #fcb666;
+}
+.interBtn.focus {
+  color: black;
+  background-color: #fcb666;
+}
+.show > .interBtn.dropdown-toggle {
+  color: black;
+  background-color: #fcb666;
 }
 </style>
