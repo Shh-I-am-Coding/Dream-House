@@ -28,7 +28,7 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right" v-if="this.getUserInfo()">
+      <b-col class="text-right" v-if="this.getUserInfo().id === article.userId">
         <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2">수정</b-button>
         <b-button variant="outline-danger" size="sm" @click="deleteArticle">삭제</b-button>
       </b-col>
