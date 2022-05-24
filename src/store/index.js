@@ -8,6 +8,7 @@ import boardStore from "./modules/boardStore.js";
 import noticeStore from "./modules/noticeStore.js";
 import dealStore from "./modules/dealStore.js";
 import userStore from "./modules/userStore.js";
+import interestStore from "./modules/interestStore.js";
 
 const store = new Vuex.Store({
   modules: {
@@ -15,6 +16,7 @@ const store = new Vuex.Store({
     noticeStore,
     dealStore,
     userStore,
+    interestStore,
   },
   plugins: [
     createPersistedState({
