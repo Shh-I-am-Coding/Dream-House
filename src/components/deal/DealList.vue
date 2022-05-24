@@ -83,7 +83,7 @@ export default {
 #sidebar-aptList {
   height: 78vh;
   max-height: 78vh;
-  /* position: sticky; */
+  position: sticky;
   top: 195px;
 }
 .card_body {
