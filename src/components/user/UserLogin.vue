@@ -32,6 +32,7 @@
 import { mapState, mapActions, mapMutations } from "vuex";
 
 const userStore = "userStore";
+const interestStore = "interestStore";
 
 export default {
   name: "UserStore",
@@ -52,11 +53,15 @@ export default {
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN_ERROR"]),
     ...mapActions(userStore, ["userConfirm", "getUserInfo"]),
+    ...mapActions(interestStore, ["getInterestList"]),
     async confirm() {
       await this.userConfirm(this.user);
       let token = sessionStorage.getItem("access-token");
       if (this.isLogin) {
         await this.getUserInfo(token);
+        this.getInterestList({
+          id: this.user.id,
+        });
         this.$router.back();
       }
     },
