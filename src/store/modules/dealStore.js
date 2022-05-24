@@ -72,7 +72,7 @@ const dealStore = {
       state.dongs = [{ value: null, text: "동 선택" }];
     },
     SET_DEAL_LIST: (state, deals) => {
-      console.log("SET_DEAL_LIST");
+      //console.log("SET_DEAL_LIST");
       state.deals = deals;
     },
     CLEAR_DEAL_LIST: (state) => {
@@ -92,7 +92,7 @@ const dealStore = {
       state.sortOrder = sortOrder;
     },
     SET_DEALINFO_LIST: (state, dealInfos) => {
-      console.log("dd", dealInfos);
+      //console.log("dd", dealInfos);
       state.dealInfos = dealInfos;
     },
     CLEAR_DEALINFO_LIST: (state) => {
@@ -151,7 +151,7 @@ const dealStore = {
       dealList(
         params,
         (response) => {
-          console.log("GET_DEAL_LIST");
+          //console.log("GET_DEAL_LIST");
           commit("SET_DEAL_LIST", response.data);
         },
         (error) => {

@@ -116,6 +116,7 @@ export default {
 
       // 커스텀 오버레이 컨텐츠를 설정합니다
       this.placeOverlay.setContent(this.contentNode);
+      this.isInMarker = new Set();
     },
     displayMarker(markerPositions) {
       const positions = markerPositions.map((position) => new kakao.maps.LatLng(...position));
@@ -132,13 +133,13 @@ export default {
         const bounds = positions.reduce((bounds, latlng) => bounds.extend(latlng), new kakao.maps.LatLngBounds());
 
         this.map.setBounds(bounds);
-        console.log(bounds);
+        //console.log(bounds);
       }
     },
     mkMarker(deal) {
       if (!this.isInMarker.has(deal.aptCode)) {
         this.isInMarker.add(deal.aptCode);
-        console.log(deal.aptCode, " ", deal.aptName);
+        //console.log(deal.aptCode, " ", deal.aptName);
         const coords = new kakao.maps.LatLng(deal.lat, deal.lng);
         // 결과값으로 받은 위치를 마커로 표시합니다
         const marker = new kakao.maps.Marker({
@@ -156,7 +157,7 @@ export default {
       }
     },
     mkMarkers(deals) {
-      this.isInMarker = new Set();
+      this.isInMarker.clear();
       deals.forEach((deal) => {
         this.mkMarker(deal);
       });
