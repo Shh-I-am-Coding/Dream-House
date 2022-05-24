@@ -28,7 +28,7 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right">
+      <b-col class="text-right" v-if="this.getUserInfo()">
         <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2">수정</b-button>
         <b-button variant="outline-danger" size="sm" @click="deleteArticle">삭제</b-button>
       </b-col>
@@ -38,9 +38,10 @@
 
 <script>
 import moment from "moment";
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import Swal from "sweetalert2";
 
+const userStore = "userStore";
 const boardStore = "boardStore";
 
 export default {
@@ -62,6 +63,7 @@ export default {
   methods: {
     ...mapActions(boardStore, ["detailArticle"]),
     ...mapMutations(boardStore, ["SET_IS_REMAIN_SEARCH_CONDITION"]),
+    ...mapGetters(userStore, ["getUserInfo"]),
     listArticle() {
       this.SET_IS_REMAIN_SEARCH_CONDITION(true);
       this.$router.push({ name: "boardList" });

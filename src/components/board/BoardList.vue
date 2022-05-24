@@ -28,7 +28,7 @@
       </b-row>
       <b-row class="mb-1">
         <b-col class="text-right">
-          <b-button variant="warning" @click="moveWrite()">글쓰기</b-button>
+          <b-button variant="warning" @click="moveWrite">글쓰기</b-button>
         </b-col>
       </b-row>
       <board-paging></board-paging>
@@ -39,11 +39,13 @@
 
 <script>
 import moment from "moment";
+import Swal from "sweetalert2";
 import BoardSearch from "@/components/board/item/BoardSearch.vue";
 import BoardPaging from "@/components/board/item/BoardPaging.vue";
 
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
 
+const userStore = "userStore";
 const boardStore = "boardStore";
 
 export default {
@@ -67,13 +69,23 @@ export default {
   methods: {
     ...mapActions(boardStore, ["setArticles"]),
     ...mapMutations(boardStore, ["SET_IS_REMAIN_SEARCH_CONDITION"]),
+    ...mapGetters(userStore, ["getUserInfo"]),
     moveWrite() {
-      this.$router.push({ name: "boardRegister" });
+      if (this.getUserInfo()) {
+        this.$router.push({ name: "boardRegister" });
+      } else {
+        Swal.fire({
+          title: "로그인 필요! 🙅‍♂️",
+          text: "로그인이 필요한 서비스입니다.",
+          icon: "error",
+          confirmButtonText: "확인",
+        });
+      }
     },
   },
   filters: {
     dateFormat(regtime) {
-      return moment(new Date(regtime)).format("YY.MM.DD HH.mm");
+      return moment(new Date(regtime)).format("YY/MM/DD  HH:mm");
     },
   },
 };

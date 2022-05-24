@@ -16,10 +16,6 @@
             <router-link :to="{ name: 'home' }" class="menuItem">관심지역 설정</router-link>
           </b-nav-item>
           <b-nav-item class="link align-self-center menuItem" @click.prevent="qna">문의게시판</b-nav-item>
-
-          <!-- <b-nav-item href="#">
-            <router-link :to="{ name: 'board' }" class="menuItem">문의게시판</router-link>
-          </b-nav-item> -->
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
