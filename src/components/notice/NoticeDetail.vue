@@ -10,7 +10,7 @@
                   <b>{{ article.title }}</b>
                 </h3></b-col
               >
-              <b-col class="text-right"><b class="mr-2">작성자</b> {{ article.userId }}</b-col>
+              <b-col class="text-right"><b class="mr-1">작성자</b> 관리자</b-col>
               <b-col class="text-right"><b class="mr-2">조회수</b> {{ article.hit }}</b-col>
             </b-row>
             <b-row class="pr-3">
@@ -28,7 +28,7 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right" v-if="this.getUserInfo().id === article.userId">
+      <b-col class="text-right" v-if="this.getUserInfo() != null && this.getUserInfo().id === 'admin'">
         <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2">수정</b-button>
         <b-button variant="outline-danger" size="sm" @click="deleteArticle">삭제</b-button>
       </b-col>
@@ -42,12 +42,12 @@ import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import Swal from "sweetalert2";
 
 const userStore = "userStore";
-const boardStore = "boardStore";
+const noticeStore = "noticeStore";
 
 export default {
-  name: "BoardDetail",
+  name: "NoticeDetail",
   computed: {
-    ...mapState(boardStore, ["article", "searchCondition", "isReaminSearchCondition"]),
+    ...mapState(noticeStore, ["article", "searchCondition", "isReaminSearchCondition"]),
     message() {
       if (String(this.article.content)) return String(this.article.content).split("\n").join("<br>");
       return "";
@@ -61,15 +61,15 @@ export default {
     this.detailArticle(articleNo);
   },
   methods: {
-    ...mapActions(boardStore, ["detailArticle"]),
-    ...mapMutations(boardStore, ["SET_IS_REMAIN_BOARD_SEARCH_CONDITION"]),
+    ...mapActions(noticeStore, ["detailArticle"]),
+    ...mapMutations(noticeStore, ["SET_IS_REMAIN_NOTICE_SEARCH_CONDITION"]),
     ...mapGetters(userStore, ["getUserInfo"]),
     listArticle() {
-      this.SET_IS_REMAIN_BOARD_SEARCH_CONDITION(true);
-      this.$router.push({ name: "boardList" });
+      this.SET_IS_REMAIN_NOTICE_SEARCH_CONDITION(true);
+      this.$router.push({ name: "noticeList" });
     },
     moveModifyArticle() {
-      this.$router.push({ name: "boardModify" });
+      this.$router.push({ name: "noticeModify" });
     },
     deleteArticle() {
       Swal.fire({
@@ -83,7 +83,7 @@ export default {
         cancelButtonText: "아니오",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.$router.push({ name: "boardDelete" });
+          this.$router.push({ name: "noticeDelete" });
         }
       });
     },

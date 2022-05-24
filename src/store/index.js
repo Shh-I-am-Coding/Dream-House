@@ -5,12 +5,14 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 
 import boardStore from "./modules/boardStore.js";
+import noticeStore from "./modules/noticeStore.js";
 import dealStore from "./modules/dealStore.js";
 import userStore from "./modules/userStore.js";
 
 const store = new Vuex.Store({
   modules: {
     boardStore,
+    noticeStore,
     dealStore,
     userStore,
   },

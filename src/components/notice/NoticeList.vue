@@ -17,7 +17,7 @@
                 <b-th>
                   <router-link :to="`${Number(article.articleNo)}`" class="title">{{ article.title }}</router-link>
                 </b-th>
-                <b-td>{{ article.userId }}</b-td>
+                <b-td>관리자</b-td>
                 <b-td>{{ article.regTime | dateFormat }}</b-td>
                 <b-td>{{ article.hit }}</b-td>
               </b-tr>
@@ -26,39 +26,38 @@
         </b-col>
         <b-col v-else> <p>글 목록이 없습니다.</p> </b-col>
       </b-row>
-      <b-row class="mb-1">
+      <b-row class="mb-1" v-if="this.getUserInfo() != null && this.getUserInfo().id === 'admin'">
         <b-col class="text-right">
           <b-button variant="warning" @click="moveWrite">글쓰기</b-button>
         </b-col>
       </b-row>
-      <board-paging></board-paging>
-      <board-search></board-search>
+      <notice-paging></notice-paging>
+      <notice-search></notice-search>
     </b-container>
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import Swal from "sweetalert2";
-import BoardSearch from "@/components/board/item/BoardSearch.vue";
-import BoardPaging from "@/components/board/item/BoardPaging.vue";
+import NoticeSearch from "@/components/notice/item//NoticeSearch.vue";
+import NoticePaging from "@/components/notice/item/NoticePaging.vue";
 
 import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
 
 const userStore = "userStore";
-const boardStore = "boardStore";
+const noticeStore = "noticeStore";
 
 export default {
-  name: "BoardList",
+  name: "NoticeList",
   components: {
-    BoardSearch,
-    BoardPaging,
+    NoticeSearch,
+    NoticePaging,
   },
   computed: {
-    ...mapState(boardStore, ["articles", "searchCondition", "isReaminSearchCondition"]),
+    ...mapState(noticeStore, ["articles", "searchCondition", "isReaminSearchCondition"]),
   },
   async created() {
-    this.SET_IS_REMAIN_BOARD_SEARCH_CONDITION(this.isReaminSearchCondition);
+    this.SET_IS_REMAIN_NOTICE_SEARCH_CONDITION(this.isReaminSearchCondition);
     if (!this.isReaminSearchCondition) {
       this.searchCondition.key = "title";
       this.searchCondition.word = "";
@@ -67,20 +66,11 @@ export default {
     await this.setArticles(this.searchCondition);
   },
   methods: {
-    ...mapActions(boardStore, ["setArticles"]),
-    ...mapMutations(boardStore, ["SET_IS_REMAIN_BOARD_SEARCH_CONDITION"]),
+    ...mapActions(noticeStore, ["setArticles"]),
+    ...mapMutations(noticeStore, ["SET_IS_REMAIN_NOTICE_SEARCH_CONDITION"]),
     ...mapGetters(userStore, ["getUserInfo"]),
     moveWrite() {
-      if (this.getUserInfo()) {
-        this.$router.push({ name: "boardRegister" });
-      } else {
-        Swal.fire({
-          title: "로그인 필요! 🙅‍♂️",
-          text: "로그인이 필요한 서비스입니다.",
-          icon: "error",
-          confirmButtonText: "확인",
-        });
-      }
+      this.$router.push({ name: "noticeRegister" });
     },
   },
   filters: {

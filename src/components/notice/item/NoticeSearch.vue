@@ -19,10 +19,10 @@
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
 
-const boardStore = "boardStore";
+const noticeStore = "noticeStore";
 
 export default {
-  name: "BoardSearch",
+  name: "NoticeSearch",
 
   data() {
     return {
@@ -42,18 +42,18 @@ export default {
     }
   },
   computed: {
-    ...mapState(boardStore, ["searchCondition", "isReaminSearchCondition"]),
+    ...mapState(noticeStore, ["searchCondition", "isReaminSearchCondition"]),
   },
   methods: {
-    ...mapActions(boardStore, ["setArticles"]),
-    ...mapMutations(boardStore, ["SET_IS_REMAIN_BOARD_SEARCH_CONDITION"]),
+    ...mapActions(noticeStore, ["setArticles"]),
+    ...mapMutations(noticeStore, ["SET_IS_REMAIN_NOTICE_SEARCH_CONDITION"]),
 
     onSubmit(event) {
       event.preventDefault();
       this.search();
     },
     search() {
-      this.SET_IS_REMAIN_BOARD_SEARCH_CONDITION(true);
+      this.SET_IS_REMAIN_NOTICE_SEARCH_CONDITION(true);
       this.setArticles(this.searchCondition);
     },
   },

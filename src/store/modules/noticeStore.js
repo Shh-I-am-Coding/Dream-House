@@ -1,8 +1,8 @@
 import router from "@/router";
 import Swal from "sweetalert2";
-import { create, update, remove, detail, getArticles } from "@/api/board.js";
+import { create, update, remove, detail, getArticles } from "@/api/notice.js";
 
-const boardStore = {
+const noticeStore = {
   namespaced: true,
   state: {
     articles: [],
@@ -50,7 +50,7 @@ const boardStore = {
     SET_PAGE_NAVIGATION: function (state, pageNavigation) {
       state.pageNavigation = pageNavigation;
     },
-    SET_IS_REMAIN_BOARD_SEARCH_CONDITION: function (state, isReaminSearchCondition) {
+    SET_IS_REMAIN_NOTICE_SEARCH_CONDITION: function (state, isReaminSearchCondition) {
       state.isReaminSearchCondition = isReaminSearchCondition;
     },
   },
@@ -60,20 +60,20 @@ const boardStore = {
       create(article, () => {
         commit("SET_ARTICLE", article);
         Swal.fire({
-          title: "게시글 등록! 😆",
-          text: "글을 등록하였습니다.",
+          title: "공지사항 등록! 😆",
+          text: "공지사항을 등록하였습니다.",
           icon: "success",
           confirmButtonText: "확인",
         });
-        router.push("/board");
+        router.push("/notice");
       });
     },
     // 게시글 수정
     updateArticle({ state }, article) {
       update(article, () => {
         Swal.fire({
-          title: "게시글 수정! 😎",
-          text: "글을 수정하였습니다.",
+          title: "공지사항 수정! 😎",
+          text: "공지사항을 수정하였습니다.",
           icon: "success",
           confirmButtonText: "확인",
         });
@@ -84,15 +84,15 @@ const boardStore = {
           }
         }
         state.articles[index] = article;
-        router.push("/board");
+        router.push("/notice");
       });
     },
     // 게시글 삭제
     deleteArticle({ state }, articleNo) {
       remove(articleNo, () => {
         Swal.fire({
-          title: "게시글 삭제! 👍",
-          text: "글을 삭제하였습니다.",
+          title: "공지사항 삭제! 👍",
+          text: "공지사항을 삭제하였습니다.",
           icon: "success",
           confirmButtonText: "확인",
         });
@@ -103,7 +103,7 @@ const boardStore = {
           }
         }
         state.articles.splice(index, 1);
-        router.push("/board");
+        router.push("/notice");
       });
     },
     // 게시글 상세보기
@@ -130,4 +130,4 @@ const boardStore = {
   },
 };
 
-export default boardStore;
+export default noticeStore;

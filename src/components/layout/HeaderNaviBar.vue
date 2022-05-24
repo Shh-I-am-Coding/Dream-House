@@ -16,6 +16,7 @@
             <router-link :to="{ name: 'home' }" class="menuItem">관심지역 설정</router-link>
           </b-nav-item>
           <b-nav-item class="link align-self-center menuItem" @click.prevent="qna">문의게시판</b-nav-item>
+          <b-nav-item class="link align-self-center menuItem" @click.prevent="notice">공지사항</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -48,6 +49,7 @@ import Swal from "sweetalert2";
 
 const userStore = "userStore";
 const boardStore = "boardStore";
+const noticeStore = "noticeStore";
 
 export default {
   name: "HeaderNaviBar",
@@ -56,7 +58,8 @@ export default {
   },
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO", "SET_IS_DUPLICATED"]),
-    ...mapMutations(boardStore, ["SET_IS_REMAIN_SEARCH_CONDITION"]),
+    ...mapMutations(boardStore, ["SET_IS_REMAIN_BOARD_SEARCH_CONDITION"]),
+    ...mapMutations(noticeStore, ["SET_IS_REMAIN_NOTICE_SEARCH_CONDITION"]),
     logout() {
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);
@@ -70,9 +73,13 @@ export default {
       });
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },
-    async qna() {
-      this.SET_IS_REMAIN_SEARCH_CONDITION(false);
+    qna() {
+      this.SET_IS_REMAIN_BOARD_SEARCH_CONDITION(false);
       this.$router.push({ name: "board" });
+    },
+    notice() {
+      this.SET_IS_REMAIN_NOTICE_SEARCH_CONDITION(false);
+      this.$router.push({ name: "notice" });
     },
   },
 };
