@@ -1,7 +1,7 @@
 package com.ssafy.happy.board.model.service;
 
 import com.ssafy.happy.board.dto.Board;
-import com.ssafy.happy.util.SearchCondition;
+import com.ssafy.happy.board.dto.BoardSearchCondition;
 import com.ssafy.happy.board.model.repo.BoardRepo;
 import com.ssafy.happy.util.PageNavigation;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public Map<String, Object> search(SearchCondition condition) {
+    public Map<String, Object> search(BoardSearchCondition condition) {
         int totalCount = boardRepo.getTotalSearchCount(condition);
         PageNavigation pageNavigation = new PageNavigation(condition.getCurrentPage() ,totalCount);
         Map<String, Object> map = new HashMap<>();

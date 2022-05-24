@@ -1,10 +1,9 @@
-package com.ssafy.happy.board.controller;
+package com.ssafy.happy.notice.controller;
 
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,18 +14,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.happy.board.dto.Board;
-import com.ssafy.happy.board.dto.BoardSearchCondition;
-import com.ssafy.happy.board.model.service.BoardService;
+import com.ssafy.happy.notice.dto.Notice;
+import com.ssafy.happy.notice.model.service.NoticeService;
+import com.ssafy.happy.notice.dto.NoticeSearchCondition;
 
 @RestController
-@CrossOrigin()
-@RequestMapping("/board")
-public class BoardController {
-	private final BoardService boardService;
+@RequestMapping("/notice")
+public class NoticeController {
+	private final NoticeService noticeService;
 
-	public BoardController(BoardService boardService) {
-		this.boardService = boardService;
+	public NoticeController(NoticeService noticeService) {
+		this.noticeService = noticeService;
 	}
 
 	private ResponseEntity<?> exceptionHandling(Exception e) {
@@ -35,9 +33,9 @@ public class BoardController {
 	}
 
 	@PostMapping("/")
-	public ResponseEntity<?> create(@RequestBody Board article) {
+	public ResponseEntity<?> create(@RequestBody Notice article) {
 		try {
-			boardService.insert(article);
+			noticeService.insert(article);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -45,9 +43,9 @@ public class BoardController {
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<?> modify(@RequestBody Board article) {
+	public ResponseEntity<?> modify(@RequestBody Notice article) {
 		try {
-			boardService.update(article);
+			noticeService.update(article);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -56,7 +54,7 @@ public class BoardController {
 
 	@DeleteMapping("/{articleNo}")
 	public ResponseEntity<?> delete(@PathVariable int articleNo) {
-		if (boardService.delete(articleNo)) {
+		if (noticeService.delete(articleNo)) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -64,19 +62,19 @@ public class BoardController {
 	}
 
 	@GetMapping("/{articleNo}")
-	public ResponseEntity<?> searchBoard(@PathVariable int articleNo) {
+	public ResponseEntity<?> searchNotice(@PathVariable int articleNo) {
 		System.out.println(articleNo);
-		boardService.increaseHit(articleNo);
-		return new ResponseEntity<>(boardService.select(articleNo), HttpStatus.OK);
+		noticeService.increaseHit(articleNo);
+		return new ResponseEntity<>(noticeService.select(articleNo), HttpStatus.OK);
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<?> search(@ModelAttribute BoardSearchCondition boardSearchCondition) {
-		System.out.println(boardSearchCondition);
+	public ResponseEntity<?> search(@ModelAttribute NoticeSearchCondition noticeSearchCondition) {
+		System.out.println(noticeSearchCondition);
 		try {
-			Map<String, Object> boards = boardService.search(boardSearchCondition);
-			if (boards != null && boards.size() > 0)
-				return new ResponseEntity<>(boards, HttpStatus.OK);
+			Map<String, Object> notices = noticeService.search(noticeSearchCondition);
+			if (notices != null && notices.size() > 0)
+				return new ResponseEntity<>(notices, HttpStatus.OK);
 			else
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

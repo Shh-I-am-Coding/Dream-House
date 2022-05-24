@@ -1,12 +1,15 @@
-package com.ssafy.happy.util;
+package com.ssafy.happy.board.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @ToString
-public class SearchCondition {
+public class BoardSearchCondition {
     // 한 페이지에 몇개나 보여줄 것인지 결정한다.
     public final int countPerPage = 10;
 
@@ -21,7 +24,7 @@ public class SearchCondition {
 
     private boolean limit = true;
 
-    public SearchCondition(String key, String word, int currentPage) {
+    public BoardSearchCondition(String key, String word, int currentPage) {
         this.key = key;
         this.word = word;
         this.currentPage = currentPage;
