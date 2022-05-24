@@ -120,11 +120,11 @@ export default {
   },
   created() {
     this.user.id = this.userInfo.id;
-    this.user.password = this.userInfo.password;
+    this.user.password = "";
     this.user.name = this.userInfo.name;
     this.user.email = this.userInfo.email;
     this.user.phone = this.userInfo.phone;
-    this.password_confirm = this.userInfo.password;
+    this.password_confirm = "";
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
