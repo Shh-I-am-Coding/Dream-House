@@ -204,4 +204,9 @@ export default {
   color: black;
   background-color: #fcb666;
 }
+
+.card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
 </style>
