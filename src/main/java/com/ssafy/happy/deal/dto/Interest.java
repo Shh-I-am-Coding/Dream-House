@@ -7,8 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Region {
-	private String sido;
-	private String gugun;
-	private String dong;
+public class Interest {
+	private String id;
+	private String aptCode;
 }
