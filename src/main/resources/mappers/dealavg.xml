@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happy.deal.model.repo.DealAvgRepo">
+
+    <select id="getDealAvg" resultType="DealAvg">
+        select housedeal.dealYear as dealYear,
+               avg((SUBSTRING_INDEX(housedeal.dealAmount, ',', 1)*1000+SUBSTRING_INDEX(housedeal.dealAmount, ',', -1))) as avgAmount,
+               ROUND(avg((SUBSTRING_INDEX(housedeal.dealAmount, ',', 1)*1000+SUBSTRING_INDEX(housedeal.dealAmount, ',', -1)) / CAST(housedeal.area AS DECIMAL(10,2))),3) as pricePerArea
+        from housedeal inner join houseinfo on housedeal.aptCode = houseinfo.aptCode and housedeal.aptCode=#{aptCode} GROUP BY housedeal.dealYear;
+    </select>
+
+    <update id="increaseHit">
+        update apthits set hit = hit+1 where aptCode = #{aptCode}
+    </update>
+</mapper>
