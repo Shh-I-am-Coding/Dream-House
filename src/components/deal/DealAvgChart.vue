@@ -1,7 +1,6 @@
 <template>
   <div>
     <ccv-combo-chart :data="data" :options="options" />
-    <!-- <ccv-simple-bar-chart :data="ddaa" :options="optionsaaa" /> -->
   </div>
 </template>
 
@@ -29,6 +28,7 @@ export default {
             mapsTo: "ppa",
             scaleType: "linear",
             title: "평당가격",
+            correspondingDatasets: ["ppa"],
           },
           bottom: {
             title: "년도",
@@ -47,19 +47,9 @@ export default {
           },
         ],
         height: "400px",
-      },
-      optionsaaa: {
-        title: "Vertical simple bar (discrete)",
-        axes: {
-          left: {
-            mapsTo: "ppa",
-          },
-          bottom: {
-            mapsTo: "dealYear",
-            scaleType: "labels",
-          },
+        toolbar: {
+          enabled: false,
         },
-        height: "400px",
       },
     };
   },
@@ -77,17 +67,12 @@ export default {
           dealYear: this.dealAvg[i].dealYear,
           avgAmount: (Math.round(this.dealAvg[i].avgAmount / 100) * 100) / 10000,
         });
-        const params = {
+        this.data.push({
           group: "ppa",
           dealYear: this.dealAvg[i].dealYear,
-          ppa: parseFloat(this.dealAvg[i].pricePerArea),
-        };
-        console.log(params);
-        this.data.push(params);
-        this.ddaa.push(params);
+          ppa: this.dealAvg[i].pricePerArea,
+        });
       }
-
-      console.log(this.data);
     },
   },
   methods: {
@@ -98,6 +83,11 @@ export default {
 
 <style lang="scss" scoped>
 @use "@carbon/styles";
-
+// .cds--chart-holder .cds--cc--toolbar {
+//   display: none;
+// }
+// .cds--chart-holder .cds--overflow-menu {
+//   display: none;
+// }
 @import "https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed|IBM+Plex+Sans:400,600&display=swap";
 </style>

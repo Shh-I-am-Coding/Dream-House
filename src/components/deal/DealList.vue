@@ -38,10 +38,11 @@
           </div>
         </b-container>
         <deal-avg-chart v-if="userInfo" />
+        <div v-else style="font-size: 1.1rem">회원 가입하고 더 많은 정보를 얻어보세요~😉</div>
       </b-container>
       <b-row style="margin-top: 20px">
         <b-col cols="6"><b-button class="interBtn conBtn" v-b-toggle="['sidebar-dealInfo']">돌아가기</b-button></b-col>
-        <b-col cols="6" style="margin-bottom: 20px">
+        <b-col cols="6" v-show="userInfo" style="margin-bottom: 20px">
           <b-button v-if="!isInInter" class="yBtn conBtn" @click="insertInterest">관심 등록</b-button>
           <b-button v-if="isInInter" class="yBtn conBtn" @click="delInterest">관심 해제</b-button>
         </b-col>
