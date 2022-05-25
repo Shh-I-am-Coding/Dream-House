@@ -13,7 +13,7 @@
           </h1>
         </slide>
         <slide style="height: 90vh; color: #3f3f3f; flex-direction: column" class="d-flex align-items-center justify-content-center">
-          <h1><b>오늘의 뉴스</b></h1>
+          <h1><b>회원가입 후 서비스를 이용해보세요.</b></h1>
           <b-card-group deck class="mt-4 mr-5">
             <b-card border-variant="light" header="" class="text-left">
               <b-card-text>
@@ -27,7 +27,9 @@
           </b-card-group>
         </slide>
         <slide style="height: 90vh; color: #3f3f3f; flex-direction: column" class="d-flex align-items-center justify-content-center">
-          <h1><b>오늘의 뉴스</b></h1>
+          <h1>
+            <b>오늘의 뉴스<img class="mb-3 ml-2" src="@/assets/img/news04.png" width="10%" /></b>
+          </h1>
           <b-card-group deck class="mt-4 mr-5">
             <b-card border-variant="light" header="" class="text-left">
               <b-card-text>
@@ -41,7 +43,9 @@
           </b-card-group>
         </slide>
         <slide style="height: 90vh; color: #3f3f3f; flex-direction: column" class="d-flex align-items-center justify-content-center">
-          <h1><b>최근 인기 아파트</b></h1>
+          <h1>
+            <b>최근 인기 아파트<img class="mb-4 ml-2" src="@/assets/img/ranking_03.png" width="10%" /></b>
+          </h1>
           <b-card-group class="mt-4 mr-5" style="padding-left: 3vh" deck>
             <b-card
               border-variant="light"
@@ -101,22 +105,10 @@
               </template>
             </b-card>
           </b-card-group>
-          <!-- <b-card-group deck class="mt-4 mr-5">
-            <b-card border-variant="light" header="" class="text-left">
-              <b-card-text>
-                <b-row v-for="(topHit, index3) in topHits" :key="index3" style="color: black; list-style: none; width: 48vh; text-allign: center">
-                  <b-col cols="10" style="border-bottom: 1px solid #88ab88; margin: 5px; padding-bottom: 2vh; padding-top: 1vh; font-weight: bold; color: #e77920; font-size: 1.75rem">
-                    <a>{{ topHit.dongName }} {{ topHit.aptName }} {{ topHit.avgAmount | price }}</a>
-                  </b-col>
-                </b-row>
-              </b-card-text>
-            </b-card>
-          </b-card-group> -->
         </slide>
       </hooper>
     </div>
   </div>
-  <!-- <b-container fluid> </b-container> -->
 </template>
 
 <script>
