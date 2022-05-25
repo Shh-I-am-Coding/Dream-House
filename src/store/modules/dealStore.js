@@ -13,6 +13,7 @@ const dealStore = {
     sortOrder: "asc",
     sortBy: "aptName",
     topHits: [],
+    chartData: [],
     // deal: {
     // private int dealNum;
     // private String aptCode;
@@ -103,13 +104,26 @@ const dealStore = {
     },
     SET_DEALAVG_LIST: (state, dealAvg) => {
       state.dealAvg = dealAvg;
+      const data = [];
+      for (let i = 0; i < dealAvg.length; i++) {
+        data.push({
+          group: "avgAmount",
+          dealYear: dealAvg[i].dealYear,
+          avgAmount: (Math.round(dealAvg[i].avgAmount / 100) * 100) / 10000,
+        });
+        data.push({
+          group: "ppa",
+          dealYear: dealAvg[i].dealYear,
+          ppa: dealAvg[i].pricePerArea,
+        });
+      }
+      state.chartData = data;
     },
     CLEAR_DEALAVG_LIST: (state) => {
       state.dealAvg = [];
     },
     SET_TOPHIT_LIST: (state, topHits) => {
       state.topHits = topHits;
-      console.log("SET FIN");
     },
   },
   actions: {
@@ -189,7 +203,6 @@ const dealStore = {
       );
     },
     getDealAvg: ({ commit }, params) => {
-      console.log(params);
       dealAvg(
         params,
         (response) => {
@@ -201,7 +214,6 @@ const dealStore = {
       );
     },
     getTopHits: ({ commit }) => {
-      console.log("ING");
       topHits(
         (response) => {
           console.log("RRRRRR", response.data);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ccv-combo-chart :data="data" :options="options" />
+    <ccv-combo-chart :data="chartData" :options="options" />
   </div>
 </template>
 
@@ -53,25 +53,12 @@ export default {
     };
   },
   computed: {
-    ...mapState(dealStore, ["dealAvg", "deal"]),
+    ...mapState(dealStore, ["dealAvg", "deal", "chartData"]),
   },
   watch: {
     deal(newValue) {
       if (newValue == null) return;
-      this.data = [];
       this.getDealAvg({ aptCode: newValue.aptCode });
-      for (let i = 0; i < this.dealAvg.length; i++) {
-        this.data.push({
-          group: "avgAmount",
-          dealYear: this.dealAvg[i].dealYear,
-          avgAmount: (Math.round(this.dealAvg[i].avgAmount / 100) * 100) / 10000,
-        });
-        this.data.push({
-          group: "ppa",
-          dealYear: this.dealAvg[i].dealYear,
-          ppa: this.dealAvg[i].pricePerArea,
-        });
-      }
     },
   },
   methods: {
