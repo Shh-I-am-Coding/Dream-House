@@ -319,17 +319,6 @@ export default {
       }
     },
   },
-  filters: {
-    price(value) {
-      if (!value) return value;
-      let rst = "";
-      value.split(",").forEach((i) => {
-        rst += i;
-      });
-      rst += "0000";
-      return rst.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
-  },
 };
 </script>
 
