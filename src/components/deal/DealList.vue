@@ -269,5 +269,9 @@ export default {
 .conBtn {
   width: 12vh;
   height: 4vh;
+
+.card-title {
+  font-size: 1.2em;
+  font-weight: bold;
 }
 </style>

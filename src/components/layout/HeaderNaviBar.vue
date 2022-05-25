@@ -57,11 +57,12 @@ export default {
     ...mapState(userStore, ["isLogin", "userInfo"]),
   },
   methods: {
-    ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO", "SET_IS_DUPLICATED"]),
+    ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_IS_KAKAO_LOGIN", "SET_USER_INFO", "SET_IS_DUPLICATED"]),
     ...mapMutations(boardStore, ["SET_IS_REMAIN_BOARD_SEARCH_CONDITION"]),
     ...mapMutations(noticeStore, ["SET_IS_REMAIN_NOTICE_SEARCH_CONDITION"]),
     logout() {
       this.SET_IS_LOGIN(false);
+      this.SET_IS_KAKAO_LOGIN(false);
       this.SET_USER_INFO(null);
       this.SET_IS_DUPLICATED(true);
       sessionStorage.removeItem("access-token");

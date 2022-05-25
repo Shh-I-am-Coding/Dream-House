@@ -94,7 +94,9 @@ export default {
 .hooper-list {
   overflow: inherit;
 }
+</style>
 
+<style scoped>
 li a {
   font-weight: bold;
   color: #e77920;
