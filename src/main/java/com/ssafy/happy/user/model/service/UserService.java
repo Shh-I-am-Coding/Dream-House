@@ -14,4 +14,8 @@ public interface UserService {
 	String findPasswordByPhone(String id, String name, String phone);
 
 	String findPasswordByEmail(String id, String name, String email);
+
+	String getKakaoAccessToken(String code);
+
+	User createKakaoUser(String token);
 }

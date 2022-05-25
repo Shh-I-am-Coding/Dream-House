@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.ssafy.happy.user.dto.User;
 import com.ssafy.happy.user.model.service.JwtService;
 import com.ssafy.happy.user.model.service.UserService;
@@ -77,6 +82,17 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(resultMap, status);
+	}
+
+	@PostMapping("/login/oauth/kakao")
+	public ResponseEntity<?> kakaoCallback(@RequestBody String code) {
+		JsonParser parser = new JsonParser();
+		JsonElement element = parser.parse(code);
+		code = element.getAsJsonObject().get("code").getAsString();
+
+		String access_token = userService.getKakaoAccessToken(code);
+		User user = userService.createKakaoUser(access_token);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@GetMapping("/info/{id}")
