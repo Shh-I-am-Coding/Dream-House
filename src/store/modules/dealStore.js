@@ -1,4 +1,4 @@
-import { sidoList, gugunList, dongList, dealList, APTList } from "@/api/deal.js";
+import { sidoList, gugunList, dongList, dealList, APTList, dealAvg } from "@/api/deal.js";
 
 const dealStore = {
   namespaced: true,
@@ -9,6 +9,7 @@ const dealStore = {
     deals: [],
     deal: null,
     dealInfos: [],
+    dealAvg: [],
     sortOrder: "asc",
     sortBy: "aptName",
     // deal: {
@@ -99,6 +100,12 @@ const dealStore = {
       state.dealInfos = [];
       //state.deal.splice(0, state.deal.length);
     },
+    SET_DEALAVG_LIST: (state, dealAvg) => {
+      state.dealAvg = dealAvg;
+    },
+    CLEAR_DEALAVG_LIST: (state) => {
+      state.dealAvg = [];
+    },
   },
   actions: {
     getSido: ({ commit }) => {
@@ -170,6 +177,18 @@ const dealStore = {
         (response) => {
           //console.log(response.data);
           commit("SET_DEALINFO_LIST", response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    getDealAvg: ({ commit }, params) => {
+      console.log(params);
+      dealAvg(
+        params,
+        (response) => {
+          commit("SET_DEALAVG_LIST", response.data);
         },
         (error) => {
           console.log(error);
