@@ -19,8 +19,8 @@
         <deal-list-item v-for="(interest, index) in interests" :deal="interest" :key="index" :interested="1" v-b-toggle="['sidebar-dealInfo']" />
       </b-container>
     </b-sidebar>
-    <b-sidebar id="sidebar-dealInfo" title="아파트 정보" right shadow>
-      <b-container v-if="dealInfos && dealInfos.length != 0" class="bv-example-row overflow-auto">
+    <b-sidebar id="sidebar-dealInfo" title="아파트 정보" right shadow width="400px">
+      <b-container v-if="dealInfos && dealInfos.length != 0" class="bv-example-row">
         <b-row>
           <b-col id="infoName">{{ dealInfos[0].aptName }} </b-col>
         </b-row>
@@ -37,17 +37,25 @@
             <deal-info-list-item :dealInfo="dealInfo" :index="index" />
           </div>
         </b-container>
+        <deal-avg-chart v-if="userInfo" />
       </b-container>
-      <b-button class="yBtn" v-b-toggle="['sidebar-dealInfo']">돌아가기</b-button>
+      <b-row style="margin-top: 20px">
+        <b-col cols="6"><b-button class="interBtn conBtn" v-b-toggle="['sidebar-dealInfo']">돌아가기</b-button></b-col>
+        <b-col cols="6" style="margin-bottom: 20px">
+          <b-button v-if="!isInInter" class="yBtn conBtn" @click="insertInterest">관심 등록</b-button>
+          <b-button v-if="isInInter" class="yBtn conBtn" @click="delInterest">관심 해제</b-button>
+        </b-col>
+      </b-row>
     </b-sidebar>
   </div>
 </template>
 
 <script>
 import DealListItem from "@/components/deal/DealListItem.vue";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import Swal from "sweetalert2";
 import DealInfoListItem from "./DealInfoListItem.vue";
+import DealAvgChart from "./DealAvgChart.vue";
 
 const dealStore = "dealStore";
 const userStore = "userStore";
@@ -58,16 +66,30 @@ export default {
   components: {
     DealListItem,
     DealInfoListItem,
+    DealAvgChart,
   },
   data() {
-    return {};
+    return {
+      isInter: false,
+      isAptList: false,
+    };
   },
   computed: {
     ...mapState(dealStore, ["deals", "deal", "dealInfos"]),
     ...mapState(userStore, ["userInfo"]),
     ...mapState(interestStore, ["interests"]),
+    isInInter: function () {
+      if (!this.userInfo || !this.deal || this.interests.length < 1) return false;
+      for (let i = 0; i < this.interests.length; i++) {
+        if (this.deal.aptCode == this.interests[i].aptCode) {
+          return true;
+        }
+      }
+      return false;
+    },
   },
   methods: {
+    ...mapActions(interestStore, ["createInterest", "getInterestList", "deleteInterest"]),
     isLogin() {
       if (this.userInfo == null) {
         console.log("NeedLogin");
@@ -78,6 +100,47 @@ export default {
           confirmButtonText: "확인",
         });
       }
+    },
+    insertInterest() {
+      if (this.userInfo.id == null) {
+        Swal.fire({
+          title: "로그인이 필요합니다! 💦",
+          text: "회원가입을 하고 관심지역을 등록해 보세요.",
+          icon: "warning",
+          confirmButtonText: "확인",
+        });
+      } else {
+        const params = {
+          id: this.userInfo.id,
+          aptCode: this.deal.aptCode,
+        };
+        console.log("create", params);
+        this.createInterest(params).then(
+          Swal.fire({
+            title: "관심지역이 등록되었습니다! ",
+            text: "관심지역 목록에서 확인해보세요!.",
+            icon: "success",
+            confirmButtonText: "확인",
+          })
+        );
+      }
+    },
+    delInterest() {
+      Swal.fire({
+        title: "정말 삭제하시겠습니까?",
+        showDenyButton: true,
+        confirmButtonText: "삭제",
+        denyButtonText: `취소`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          const params = {
+            id: this.userInfo.id,
+            aptCode: this.deal.aptCode,
+          };
+          this.deleteInterest(params).then(Swal.fire("삭제완료!", "", "success"));
+        }
+      });
     },
   },
   filters: {
@@ -104,34 +167,33 @@ export default {
 .b-sidebar-outer {
   position: relative;
 }
-
 #sidebar-dealInfo {
-  height: 80vh;
-  max-height: 80vh;
+  height: 81vh;
+  max-height: 81vh;
   position: sticky;
-  top: 10vh;
+  top: 100px;
 }
 .b-sidebar-body {
-  height: 300px;
+  height: 250px;
 }
 #sidebar-aptList {
-  height: 80vh;
-  max-height: 80vh;
+  height: 81vh;
+  max-height: 81vh;
   position: sticky;
-  top: 195px;
+  top: 100px;
 }
 #sidebar-interestList {
-  height: 80vh;
-  max-height: 80vh;
+  height: 81vh;
+  max-height: 81vh;
   position: sticky;
-  top: 195px;
+  top: 100px;
 }
 .card_body {
   margin: 10px;
 }
 .infoBtn {
   color: black;
-  width: 25vh;
+  width: 200px;
   margin-bottom: 0.25rem;
 }
 .infoCard {
@@ -203,5 +265,9 @@ export default {
 .show > .interBtn.dropdown-toggle {
   color: black;
   background-color: #fcb666;
+}
+.conBtn {
+  width: 12vh;
+  height: 4vh;
 }
 </style>
