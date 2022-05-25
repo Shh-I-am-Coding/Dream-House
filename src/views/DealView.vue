@@ -1,17 +1,4 @@
 <template>
-  <!-- <b-container class="text-center" fluid>
-    <b-row>
-      <b-col>
-        <deal-search-bar></deal-search-bar>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col style="width: 100vh">
-        <deal-detail />
-      </b-col>
-      <deal-list />
-    </b-row>
-  </b-container> -->
   <div>
     <deal-search-bar></deal-search-bar>
     <deal-list />
