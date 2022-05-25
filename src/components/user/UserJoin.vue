@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import * as rules from "vee-validate/dist/rules";
 import Swal from "sweetalert2";
@@ -111,19 +111,23 @@ export default {
   data() {
     return {
       user: {
-        id: null,
-        password: null,
-        name: null,
-        email: null,
-        phone: null,
+        id: "",
+        password: "",
+        name: "",
+        email: "",
+        phone: "",
       },
       password_confirm: null,
       id_confirm: false,
+      isKakaoUser: false,
     };
   },
   components: {
     ValidationObserver,
     ValidationProvider,
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
   },
   methods: {
     ...mapActions(userStore, ["join", "get", "checkIdDuplicated"]),
@@ -154,7 +158,7 @@ export default {
     getPhoneMask(phone) {
       this.user.phone = phone.replace(/[^0-9]/g, "").replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
     },
-    onSubmit() {
+    async onSubmit() {
       if (this.isIdDuplicated() || !this.id_confirm) {
         Swal.fire({
           title: "실패! 😵",

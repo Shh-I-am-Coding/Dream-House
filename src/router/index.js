@@ -86,6 +86,11 @@ const routes = [
         component: () => import("@/components/user/UserLogin.vue"),
       },
       {
+        path: "login/oauth/kakao",
+        name: "kakaoLogin",
+        component: () => import("@/components/user/UserKakaoLogin.vue"),
+      },
+      {
         path: "join",
         name: "userJoin",
         component: () => import("@/components/user/UserJoin.vue"),
