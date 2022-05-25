@@ -8,7 +8,6 @@ import com.ssafy.happy.user.dto.User;
 
 public interface InterestService {
 	List<Deals> getInterests(String id);
-
 	int registerInterests(Interest interest);
 	int deleteInterests(Interest interest);
 

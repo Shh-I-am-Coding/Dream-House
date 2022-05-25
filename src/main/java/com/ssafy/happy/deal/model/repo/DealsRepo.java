@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface DealsRepo {
     List<Deals> selectAptName(String dongCode, String sortBy, String sortOrder);
+    List<Deals> topHitApts();
 }

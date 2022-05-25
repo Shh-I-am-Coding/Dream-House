@@ -2,6 +2,7 @@ package com.ssafy.happy.deal.controller;
 
 import java.util.List;
 
+import com.ssafy.happy.deal.dto.DealAvg;
 import com.ssafy.happy.deal.dto.Deals;
 import com.ssafy.happy.deal.model.service.DealsService;
 
@@ -40,5 +41,15 @@ public class DealController {
 	public List<Deals> getAptNameList(String dongCode, String sortBy, String sortOrder) {
 		System.out.println(dongCode+" "+sortBy + " " + sortOrder);
 		return dealsService.getAllAptName(dongCode, sortBy, sortOrder);
+	}
+	@GetMapping("/getDealAvg")
+	public List<DealAvg> getDealAvg(String aptCode) {
+		System.out.println("aptCode"+" "+aptCode);
+		return dealInfoService.getDealAvg(aptCode);
+	}
+	@GetMapping("/getTopHits")
+	public List<Deals> getTopHits() {
+		System.out.println("aptCode");
+		return dealsService.topHitApts();
 	}
 }

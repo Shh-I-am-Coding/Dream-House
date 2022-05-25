@@ -20,4 +20,8 @@ public class DealsServiceImpl implements DealsService{
     public List<Deals> getAllAptName(String dongCode, String sortBy, String sortOrder) {
         return dealsRepo.selectAptName(dongCode, sortBy, sortOrder);
     }
+    @Override
+    public List<Deals> topHitApts() {
+        return dealsRepo.topHitApts();
+    }
 }
