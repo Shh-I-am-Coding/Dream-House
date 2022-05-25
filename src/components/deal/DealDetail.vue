@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 const dealStore = "dealStore";
 
@@ -21,21 +21,11 @@ export default {
   name: "DealDetail",
   data() {
     return {
-      markerPositions1: [
-        //[37.5037779, 127.043148],   //서울 멀캠
-        //[36.355314, 127.298203],    //대전 연수원
-        [37.499590490909185, 127.0263723554437], //강남역 근처 핀
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
-      ],
       markers: [],
       placeMarkers: [],
       geocoder: null,
       ps: null,
+      infoWindow: null,
       currCategory: "",
       placeOverlay: null,
       contentNode: null,
@@ -71,7 +61,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(dealStore, ["deal", "deals", "sortBy", "sortOrder"]),
+    ...mapState(dealStore, ["deal", "deals", "sortBy", "sortOrder", "topHits"]),
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -87,6 +77,7 @@ export default {
   },
   methods: {
     ...mapActions(dealStore, ["getAptList"]),
+    ...mapMutations(dealStore, ["SET_DEAL_LIST"]),
     initMap() {
       const container = document.getElementById("map");
       const options = {
@@ -98,8 +89,9 @@ export default {
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
       this.geocoder = new kakao.maps.services.Geocoder();
-      this.displayMarker(this.markerPositions1);
+      this.SET_DEAL_LIST(this.topHits);
 
+      this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
       this.placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 }); // 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
       this.contentNode = document.createElement("div"); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다
       this.ps = new kakao.maps.services.Places(this.map);
@@ -118,24 +110,6 @@ export default {
       this.placeOverlay.setContent(this.contentNode);
       this.isInMarker = new Set();
     },
-    displayMarker(markerPositions) {
-      const positions = markerPositions.map((position) => new kakao.maps.LatLng(...position));
-
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: this.map,
-              position,
-            })
-        );
-
-        const bounds = positions.reduce((bounds, latlng) => bounds.extend(latlng), new kakao.maps.LatLngBounds());
-
-        this.map.setBounds(bounds);
-        //console.log(bounds);
-      }
-    },
     mkMarker(deal) {
       if (!this.isInMarker.has(deal.aptCode)) {
         this.isInMarker.add(deal.aptCode);
@@ -151,8 +125,23 @@ export default {
           // 마커 위에 인포윈도우를 표시합니다
           console.log("아파트명 : " + deal.aptName);
           console.log("동코드 : " + deal.dongCode);
+
           //아파트명을 통해 아파트 검색
           this.searchByAptName(deal.aptName, deal.dongCode);
+        });
+        kakao.maps.event.addListener(marker, "mouseover", () => {
+          // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+          let amount = Math.round(deal.avgAmount / 100) / 100;
+          this.infowindow.setContent(
+            '<div style="padding:5px;font-size:1.1rem;font-weight: bold;">' + deal.aptName + "</div>" + '<div style="padding:5px;font-size:0.9rem;">평균 :' + amount + "억</div>"
+          );
+          this.infowindow.open(this.map, marker);
+        });
+
+        // 마커에 마우스아웃 이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, "mouseout", () => {
+          // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+          this.infowindow.close();
         });
       }
     },

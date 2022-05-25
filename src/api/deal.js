@@ -29,4 +29,8 @@ function APTList(params, success, fail) {
 function dealAvg(params, success, fail) {
   api.get("/deal/getDealAvg", { params: params }).then(success).catch(fail);
 }
-export { sidoList, gugunList, dongList, dealList, APTList, dealAvg };
+
+function topHits(success, fail) {
+  api.get(`/deal/getTopHits`).then(success).catch(fail);
+}
+export { sidoList, gugunList, dongList, dealList, APTList, dealAvg, topHits };

@@ -1,4 +1,4 @@
-import { sidoList, gugunList, dongList, dealList, APTList, dealAvg } from "@/api/deal.js";
+import { sidoList, gugunList, dongList, dealList, APTList, dealAvg, topHits } from "@/api/deal.js";
 
 const dealStore = {
   namespaced: true,
@@ -12,6 +12,7 @@ const dealStore = {
     dealAvg: [],
     sortOrder: "asc",
     sortBy: "aptName",
+    topHits: [],
     // deal: {
     // private int dealNum;
     // private String aptCode;
@@ -106,6 +107,10 @@ const dealStore = {
     CLEAR_DEALAVG_LIST: (state) => {
       state.dealAvg = [];
     },
+    SET_TOPHIT_LIST: (state, topHits) => {
+      state.topHits = topHits;
+      console.log("SET FIN");
+    },
   },
   actions: {
     getSido: ({ commit }) => {
@@ -189,6 +194,18 @@ const dealStore = {
         params,
         (response) => {
           commit("SET_DEALAVG_LIST", response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    getTopHits: ({ commit }) => {
+      console.log("ING");
+      topHits(
+        (response) => {
+          console.log("RRRRRR", response.data);
+          commit("SET_TOPHIT_LIST", response.data);
         },
         (error) => {
           console.log(error);
