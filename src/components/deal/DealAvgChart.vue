@@ -15,7 +15,6 @@ export default {
   data() {
     return {
       data: [],
-      ddaa: [],
       options: {
         title: "아파트 거래 추이",
         axes: {
