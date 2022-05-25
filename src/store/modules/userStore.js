@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { searchId, confirmPassword, login, kakaoLogin, findById, update, register, withdraw } from "@/api/user.js";
+import { searchId, confirmPassword, login, parseKakaoUser, findById, update, register, withdraw } from "@/api/user.js";
 import router from "@/router";
 import Swal from "sweetalert2";
 
@@ -81,23 +81,7 @@ const userStore = {
         () => {}
       );
     },
-    async kakaoConfirm({ commit }) {
-      await kakaoLogin((response) => {
-        if (response.data.message === "success") {
-          let token = response.data["access-token"];
-          commit("SET_IS_LOGIN", true);
-          commit("SET_IS_KAKAO_LOGIN", true);
-          commit("SET_IS_LOGIN_ERROR", false);
-          sessionStorage.setItem("access-token", token);
-          commit("SET_USER_INFO", response.data.userInfo);
-        } else {
-          commit("SET_IS_LOGIN", false);
-          commit("SET_IS_KAKAO_LOGIN", false);
-          commit("SET_IS_LOGIN_ERROR", true);
-        }
-      });
-    },
-    getUserInfo({ commit }, token) {
+    getUser({ commit }, token) {
       let decode_token = jwt_decode(token);
       findById(
         decode_token.id,
@@ -113,6 +97,16 @@ const userStore = {
         }
       );
     },
+    async checkKakaoUser({ commit }, code) {
+      await parseKakaoUser(code, (response) => {
+        let kakaoUser = response.data;
+        commit("SET_USER_INFO", kakaoUser);
+        commit("SET_IS_LOGIN", true);
+        commit("SET_IS_KAKAO_LOGIN", true);
+        commit("SET_IS_LOGIN_ERROR", false);
+      });
+    },
+
     async join({ commit }, user) {
       await register(
         user,

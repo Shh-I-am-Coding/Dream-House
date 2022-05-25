@@ -54,7 +54,7 @@ const noticeStore = "noticeStore";
 export default {
   name: "HeaderNaviBar",
   computed: {
-    ...mapState(userStore, ["isLogin", "userInfo"]),
+    ...mapState(userStore, ["isLogin", "userInfo", "isKakaoLogin"]),
   },
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_IS_KAKAO_LOGIN", "SET_USER_INFO", "SET_IS_DUPLICATED"]),
@@ -62,10 +62,14 @@ export default {
     ...mapMutations(noticeStore, ["SET_IS_REMAIN_NOTICE_SEARCH_CONDITION"]),
     logout() {
       this.SET_IS_LOGIN(false);
-      this.SET_IS_KAKAO_LOGIN(false);
       this.SET_USER_INFO(null);
       this.SET_IS_DUPLICATED(true);
       sessionStorage.removeItem("access-token");
+      if (this.isKakaoLogin) {
+        this.SET_IS_KAKAO_LOGIN(false);
+        const url = decodeURIComponent(process.env.VUE_APP_KAKAO_LOGOUT_REDIRECT_URI);
+        window.location.replace(url);
+      }
       Swal.fire({
         title: "로그아웃 성공! 🙋‍♀️",
         text: "로그아웃 되었습니다.",

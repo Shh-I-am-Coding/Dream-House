@@ -29,11 +29,6 @@ const noticeStore = {
     },
     isReaminSearchCondition: false,
   },
-  getters: {
-    // searchUserCnt: function (state) {
-    //   return state.searchUsers.length > 0 ? state.searchUsers.length : null;
-    // },
-  },
   mutations: {
     SET_ARTICLES: function (state, articles) {
       state.articles = articles;

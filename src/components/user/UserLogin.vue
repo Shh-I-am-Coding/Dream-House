@@ -16,9 +16,8 @@
                   <input type="password" id="password" v-model="user.password" class="form-control form-control-lg" name="password" placeholder="비밀번호" required />
                 </div>
 
-                <button type="button" class="btn btn-warning btn-lg btn-block" id="loginBtn" @click="confirm">로그인</button><br /><br />
-                <button type="button" class="btn" id="loginBtn" @click="kakaoLogin"><img src="@/assets/img/kakao_login.png" /></button><br /><br />
-
+                <button type="button" class="btn btn-warning btn-lg btn-block" id="loginBtn" @click="confirm">로그인</button>
+                <button type="button" class="btn btn-block mb-5" @click="kakaoLogin"><img src="@/assets/img/kakao_login.png" /></button>
                 <!--TODO 비밀번호찾기 라우터링크로-->
                 <a href="${root}/user/findPassword">비밀번호 찾기</a>
               </b-form>
@@ -32,7 +31,6 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
-
 const userStore = "userStore";
 const interestStore = "interestStore";
 
@@ -44,36 +42,35 @@ export default {
         id: null,
         password: null,
       },
+      url: "",
     };
   },
   computed: {
-    ...mapState(userStore, ["isLogin", "isKakaoLogin", "isLoginError"]),
+    ...mapState(userStore, ["isLogin", "isLoginError"]),
   },
   created() {
     this.SET_IS_LOGIN_ERROR(false);
   },
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN_ERROR"]),
-    ...mapActions(userStore, ["userConfirm", "getUserInfo", "kakaoConfirm"]),
+    ...mapActions(userStore, ["userConfirm", "getUser"]),
     ...mapActions(interestStore, ["getInterestList"]),
     async confirm() {
       await this.userConfirm(this.user);
       let token = sessionStorage.getItem("access-token");
       if (this.isLogin) {
-        await this.getUserInfo(token);
+        await this.getUser(token);
         this.getInterestList({
           id: this.user.id,
         });
         this.$router.push("/");
       }
     },
-    async kakaoLogin() {
-      await this.kakaoConfirm();
-      let token = sessionStorage.getItem("access-token");
-      if (this.isKakaoLogin) {
-        await this.getUserInfo(token);
-        this.$router.push("/");
-      }
+    kakaoLogin() {
+      const API_KEY = process.env.VUE_APP_KAKAO_LOGIN_API_KEY;
+      const REDIRECT_URI = process.env.VUE_APP_KAKAO_LOGIN_REDIRECT_URI;
+      const url = "https://kauth.kakao.com/oauth/authorize?client_id=" + decodeURIComponent(API_KEY) + "&redirect_uri=" + decodeURIComponent(REDIRECT_URI) + "&response_type=code";
+      window.location.replace(url);
     },
   },
 };
