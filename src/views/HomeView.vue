@@ -125,7 +125,8 @@ import { Hooper, Slide } from "hooper";
 import "hooper/dist/hooper.css";
 import { getNews } from "@/api/news.js";
 import { topHits } from "@/api/deal.js";
-import dealStore from "@/store/modules/dealStore";
+
+const dealStore = "dealStore";
 
 export default {
   name: "HomeView",
@@ -158,6 +159,7 @@ export default {
     });
     topHits((response) => {
       this.topHits = response.data;
+      console.log(this.topHits);
       this.SET_TOPHIT_LIST(this.topHits);
     });
   },
