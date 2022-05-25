@@ -29,7 +29,7 @@
         <b-navbar-nav class="ml-auto" v-else>
           <b-nav-item class="align-self-center"
             ><router-link :to="{ name: 'userMyInfoHome' }" class="link align-self-center">
-              <b-avatar variant="primary" v-text="userInfo.id.charAt(0).toUpperCase()"></b-avatar> {{ userInfo.name }} 님 환영합니다.</router-link
+              <b-avatar variant="warning" v-text="userInfo.id.charAt(0).toUpperCase()"></b-avatar> {{ userInfo.name }} 님 환영합니다.</router-link
             >
           </b-nav-item>
           <b-nav-item class="align-self-center"><router-link :to="{ name: 'userMyInfoHome' }" class="link align-self-center menuItem">마이페이지</router-link></b-nav-item>
