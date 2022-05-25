@@ -17,6 +17,8 @@
                 </div>
 
                 <button type="button" class="btn btn-warning btn-lg btn-block" id="loginBtn" @click="confirm">로그인</button><br /><br />
+                <button type="button" class="btn" id="loginBtn" @click="kakaoLogin"><img src="@/assets/img/kakao_login.png" /></button><br /><br />
+
                 <!--TODO 비밀번호찾기 라우터링크로-->
                 <a href="${root}/user/findPassword">비밀번호 찾기</a>
               </b-form>
@@ -45,14 +47,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(userStore, ["isLogin", "isLoginError"]),
+    ...mapState(userStore, ["isLogin", "isKakaoLogin", "isLoginError"]),
   },
   created() {
     this.SET_IS_LOGIN_ERROR(false);
   },
   methods: {
     ...mapMutations(userStore, ["SET_IS_LOGIN_ERROR"]),
-    ...mapActions(userStore, ["userConfirm", "getUserInfo"]),
+    ...mapActions(userStore, ["userConfirm", "getUserInfo", "kakaoConfirm"]),
     ...mapActions(interestStore, ["getInterestList"]),
     async confirm() {
       await this.userConfirm(this.user);
@@ -62,7 +64,15 @@ export default {
         this.getInterestList({
           id: this.user.id,
         });
-        this.$router.back();
+        this.$router.push("/");
+      }
+    },
+    async kakaoLogin() {
+      await this.kakaoConfirm();
+      let token = sessionStorage.getItem("access-token");
+      if (this.isKakaoLogin) {
+        await this.getUserInfo(token);
+        this.$router.push("/");
       }
     },
   },
