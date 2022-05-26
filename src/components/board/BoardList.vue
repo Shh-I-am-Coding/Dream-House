@@ -14,7 +14,7 @@
             </b-thead>
             <tbody>
               <b-tr v-for="(article, index) in articles" :key="index">
-                <b-th style="width: 65vh">
+                <b-th style="width: 600px">
                   <router-link :to="`${Number(article.articleNo)}`" class="title">{{ article.title }}</router-link>
                 </b-th>
                 <b-td>{{ article.userId }}</b-td>
