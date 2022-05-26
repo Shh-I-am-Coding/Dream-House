@@ -4,8 +4,8 @@
       <b-row>
         <b-col v-if="articles.length">
           <b-table-simple hover responsive>
-            <b-thead style="background-color: #ffdfa4">
-              <b-tr style="background-color: #ffdfa4">
+            <b-thead style="background-color: blanchedalmond">
+              <b-tr style="background-color: blanchedalmond">
                 <b-th>제목</b-th>
                 <b-th>작성자</b-th>
                 <b-th>작성일</b-th>
@@ -28,7 +28,7 @@
       </b-row>
       <b-row class="mb-1">
         <b-col class="text-right">
-          <b-button variant="warning" @click="moveWrite">글쓰기</b-button>
+          <b-button class="writeBtn" @click="moveWrite">글쓰기</b-button>
         </b-col>
       </b-row>
       <board-paging></board-paging>
@@ -106,5 +106,15 @@ export default {
 a:hover {
   text-decoration: none;
   color: orange;
+}
+.writeBtn {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: rgb(255, 192, 119);
+}
+.writeBtn:hover {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #ffa743;
 }
 </style>

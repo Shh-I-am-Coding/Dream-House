@@ -14,11 +14,11 @@
     <b-row class="p-3 pb-5 mb-3" v-html="message" style="border-bottom: 1px solid"> </b-row>
     <b-row class="mb-1">
       <b-col class="text-left">
-        <b-button variant="outline-primary" @click="listArticle">목록</b-button>
+        <b-button class="listBtn" @click="listArticle">목록</b-button>
       </b-col>
       <b-col class="text-right" v-if="this.getUserInfo() != null && this.getUserInfo().id === 'admin'">
-        <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2">수정</b-button>
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle">삭제</b-button>
+        <b-button @click="moveModifyArticle" class="modBtn mr-2">수정</b-button>
+        <b-button class="delBtn" @click="deleteArticle">삭제</b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -82,5 +82,35 @@ export default {
 <style scoped>
 .card-header {
   background-color: blanchedalmond;
+}
+.listBtn {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: rgb(255, 192, 119);
+}
+.listBtn:hover {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #ffa743;
+}
+.delBtn {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #fcc8b8;
+}
+.delBtn:hover {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #f8b6a3;
+}
+.modBtn {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #b4e2fc;
+}
+.modBtn:hover {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #99daff;
 }
 </style>

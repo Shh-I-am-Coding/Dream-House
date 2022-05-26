@@ -227,7 +227,6 @@ export default {
   margin-bottom: 1rem;
 }
 .yBtn,
-.yBtn:hover,
 .yBtn:not(:disabled):not(.disabled):active,
 .yBtn:not(:disabled):not(.disabled).active,
 .yBtn:focus,
@@ -236,7 +235,10 @@ export default {
   color: black;
   background-color: #ffd071;
 }
-
+.yBtn:hover {
+  color: black;
+  background-color: #fdc659;
+}
 .interBtn:hover {
   color: black;
   background-color: #fda846;
