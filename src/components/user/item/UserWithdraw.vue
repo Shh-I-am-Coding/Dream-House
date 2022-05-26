@@ -7,7 +7,7 @@
       <b-form>
         <b-input-group class="form-input">
           <b-form-input type="password" v-model="user.password" placeholder="비밀번호 확인"></b-form-input>
-          <b-button type="button" @click="onSubmit">비밀번호 확인</b-button>
+          <b-button type="button" variant="success" @click="onSubmit">비밀번호 확인</b-button>
         </b-input-group>
       </b-form>
       <b-button v-show="password_confirm" type="button" variant="danger" @click="withdraw" style="width: 150px; margin-top: 20px">탈퇴</b-button>
@@ -70,8 +70,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "네",
-        cancelButtonText: "아니오",
+        confirmButtonText: "탈퇴",
+        cancelButtonText: "취소",
       }).then((result) => {
         if (result.isConfirmed) {
           this.deleteUserInfo(this.userInfo.id);
