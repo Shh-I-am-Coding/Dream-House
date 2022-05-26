@@ -2,10 +2,11 @@ package com.ssafy.happy.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.happy.user.dto.User;
+import com.ssafy.happy.user.model.service.EmailService;
 import com.ssafy.happy.user.model.service.JwtService;
 import com.ssafy.happy.user.model.service.UserService;
 
@@ -35,11 +35,12 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 	private final UserService userService;
 	private final JwtService jwtService;
+	private final EmailService emailService;
 
-	@Autowired
-	public UserController(UserService userService, JwtService jwtService) {
+	public UserController(UserService userService, JwtService jwtService, EmailService emailService) {
 		this.userService = userService;
 		this.jwtService = jwtService;
+		this.emailService = emailService;
 	}
 
 	@GetMapping("/{id}")
@@ -127,16 +128,26 @@ public class UserController {
 		}
 		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	//
-	// @GetMapping("/logout")
-	// public String logout(HttpSession session) {
-	// 	session.invalidate();
-	// 	return "redirect:/";
-	// }
+
+	@PostMapping("/email/send")
+	public String sendEmail(@RequestBody String email) {
+		JsonParser parser = new JsonParser();
+		JsonElement element = parser.parse(email);
+		email = element.getAsJsonObject().get("email").getAsString().trim();
+		System.out.println(email);
+		String certifiedCode;
+		try {
+			certifiedCode = emailService.sendMail(email);
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+		return certifiedCode;
+	}
 
 	@PutMapping("/")
 	public ResponseEntity<String> update(@RequestBody User user)  {
 		if(userService.updateAccount(user) > 0) {
+
 			return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
 		}
 		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
