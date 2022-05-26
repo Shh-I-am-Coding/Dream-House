@@ -69,7 +69,7 @@ export default {
   font-weight: bold;
   background-color: #b4e2fc;
 }
-.modBtn:hover {
+.seachBtn:hover {
   color: rgb(70, 70, 70);
   font-weight: bold;
   background-color: #99daff;

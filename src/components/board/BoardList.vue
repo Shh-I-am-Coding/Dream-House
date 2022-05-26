@@ -107,7 +107,12 @@ a:hover {
   text-decoration: none;
   color: orange;
 }
-.writeBtn {
+.writeBtn,
+.writeBtn:not(:disabled):not(.disabled):active,
+.writeBtn:not(:disabled):not(.disabled).active,
+.writeBtn:focus,
+.writeBtn.focus,
+.show > .writeBtn.dropdown-toggle {
   color: rgb(70, 70, 70);
   font-weight: bold;
   background-color: rgb(255, 192, 119);
