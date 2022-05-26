@@ -5,7 +5,7 @@
       <b-button v-b-toggle.sidebar-interestList class="interBtn" @click="isLogin"><b>관심 아파트</b></b-button>
     </div>
 
-    <b-sidebar id="sidebar-aptList" title="아파트 리스트" shadow style="width: 20vw">
+    <b-sidebar id="sidebar-aptList" title="아파트 리스트" shadow style="width: 20vw; position: absoulte">
       <b-container v-if="deals && deals.length != 0" class="bv-example-row mt-3 overflow-auto">
         <deal-list-item v-for="(deal, index) in deals" :key="index" :deal="deal" :interested="0" v-b-toggle="['sidebar-dealInfo']" />
       </b-container>
@@ -196,8 +196,8 @@ export default {
 #sidebar-dealInfo,
 #sidebar-aptList,
 #sidebar-interestList {
-  height: 96vh;
-  max-height: 96vh;
+  height: 850px;
+  max-height: 850px;
   position: relative;
   top: -9vh;
 }
@@ -252,7 +252,7 @@ export default {
 }
 .favoriteBtn {
   position: relative;
-  top: 48vh;
+  top: 420px;
   float: right;
   width: 15%;
   z-index: 7;
