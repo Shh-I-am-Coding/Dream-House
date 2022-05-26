@@ -2,12 +2,10 @@ package com.ssafy.happy.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -46,7 +44,7 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<String> search(@PathVariable String id) {
 		User searchedUser = userService.search(id);
-		if(searchedUser != null) {
+		if (searchedUser != null) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
 		}
 		return new ResponseEntity<>("fail", HttpStatus.OK);
@@ -56,7 +54,7 @@ public class UserController {
 	public ResponseEntity<String> confirmPassword(@RequestBody User user) {
 		log.debug(user.toString());
 		User searchedUser = userService.search(user.getId());
-		if(searchedUser != null && searchedUser.getPassword().equals(user.getPassword())) {
+		if (searchedUser != null && searchedUser.getPassword().equals(user.getPassword())) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
 		}
 		return new ResponseEntity<>("fail", HttpStatus.OK);
@@ -123,7 +121,7 @@ public class UserController {
 	@PostMapping("/")
 	public ResponseEntity<String> join(@RequestBody User user) {
 		log.debug(user.toString());
-		if(userService.register(user) > 0) {
+		if (userService.register(user) > 0) {
 			return new ResponseEntity<>("success", HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -145,8 +143,8 @@ public class UserController {
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<String> update(@RequestBody User user)  {
-		if(userService.updateAccount(user) > 0) {
+	public ResponseEntity<String> update(@RequestBody User user) {
+		if (userService.updateAccount(user) > 0) {
 
 			return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
 		}
@@ -154,8 +152,8 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete(@PathVariable String id)  {
-		if(userService.deleteAccount(id) > 0) {
+	public ResponseEntity<String> delete(@PathVariable String id) {
+		if (userService.deleteAccount(id) > 0) {
 			return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
 		}
 		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);

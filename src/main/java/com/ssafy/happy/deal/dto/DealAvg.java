@@ -1,6 +1,10 @@
 package com.ssafy.happy.deal.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -9,7 +13,7 @@ import lombok.*;
 @ToString
 
 public class DealAvg {
-    private int dealYear;
-    private String avgAmount;
-    private String pricePerArea;
+	private int dealYear;
+	private String avgAmount;
+	private String pricePerArea;
 }

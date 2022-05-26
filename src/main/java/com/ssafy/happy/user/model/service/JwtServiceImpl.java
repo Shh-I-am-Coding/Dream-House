@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class JwtServiceImpl implements JwtService{
+public class JwtServiceImpl implements JwtService {
 	private static final int EXPIRE_MINUTES = 60;
 	private static final String SALT = "happyHouseSecret";
 
@@ -38,7 +38,7 @@ public class JwtServiceImpl implements JwtService{
 
 	@Override
 	public Map<String, Object> get(String key) {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes())
 			.getRequest();
 		String jwt = request.getHeader("access-token");
 		Jws<Claims> claims = null;

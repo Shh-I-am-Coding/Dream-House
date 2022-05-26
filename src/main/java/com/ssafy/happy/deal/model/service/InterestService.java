@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.ssafy.happy.deal.dto.Deals;
 import com.ssafy.happy.deal.dto.Interest;
-import com.ssafy.happy.user.dto.User;
 
 public interface InterestService {
 	List<Deals> getInterests(String id);
+
 	int registerInterests(Interest interest);
+
 	int deleteInterests(Interest interest);
 
 }

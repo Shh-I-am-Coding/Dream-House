@@ -2,12 +2,12 @@ package com.ssafy.happy.deal.model.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.ssafy.happy.deal.dto.DealAvg;
+import com.ssafy.happy.deal.dto.DealInfo;
 import com.ssafy.happy.deal.model.repo.DealAvgRepo;
 import com.ssafy.happy.deal.model.repo.DealInfoRepo;
-import com.ssafy.happy.deal.dto.DealInfo;
-
-import org.springframework.stereotype.Service;
 
 @Service
 public class DealInfoServiceImpl implements DealInfoService {

@@ -8,14 +8,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.happy.user.dto.User;
 import com.ssafy.happy.user.model.repo.UserRepo;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -66,13 +66,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String getKakaoAccessToken(String code) {
-		String access_Token="";
-		String refresh_Token ="";
+		String access_Token = "";
+		String refresh_Token = "";
 		String reqURL = "https://kauth.kakao.com/oauth/token";
 
-		try{
+		try {
 			URL url = new URL(reqURL);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
 			//POST 요청을 위해 기본값이 false인 setDoOutput을 true로
 			conn.setRequestMethod("POST");
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
 
 			br.close();
 			bw.close();
-		}catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return access_Token;
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
 		//access_token을 이용하여 사용자 정보 조회
 		try {
 			URL url = new URL(reqURL);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
 			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
@@ -151,10 +151,18 @@ public class UserServiceImpl implements UserService {
 			JsonParser parser = new JsonParser();
 			JsonElement element = parser.parse(result.toString());
 
-			String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
-			boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
+			String nickname = element.getAsJsonObject()
+				.get("properties")
+				.getAsJsonObject()
+				.get("nickname")
+				.getAsString();
+			boolean hasEmail = element.getAsJsonObject()
+				.get("kakao_account")
+				.getAsJsonObject()
+				.get("has_email")
+				.getAsBoolean();
 			String email = "";
-			if(hasEmail){
+			if (hasEmail) {
 				email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
 			}
 

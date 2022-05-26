@@ -30,48 +30,63 @@ public class PageNavigation {
 	public boolean isStartRange() {
 		return startRange;
 	}
+
 	public void setStartRange(boolean startRange) {
 		this.startRange = startRange;
 	}
+
 	public boolean isEndRange() {
 		return endRange;
 	}
+
 	public void setEndRange(boolean endRange) {
 		this.endRange = endRange;
 	}
+
 	public int getTotalCount() {
 		return totalCount;
 	}
+
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
 	}
+
 	public int getTotalPageCount() {
 		return totalPageCount;
 	}
+
 	public void setTotalPageCount(int totalPageCount) {
 		this.totalPageCount = totalPageCount;
 	}
+
 	public int getCurrentPage() {
 		return currentPage;
 	}
+
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
+
 	public int getCountPerPage() {
 		return countPerPage;
 	}
+
 	public void setCountPerPage(int countPerPage) {
 		this.countPerPage = countPerPage;
 	}
+
 	public int getStartPage() {
 		return startPage;
 	}
+
 	public void setStartPage(int startPage) {
 		this.startPage = startPage;
 	}
+
 	public int getEndPage() {
 		return endPage;
 	}
+
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
@@ -116,6 +131,8 @@ public class PageNavigation {
 
 	@Override
 	public String toString() {
-		return "PageNavigation [startRange=" + startRange + ", endRange=" + endRange + ", totalCount=" + totalCount + ", totalPageCount=" + totalPageCount + ", currentPage=" + currentPage + ", countPerPage=" + countPerPage + ", startPage=" + startPage + ", endPage=" + endPage + "]";
+		return "PageNavigation [startRange=" + startRange + ", endRange=" + endRange + ", totalCount=" + totalCount
+			+ ", totalPageCount=" + totalPageCount + ", currentPage=" + currentPage + ", countPerPage=" + countPerPage
+			+ ", startPage=" + startPage + ", endPage=" + endPage + "]";
 	}
 }

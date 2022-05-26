@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class JwtInterceptor implements HandlerInterceptor{
+public class JwtInterceptor implements HandlerInterceptor {
 	private static final String HEADER_AUTH = "auth-token";
 
 	private final JwtService jwtService;
@@ -26,10 +26,10 @@ public class JwtInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		final String token = request.getHeader(HEADER_AUTH);
 
-		if(token != null && jwtService.isUsable(token)){
+		if (token != null && jwtService.isUsable(token)) {
 			log.info("토큰 사용 가능 : {}", token);
 			return true;
-		}else{
+		} else {
 			log.info("토큰 사용 불가능 : {}", token);
 			throw new UnauthorizedException();
 		}

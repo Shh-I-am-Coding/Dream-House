@@ -2,7 +2,6 @@ package com.ssafy.happy.user.dto;
 
 import lombok.*;
 
-
 @Getter
 @Setter
 @NoArgsConstructor

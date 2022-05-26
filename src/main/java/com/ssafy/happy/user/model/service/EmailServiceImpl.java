@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements EmailService {
 	private final JavaMailSender javaMailSender;
 
 	public EmailServiceImpl(JavaMailSender javaMailSender) {
@@ -61,7 +61,7 @@ public class EmailServiceImpl implements EmailService{
 		do {
 			int num = random.nextInt(75) + 48;
 			if (num <= 57 || num >= 65 && num <= 90 || num >= 97) {
-				sb.append((char) num);
+				sb.append((char)num);
 			}
 		} while (sb.length() < 10);
 		return sb.toString();

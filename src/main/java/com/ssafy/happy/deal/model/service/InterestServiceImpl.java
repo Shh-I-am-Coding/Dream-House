@@ -2,13 +2,12 @@ package com.ssafy.happy.deal.model.service;
 
 import java.util.List;
 
-import com.ssafy.happy.deal.dto.Deals;
-import com.ssafy.happy.deal.dto.Interest;
-import com.ssafy.happy.user.dto.User;
-import com.ssafy.happy.deal.model.repo.InterestRepo;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.ssafy.happy.deal.dto.Deals;
+import com.ssafy.happy.deal.dto.Interest;
+import com.ssafy.happy.deal.model.repo.InterestRepo;
 
 @Service
 public class InterestServiceImpl implements InterestService {

@@ -37,7 +37,7 @@ public class NaverCrawler {
 		String response = search();
 		String[] fields = {"title", "link"};
 		Map<String, Object> result = getResult(response, fields);
-		return (List<Map<String, Object>>) result.get("result");
+		return (List<Map<String, Object>>)result.get("result");
 	}
 
 	private String search() {
@@ -73,9 +73,9 @@ public class NaverCrawler {
 		Map<String, Object> rtnObj = new HashMap<>();
 		try {
 			JSONParser parser = new JSONParser();
-			JSONObject result = (JSONObject) parser.parse(response);
+			JSONObject result = (JSONObject)parser.parse(response);
 
-			JSONArray items = (JSONArray) result.get("items");
+			JSONArray items = (JSONArray)result.get("items");
 			List<Map<String, Object>> itemList = new ArrayList<>();
 
 			for (Object o : items) {
@@ -83,7 +83,7 @@ public class NaverCrawler {
 				Map<String, Object> itemMap = new HashMap<>();
 
 				for (String field : fields) {
-					String filtered = String.valueOf(item.get(field)).replace("<b>","");
+					String filtered = String.valueOf(item.get(field)).replace("<b>", "");
 					filtered = filtered.replace("</b>", "");
 					itemMap.put(field, filtered);
 				}

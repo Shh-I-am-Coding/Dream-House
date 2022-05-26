@@ -1,6 +1,6 @@
 package com.ssafy.happy.deal.model.repo;
 
-import java.util.*;
+import java.util.List;
 
 import com.ssafy.happy.deal.dto.DealInfo;
 
