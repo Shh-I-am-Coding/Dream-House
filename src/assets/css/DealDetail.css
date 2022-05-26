@@ -42,29 +42,37 @@
   width: 27px;
   height: 28px;
 }
-#category li .category_bg {
-  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png) no-repeat;
-}
 #category li .bank {
-  background-position: -10px 0;
+  background-image: url(../img/pins/money1.png);
+  background-size: cover;
 }
 #category li .mart {
-  background-position: -10px -36px;
+  background-image: url(../img/pins/supermarket1.png);
+  background-size: cover;
 }
 #category li .pharmacy {
-  background-position: -10px -72px;
+  background-image: url(../img/pins/hospital1.png);
+  background-size: cover;
 }
 #category li .oil {
-  background-position: -10px -108px;
+  background-image: url(../img/pins/gas1.png);
+  background-size: cover;
 }
 #category li .cafe {
-  background-position: -10px -144px;
+  background-image: url(../img/pins/cafe1.png);
+  background-size: cover;
 }
 #category li .store {
-  background-position: -10px -180px;
+  background-image: url(../img/pins/shop1.png);
+  background-size: cover;
 }
-#category li.on .category_bg {
-  background-position-x: -46px;
+#category li .parking {
+  background-image: url(../img/pins/parking1.png);
+  background-size: cover;
+}
+#category li .school {
+  background-image: url(../img/pins/school1.png);
+  background-size: cover;
 }
 .placeinfo_wrap {
   position: absolute;

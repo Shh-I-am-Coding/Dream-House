@@ -2,12 +2,15 @@
   <div>
     <div id="map"></div>
     <ul id="category">
+      <!-- <li v-for="(place, index) in placeHolder" :key=index v-html="place" @click="onClickCategory(place.id)" :class="[currCategory === searchPlaces.id ? 'on' : 'off']"/> -->
       <li v-html="placeHolder[0].tags" @click="onClickCategory(placeHolder[0].id)" :class="[currCategory === placeHolder[0].id ? 'on' : 'off']" />
       <li v-html="placeHolder[1].tags" @click="onClickCategory(placeHolder[1].id)" :class="[currCategory === placeHolder[1].id ? 'on' : 'off']" />
       <li v-html="placeHolder[2].tags" @click="onClickCategory(placeHolder[2].id)" :class="[currCategory === placeHolder[2].id ? 'on' : 'off']" />
       <li v-html="placeHolder[3].tags" @click="onClickCategory(placeHolder[3].id)" :class="[currCategory === placeHolder[3].id ? 'on' : 'off']" />
       <li v-html="placeHolder[4].tags" @click="onClickCategory(placeHolder[4].id)" :class="[currCategory === placeHolder[4].id ? 'on' : 'off']" />
       <li v-html="placeHolder[5].tags" @click="onClickCategory(placeHolder[5].id)" :class="[currCategory === placeHolder[5].id ? 'on' : 'off']" />
+      <li v-html="placeHolder[6].tags" @click="onClickCategory(placeHolder[6].id)" :class="[currCategory === placeHolder[6].id ? 'on' : 'off']" />
+      <li v-html="placeHolder[7].tags" @click="onClickCategory(placeHolder[7].id)" :class="[currCategory === placeHolder[7].id ? 'on' : 'off']" />
     </ul>
   </div>
 </template>
@@ -31,6 +34,7 @@ export default {
       contentNode: null,
       map: null,
       count: 0,
+      pinImg: null,
       placeHolder: [
         {
           id: "BK9",
@@ -45,8 +49,8 @@ export default {
           tags: '<span class="category_bg pharmacy"></span>약국',
         },
         {
-          id: "OL7",
-          tags: '<span class="category_bg oil"></span>주유소',
+          id: "SC4",
+          tags: '<span class="category_bg school"></span>학교',
         },
         {
           id: "CE7",
@@ -56,8 +60,19 @@ export default {
           id: "CS2",
           tags: '<span class="category_bg store"></span>편의점',
         },
+        {
+          id: "PK6",
+          tags: '<span class="category_bg parking"></span>주차장',
+        },
+        {
+          id: "OL7",
+          tags: '<span class="category_bg oil"></span>주유소',
+        },
       ],
       isInMarker: null,
+      socialPins: [],
+      imgSize: null,
+      imgOptions: { offset: new kakao.maps.Point(13, 40) },
     };
   },
   computed: {
@@ -90,6 +105,8 @@ export default {
       this.map = new kakao.maps.Map(container, options);
       this.geocoder = new kakao.maps.services.Geocoder();
       this.SET_DEAL_LIST(this.topHits);
+      this.imgSize = new kakao.maps.Size(40, 40);
+      this.pinImg = new kakao.maps.MarkerImage(require("@/assets/img/pins/pin08.png"), this.imgSize, this.imgOptions);
 
       this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
       this.placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 }); // 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
@@ -109,6 +126,15 @@ export default {
       // 커스텀 오버레이 컨텐츠를 설정합니다
       this.placeOverlay.setContent(this.contentNode);
       this.isInMarker = new Set();
+
+      this.socialPins.push(require("@/assets/img/pins/money1.png"));
+      this.socialPins.push(require("@/assets/img/pins/supermarket1.png"));
+      this.socialPins.push(require("@/assets/img/pins/hospital1.png"));
+      this.socialPins.push(require("@/assets/img/pins/gas1.png"));
+      this.socialPins.push(require("@/assets/img/pins/cafe1.png"));
+      this.socialPins.push(require("@/assets/img/pins/shop1.png"));
+      this.socialPins.push(require("@/assets/img/pins/parking1.png"));
+      this.socialPins.push(require("@/assets/img/pins/school1.png"));
     },
     mkMarker(deal) {
       if (!this.isInMarker.has(deal.aptCode)) {
@@ -119,6 +145,7 @@ export default {
         const marker = new kakao.maps.Marker({
           map: this.map,
           position: coords,
+          image: this.pinImg,
         });
         this.markers.push(marker);
         kakao.maps.event.addListener(marker, "click", () => {
@@ -229,18 +256,11 @@ export default {
       }
     },
     addMarker(position, order) {
-      let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
-        imageSize = new kakao.maps.Size(27, 28), // 마커 이미지의 크기
-        imgOptions = {
-          spriteSize: new kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기
-          spriteOrigin: new kakao.maps.Point(46, order * 36), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-          offset: new kakao.maps.Point(11, 28), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-        },
-        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-        marker = new kakao.maps.Marker({
-          position: position, // 마커의 위치
-          image: markerImage,
-        });
+      const markerImage = new kakao.maps.MarkerImage(this.socialPins[order], this.imgSize, this.imgOptions);
+      const marker = new kakao.maps.Marker({
+        position: position, // 마커의 위치
+        image: markerImage,
+      });
 
       marker.setMap(this.map); // 지도 위에 마커를 표출합니다
       this.placeMarkers.push(marker); // 배열에 생성된 마커를 추가합니다
