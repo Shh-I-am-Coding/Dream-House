@@ -1,6 +1,6 @@
 <template>
   <div style="border-bottom: 1px solid #dfdfdf">
-    <b-navbar toggleable="lg" type="light" style="background-color: white">
+    <b-navbar toggleable="lg" type="light" style="background-color: white" class="ml-4">
       <b-navbar-brand href="#">
         <router-link :to="{ name: 'home' }"> <b-img :src="require('@/assets/img/logo05.png')" style="width: 200px"></b-img></router-link>
       </b-navbar-brand>
