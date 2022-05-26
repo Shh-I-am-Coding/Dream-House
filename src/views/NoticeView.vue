@@ -1,6 +1,8 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
-    <h3>공지사항</h3>
+  <b-container class="bv-example-row mt-4 text-center">
+    <h3>
+      <b>공지사항<img src="@/assets/img/notice_logo.png" width="4%" class="mb-2 ml-2" /></b>
+    </h3>
     <router-view></router-view>
   </b-container>
 </template>

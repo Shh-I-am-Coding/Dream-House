@@ -1,5 +1,5 @@
 <template>
-  <div class="m-5">
+  <div class="mb-5">
     <b-container class="bv-example-row">
       <b-row>
         <b-col v-if="articles.length">
