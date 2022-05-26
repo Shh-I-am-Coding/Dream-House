@@ -1,6 +1,8 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
-    <h3>문의게시판</h3>
+  <b-container class="bv-example-row mt-4 text-center">
+    <h3>
+      <b>문의게시판 <img src="@/assets/img/qna_logo.png" width="4%" class="mb-3 ml-2" /></b>
+    </h3>
     <router-view></router-view>
   </b-container>
 </template>
