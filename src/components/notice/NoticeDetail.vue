@@ -1,29 +1,17 @@
 <template>
   <b-container class="bv-example-row mt-4 text-left">
-    <b-row class="mb-1">
+    <b-row class="pb-1 pt-3" style="background-color: blanchedalmond; border-top: 3px solid">
       <b-col>
-        <b-card class="mb-2" border-variant="dark" no-body>
-          <template #header>
-            <b-row class="pr-3 pl-3 pt-3">
-              <b-col cols="9"
-                ><h3>
-                  <b>{{ article.title }}</b>
-                </h3></b-col
-              >
-              <b-col class="text-right"><b class="mr-1">작성자</b> 관리자</b-col>
-              <b-col class="text-right"><b class="mr-2">조회수</b> {{ article.hit }}</b-col>
-            </b-row>
-            <b-row class="pr-3">
-              <b-col class="text-right"><b class="mr-2"></b> {{ dateFormat }}</b-col>
-            </b-row>
-          </template>
-
-          <b-card-body class="text-left p-4 ml-2">
-            <div v-html="message"></div>
-          </b-card-body>
-        </b-card>
+        <h3 class="mb-3" style="padding-top: 5px">
+          <b>{{ article.title }}</b>
+        </h3>
       </b-col>
     </b-row>
+    <b-row class="pr-3 pb-4 mb-3" style="background-color: blanchedalmond; border-bottom: 1px solid">
+      <b-col cols="3" class="text-left"> <b class="mr-2">등록일</b>{{ dateFormat }} </b-col>
+      <b-col cols="9" class="text-left p-0"><b class="mr-2">조회수</b> {{ article.hit }}</b-col>
+    </b-row>
+    <b-row class="p-3 pb-5 mb-3" v-html="message" style="border-bottom: 1px solid"> </b-row>
     <b-row class="mb-1">
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>

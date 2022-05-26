@@ -14,7 +14,7 @@
             </b-thead>
             <tbody>
               <b-tr v-for="(article, index) in articles" :key="index">
-                <b-th>
+                <b-th style="width: 600px">
                   <router-link :to="`${Number(article.articleNo)}`" class="title">{{ article.title }}</router-link>
                 </b-th>
                 <b-td>관리자</b-td>
@@ -28,7 +28,7 @@
       </b-row>
       <b-row class="mb-1" v-if="this.getUserInfo() != null && this.getUserInfo().id === 'admin'">
         <b-col class="text-right">
-          <b-button variant="warning" @click="moveWrite">글쓰기</b-button>
+          <b-button variant="warning" @click="moveWrite"><b>글쓰기</b></b-button>
         </b-col>
       </b-row>
       <notice-paging></notice-paging>
