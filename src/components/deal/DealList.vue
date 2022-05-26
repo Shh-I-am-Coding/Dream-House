@@ -196,8 +196,8 @@ export default {
 #sidebar-dealInfo,
 #sidebar-aptList,
 #sidebar-interestList {
-  height: 850px;
-  max-height: 850px;
+  height: 880px;
+  max-height: 880px;
   position: relative;
   top: -9vh;
 }
