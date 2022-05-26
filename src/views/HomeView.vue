@@ -77,7 +77,15 @@
               </template>
             </b-card>
 
-            <b-card border-variant="light" v-if="topHits.length > 3" footer-tag="footer" class="text-center" style="width: 40vh; max-width: 250px" img-alt="Image" img-src="">
+            <b-card
+              border-variant="light"
+              v-if="topHits.length > 3"
+              footer-tag="footer"
+              class="text-center"
+              style="width: 40vh; max-width: 250px"
+              img-alt="Image"
+              :img-src="require('@/assets/img/houses/img0003.jpg')"
+            >
               <b-card-text v-model="topHits[3]" style="font-weight: bold; color: black; list-style: none; font-size: 1.1rem">4. {{ topHits[3].aptName }}</b-card-text>
               <b-card-text v-model="topHits[3]" style="font-weight: bold; color: black; list-style: none">{{ topHits[3].dongName }}</b-card-text>
               <template #footer>
