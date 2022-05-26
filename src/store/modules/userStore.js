@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { searchId, confirmPassword, login, parseKakaoUser, findById, update, register, withdraw } from "@/api/user.js";
+import { searchId, confirmPassword, login, parseKakaoUser, sendMail, findById, update, register, withdraw } from "@/api/user.js";
 import router from "@/router";
 import Swal from "sweetalert2";
 
@@ -12,6 +12,7 @@ const userStore = {
     isDuplicated: true,
     isPasswordConfirmed: false,
     userInfo: null,
+    certifiedCode: "",
   },
   getters: {
     getUserInfo: function (state) {
@@ -43,6 +44,9 @@ const userStore = {
     SET_USER_INFO: (state, userInfo) => {
       state.isLogin = true;
       state.userInfo = userInfo;
+    },
+    SET_CERTIFIED_CODE: (state, certifiedCode) => {
+      state.certifiedCode = certifiedCode;
     },
   },
   actions: {
@@ -106,7 +110,11 @@ const userStore = {
         commit("SET_IS_LOGIN_ERROR", false);
       });
     },
-
+    async sendCertifiedCode({ commit }, email) {
+      await sendMail(email, (response) => {
+        commit("SET_CERTIFIED_CODE", response.data);
+      });
+    },
     async join({ commit }, user) {
       await register(
         user,

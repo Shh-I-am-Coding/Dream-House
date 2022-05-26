@@ -18,6 +18,10 @@ async function parseKakaoUser(code, success, fail) {
   await api.post(`/user/login/oauth/kakao`, { code: code }).then(success).catch(fail);
 }
 
+async function sendMail(email, success, fail) {
+  await api.post(`/user/email/send`, { email: email }).then(success).catch(fail);
+}
+
 async function findById(id, success, fail) {
   api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
   await api.get(`/user/info/${id}`).then(success).catch(fail);
@@ -35,4 +39,4 @@ async function withdraw(id, success, fail) {
   await api.delete(`/user/${id}`).then(success).catch(fail);
 }
 
-export { searchId, confirmPassword, login, parseKakaoUser, findById, register, update, withdraw };
+export { searchId, confirmPassword, login, parseKakaoUser, sendMail, findById, register, update, withdraw };
