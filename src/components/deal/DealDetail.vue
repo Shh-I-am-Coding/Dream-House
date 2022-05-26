@@ -77,14 +77,16 @@ export default {
       isInMarker: null,
       socialPins: [],
       imgSize: null,
-      imgOptions: { offset: new kakao.maps.Point(13, 40) },
+      imgOptions: null,
     };
   },
   computed: {
     ...mapState(dealStore, ["deal", "deals", "sortBy", "sortOrder", "topHits"]),
   },
   mounted() {
+    console.log("mounted");
     if (window.kakao && window.kakao.maps) {
+      console.log("initMap", window.kakao);
       this.initMap();
     } else {
       const script = document.createElement("script");
@@ -93,12 +95,15 @@ export default {
       script.onload = () => kakao.maps.load(this.initMap);
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + decodeURIComponent(SERVICE_KEY) + "&libraries=services";
       document.head.appendChild(script);
+      console.log("initMap else", window.kakao);
+      console.log(script);
     }
   },
   methods: {
     ...mapActions(dealStore, ["getAptList"]),
     ...mapMutations(dealStore, ["SET_DEAL_LIST"]),
     initMap() {
+      console.log(window.kakao);
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -112,6 +117,7 @@ export default {
       this.SET_DEAL_LIST(this.topHits);
       this.imgSize = new kakao.maps.Size(40, 40);
       this.pinImg = new kakao.maps.MarkerImage(require("@/assets/img/pins/pin08.png"), this.imgSize, this.imgOptions);
+      this.imgOptions = { offset: new kakao.maps.Point(13, 40) };
 
       this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
       this.placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 }); // 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
