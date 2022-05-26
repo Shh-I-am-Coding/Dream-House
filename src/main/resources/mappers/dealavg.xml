@@ -11,6 +11,6 @@
     </select>
 
     <update id="increaseHit">
-        update apthits set hit = hit+1 where aptCode = #{aptCode}
+        update apthits set hit = hit+1 where aptCode = (select aptCode from houseinfo where apartmentName = #{aptName} and dongCode = #{dongCode});
     </update>
 </mapper>

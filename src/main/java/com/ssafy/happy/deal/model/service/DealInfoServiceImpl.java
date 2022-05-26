@@ -26,12 +26,12 @@ public class DealInfoServiceImpl implements DealInfoService {
 
 	@Override
 	public List<DealInfo> getApt(String aptName, String dongCode) {
+		dealAvgRepo.increaseHit(aptName, dongCode);
 		return dealInfoRepo.selectApt(aptName, dongCode);
 	}
 
 	@Override
 	public List<DealAvg> getDealAvg(String aptCode) {
-		dealAvgRepo.increaseHit(aptCode);
 		return dealAvgRepo.getDealAvg(aptCode);
 	}
 
