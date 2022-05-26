@@ -22,6 +22,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
+import Swal from "sweetalert2";
 
 const dealStore = "dealStore";
 
@@ -45,7 +46,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(dealStore, ["sidos", "guguns", "dongs", "deals", "deal"]),
+    ...mapState(dealStore, ["sidos", "guguns", "dongs", "deals", "deal", "dealsChanged"]),
   },
   created() {
     this.CLEAR_DETAIL_DEAL();
@@ -55,7 +56,7 @@ export default {
   },
   methods: {
     ...mapActions(dealStore, ["getSido", "getGugun", "getDong", "getDealList"]),
-    ...mapMutations(dealStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_DETAIL_DEAL", "CLEAR_DEAL_LIST", "CHANGE_SORTBY", "CHANGE_SORTORDER"]),
+    ...mapMutations(dealStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_DETAIL_DEAL", "CLEAR_DEAL_LIST", "CHANGE_SORTBY", "CHANGE_SORTORDER", "SET_DEALSCHANGED"]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
       this.CLEAR_DONG_LIST();
@@ -81,6 +82,20 @@ export default {
       this.CHANGE_SORTBY(this.sortBy);
       this.CHANGE_SORTORDER(this.sortOrder);
       this.getDealList(params);
+    },
+  },
+  watch: {
+    dealsChanged() {
+      if (this.deals.length == 0) {
+        console.log("after", this.deals);
+        Swal.fire({
+          title: "선택하신 지역에 매매 내역이 없습니다.",
+          text: "다른지역에 매매 내역을 검색해 보세요!",
+          icon: "warning",
+          confirmButtonText: "확인",
+        });
+      }
+      this.SET_DEALSCHANGED(false);
     },
   },
 };

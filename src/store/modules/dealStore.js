@@ -14,6 +14,7 @@ const dealStore = {
     sortBy: "aptName",
     topHits: [],
     chartData: [],
+    dealsChanged: false,
     // deal: {
     // private int dealNum;
     // private String aptCode;
@@ -75,10 +76,11 @@ const dealStore = {
       state.dongs = [{ value: null, text: "동 선택" }];
     },
     SET_DEAL_LIST: (state, deals) => {
-      //console.log("SET_DEAL_LIST");
+      console.log("SET_DEAL_LIST");
       state.deals = deals;
     },
     CLEAR_DEAL_LIST: (state) => {
+      console.log("CLEAR_DEAL_LIST");
       state.deals = [];
       //state.deal.splice(0, state.deal.length);
     },
@@ -124,6 +126,9 @@ const dealStore = {
     },
     SET_TOPHIT_LIST: (state, topHits) => {
       state.topHits = topHits;
+    },
+    SET_DEALSCHANGED: (state, changed) => {
+      state.dealsChanged = changed;
     },
   },
   actions: {
@@ -173,17 +178,19 @@ const dealStore = {
       );
     },
     getDealList: ({ commit }, params) => {
-      //console.log(params);
+      console.log("getDealList");
       dealList(
         params,
         (response) => {
-          //console.log("GET_DEAL_LIST");
+          console.log("GET_DEAL_LIST");
           commit("SET_DEAL_LIST", response.data);
+          commit("SET_DEALSCHANGED", true);
         },
         (error) => {
           console.log(error);
         }
       );
+      console.log("FIN");
     },
     detailDeal: ({ commit }, deal) => {
       // 나중에 house.일련번호를 이용하여 API 호출
@@ -216,7 +223,6 @@ const dealStore = {
     getTopHits: ({ commit }) => {
       topHits(
         (response) => {
-          console.log("RRRRRR", response.data);
           commit("SET_TOPHIT_LIST", response.data);
         },
         (error) => {
