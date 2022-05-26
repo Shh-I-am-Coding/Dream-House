@@ -21,6 +21,7 @@
     </b-sidebar>
     <b-sidebar id="sidebar-dealInfo" title="아파트 정보" right shadow width="400px">
       <b-container v-if="dealInfos && dealInfos.length != 0" class="bv-example-row">
+        <img :src="getImgName()" style="width: 350px; height: 300px" />
         <b-row>
           <b-col id="infoName">{{ dealInfos[0].aptName }} </b-col>
         </b-row>
@@ -73,7 +74,25 @@ export default {
     return {
       isInter: false,
       isAptList: false,
+      imgUrls: [],
     };
+  },
+  created() {
+    this.imgUrls.push(require("@/assets/img/rand/1.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/2.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/3.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/4.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/5.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/6.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/7.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/8.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/9.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/10.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/11.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/12.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/13.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/14.jpg"));
+    this.imgUrls.push(require("@/assets/img/rand/15.jpg"));
   },
   computed: {
     ...mapState(dealStore, ["deals", "deal", "dealInfos"]),
@@ -142,6 +161,11 @@ export default {
           this.deleteInterest(params).then(Swal.fire("삭제완료!", "", "success"));
         }
       });
+    },
+    getImgName() {
+      const num = Math.floor(Math.random() * 15) + 1;
+      //return "@/assets/img/houses/rand/" + num + ".jpg";
+      return this.imgUrls[num];
     },
   },
   filters: {
