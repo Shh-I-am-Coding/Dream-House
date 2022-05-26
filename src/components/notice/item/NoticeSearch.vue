@@ -9,7 +9,7 @@
           <b-col sm="8">
             <b-form-input class="search" type="text" name="word" id="word" v-model="searchCondition.word" />
           </b-col>
-          <b-button type="submit" variant="secondary">검색</b-button>
+          <b-button type="submit" class="seachBtn">검색</b-button>
         </b-row>
       </b-container>
     </b-form>
@@ -63,5 +63,15 @@ export default {
 <style scoped>
 .search {
   display: inline;
+}
+.seachBtn {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #b4e2fc;
+}
+.seachBtn:hover {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #99daff;
 }
 </style>
