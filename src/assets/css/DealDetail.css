@@ -28,7 +28,7 @@
   background: #eee;
 }
 #category li:hover {
-  background: #ffe6e6;
+  background: #ffeacb;
   border-left: 1px solid #acacac;
   margin-left: -1px;
 }
@@ -50,8 +50,12 @@
   background-image: url(../img/pins/supermarket1.png);
   background-size: cover;
 }
-#category li .pharmacy {
+#category li .hospital {
   background-image: url(../img/pins/hospital1.png);
+  background-size: cover;
+}
+#category li .pharmacy {
+  background-image: url(../img/pins/pharmacy1.png);
   background-size: cover;
 }
 #category li .oil {

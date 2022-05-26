@@ -11,6 +11,7 @@
       <li v-html="placeHolder[5].tags" @click="onClickCategory(placeHolder[5].id)" :class="[currCategory === placeHolder[5].id ? 'on' : 'off']" />
       <li v-html="placeHolder[6].tags" @click="onClickCategory(placeHolder[6].id)" :class="[currCategory === placeHolder[6].id ? 'on' : 'off']" />
       <li v-html="placeHolder[7].tags" @click="onClickCategory(placeHolder[7].id)" :class="[currCategory === placeHolder[7].id ? 'on' : 'off']" />
+      <li v-html="placeHolder[8].tags" @click="onClickCategory(placeHolder[8].id)" :class="[currCategory === placeHolder[8].id ? 'on' : 'off']" />
     </ul>
   </div>
 </template>
@@ -43,6 +44,10 @@ export default {
         {
           id: "MT1",
           tags: '<span class="category_bg mart"></span>마트',
+        },
+        {
+          id: "HP8",
+          tags: '<span class="category_bg hospital"></span>병원',
         },
         {
           id: "PM9",
@@ -130,11 +135,12 @@ export default {
       this.socialPins.push(require("@/assets/img/pins/money1.png"));
       this.socialPins.push(require("@/assets/img/pins/supermarket1.png"));
       this.socialPins.push(require("@/assets/img/pins/hospital1.png"));
-      this.socialPins.push(require("@/assets/img/pins/gas1.png"));
+      this.socialPins.push(require("@/assets/img/pins/pharmacy1.png"));
+      this.socialPins.push(require("@/assets/img/pins/school1.png"));
       this.socialPins.push(require("@/assets/img/pins/cafe1.png"));
       this.socialPins.push(require("@/assets/img/pins/shop1.png"));
       this.socialPins.push(require("@/assets/img/pins/parking1.png"));
-      this.socialPins.push(require("@/assets/img/pins/school1.png"));
+      this.socialPins.push(require("@/assets/img/pins/gas1.png"));
     },
     mkMarker(deal) {
       if (!this.isInMarker.has(deal.aptCode)) {
