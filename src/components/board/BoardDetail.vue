@@ -2,24 +2,21 @@
   <b-container class="bv-example-row mt-4 text-left">
     <b-row class="mb-1">
       <b-col>
-        <b-card class="mb-2" border-variant="dark" no-body>
+        <b-card class="mb-2" border-variant="Light" no-body>
           <template #header>
-            <b-row class="pr-3 pl-3 pt-3">
-              <b-col cols="9"
-                ><h3>
-                  <b>{{ article.title }}</b>
-                </h3></b-col
-              >
-              <b-col class="text-right"><b class="mr-2">작성자</b> {{ article.userId }}</b-col>
-              <b-col class="text-right"><b class="mr-2">조회수</b> {{ article.hit }}</b-col>
-            </b-row>
-            <b-row class="pr-3">
-              <b-col class="text-right"><b class="mr-2"></b> {{ dateFormat }}</b-col>
-            </b-row>
+            <h3 style="padding-top: 5px">
+              <b>{{ article.title }}</b>
+            </h3>
           </template>
 
           <b-card-body class="text-left p-4 ml-2">
-            <div v-html="message"></div>
+            <b-row class="pr-3 mb-3">
+              <b-col cols="2" class="text-center" style="width: 3vh; border-right: 1px solid"><b class="mr-2">작성자</b> : {{ article.userId }}</b-col>
+              <b-col cols="4" class="text-left"><b class="mr-2"></b> {{ dateFormat }}</b-col>
+              <b-col cols="6" class="text-right"><b class="mr-2">조회수</b> {{ article.hit }}</b-col>
+            </b-row>
+            <div></div>
+            <div style="padding-bottom: 30px" v-html="message"></div>
           </b-card-body>
         </b-card>
       </b-col>
