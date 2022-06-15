@@ -1,0 +1,125 @@
+<template>
+  <div class="mb-5">
+    <b-container class="bv-example-row">
+      <b-row>
+        <b-col v-if="articles.length">
+          <b-table-simple hover responsive>
+            <b-thead style="background-color: blanchedalmond">
+              <b-tr style="background-color: blanchedalmond">
+                <b-th>제목</b-th>
+                <b-th>작성자</b-th>
+                <b-th>작성일</b-th>
+                <b-th>조회수</b-th>
+              </b-tr>
+            </b-thead>
+            <tbody>
+              <b-tr v-for="(article, index) in articles" :key="index">
+                <b-th style="width: 600px">
+                  <router-link :to="`${Number(article.articleNo)}`" class="title">{{ article.title }}</router-link>
+                </b-th>
+                <b-td>{{ article.userId }}</b-td>
+                <b-td>{{ article.regTime | dateFormat }}</b-td>
+                <b-td>{{ article.hit }}</b-td>
+              </b-tr>
+            </tbody>
+          </b-table-simple>
+        </b-col>
+        <b-col v-else> <p>글 목록이 없습니다.</p> </b-col>
+      </b-row>
+      <b-row class="mb-1">
+        <b-col class="text-right">
+          <b-button class="writeBtn" @click="moveWrite">글쓰기</b-button>
+        </b-col>
+      </b-row>
+      <board-paging></board-paging>
+      <board-search></board-search>
+    </b-container>
+  </div>
+</template>
+
+<script>
+import moment from "moment";
+import Swal from "sweetalert2";
+import BoardSearch from "@/components/board/item/BoardSearch.vue";
+import BoardPaging from "@/components/board/item/BoardPaging.vue";
+
+import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
+
+const userStore = "userStore";
+const boardStore = "boardStore";
+
+export default {
+  name: "BoardList",
+  components: {
+    BoardSearch,
+    BoardPaging,
+  },
+  computed: {
+    ...mapState(boardStore, ["articles", "searchCondition", "isReaminSearchCondition"]),
+  },
+  async created() {
+    this.SET_IS_REMAIN_BOARD_SEARCH_CONDITION(this.isReaminSearchCondition);
+    if (!this.isReaminSearchCondition) {
+      this.searchCondition.key = "title";
+      this.searchCondition.word = "";
+      this.searchCondition.currentPage = 1;
+    }
+    await this.setArticles(this.searchCondition);
+  },
+  methods: {
+    ...mapActions(boardStore, ["setArticles"]),
+    ...mapMutations(boardStore, ["SET_IS_REMAIN_BOARD_SEARCH_CONDITION"]),
+    ...mapGetters(userStore, ["getUserInfo"]),
+    moveWrite() {
+      if (this.getUserInfo()) {
+        this.$router.push({ name: "boardRegister" });
+      } else {
+        Swal.fire({
+          title: "로그인 필요! 🙅‍♂️",
+          text: "로그인이 필요한 서비스입니다.",
+          icon: "error",
+          confirmButtonText: "확인",
+        });
+      }
+    },
+  },
+  filters: {
+    dateFormat(regtime) {
+      return moment(new Date(regtime)).format("YY/MM/DD  HH:mm");
+    },
+  },
+};
+</script>
+
+<style scope>
+.tdClass {
+  width: 50px;
+  text-align: center;
+}
+.tdSubject {
+  width: 300px;
+  text-align: left;
+}
+.title {
+  color: #3e3e3e;
+}
+a:hover {
+  text-decoration: none;
+  color: orange;
+}
+.writeBtn,
+.writeBtn:not(:disabled):not(.disabled):active,
+.writeBtn:not(:disabled):not(.disabled).active,
+.writeBtn:focus,
+.writeBtn.focus,
+.show > .writeBtn.dropdown-toggle {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: rgb(255, 192, 119);
+}
+.writeBtn:hover {
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+  background-color: #ffa743;
+}
+</style>
