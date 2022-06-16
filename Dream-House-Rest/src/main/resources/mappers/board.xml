@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happy.board.model.repo.BoardRepo">
+
+    <insert id="insert" parameterType="Board">
+        insert into board (userId, title, content)
+        values (#{userId}, #{title}, #{content})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from board
+        where articleNo = #{articleNo}
+    </delete>
+
+    <update id="update" parameterType="Board">
+        update board
+        set userId = #{userId},
+            title     = #{title},
+            content    = #{content}
+        where articleNo = #{articleNo}
+    </update>
+
+    <select id="select" resultType="Board">
+        select *
+        from board
+        where articleNo = #{articleNo}
+        order by regtime desc
+    </select>
+
+    <select id="search" resultType="Board">
+        select * from board
+        <if test="key != 'none'">
+            where ${key} like concat('%', #{word}, '%')
+        </if>
+            order by regtime desc
+        <if test="limit">
+            limit #{offset}, #{countPerPage}
+        </if>
+    </select>
+
+    <select id="getTotalSearchCount" resultType="int">
+        select count(*) from board
+        <if test="key != 'none'">
+            where ${key} like concat('%', #{word}, '%')
+        </if>
+    </select>
+
+    <update id="increaseHit">
+        update board set hit = hit+1 where articleNo = #{articleNo}
+    </update>
+</mapper>

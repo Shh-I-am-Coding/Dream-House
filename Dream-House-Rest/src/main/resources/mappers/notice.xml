@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happy.notice.model.repo.NoticeRepo">
+
+    <insert id="insert" parameterType="Notice">
+        insert into notice (userId, title, content)
+        values (#{userId}, #{title}, #{content})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from notice
+        where articleNo = #{articleNo}
+    </delete>
+
+    <update id="update" parameterType="Notice">
+        update notice
+        set userId = #{userId},
+            title     = #{title},
+            content    = #{content}
+        where articleNo = #{articleNo}
+    </update>
+
+    <select id="select" resultType="Notice">
+        select *
+        from notice
+        where articleNo = #{articleNo}
+        order by regtime desc
+    </select>
+
+    <select id="search" resultType="Notice">
+        select * from notice
+        <if test="key != 'none'">
+            where ${key} like concat('%', #{word}, '%')
+        </if>
+            order by regtime desc
+        <if test="limit">
+            limit #{offset}, #{countPerPage}
+        </if>
+    </select>
+
+    <select id="getTotalSearchCount" resultType="int">
+        select count(*) from notice
+        <if test="key != 'none'">
+            where ${key} like concat('%', #{word}, '%')
+        </if>
+    </select>
+
+    <update id="increaseHit">
+        update notice set hit = hit+1 where articleNo = #{articleNo}
+    </update>
+</mapper>
