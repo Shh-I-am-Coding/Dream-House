@@ -14,7 +14,7 @@
   [Notion](https://sunset-offer-934.notion.site/ab0600e5db484974b5d21485a34d4583?v=3090e8271bb845d4a48c25ba61371bf1)  |  [UCC](https://www.youtube.com/watch?v=-wafC3AMRKM)
 
 </div>
-<br/><hr><br>
+<br>
 
 ## 서비스 소개 🖥
 아파트 매매 거래 정보를 쉽게 검색할 수 있는 서비스입니다.<br>
@@ -62,7 +62,7 @@
 `Visual Studio Code` <br>
 `IntelliJ`
 
-<br><hr><br>
+<br><br>
 
 ## 서비스 구조도 🔍
 <img width="680" alt="서비스 구조도" src="https://user-images.githubusercontent.com/60915285/195379713-bbd2ba8c-5da5-47e5-96ee-b5b6ca00d40d.png">
@@ -127,8 +127,7 @@
 
 공지사항 게시판은 관리자만 글을 쓰고 관리할 수 있습니다.
 
-<br>
-<hr><br>
+<br><br>
 
 
 
@@ -146,7 +145,7 @@
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/60915285/195409721-a267a86c-b28a-4370-b91f-55b3fc6c9784.png">
 
 
-<br><hr><br>
+<br><br>
 ## 팀원 소개 👪
 <table>
     <tr>
@@ -157,4 +156,4 @@
     </tr>
 </table>
 
-<br><br><br>
+<br><br>
