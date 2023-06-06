@@ -11,7 +11,7 @@
   2022.05.18 ~ 2022.05.27
   <br><br>
 
-  [Notion](https://sunset-offer-934.notion.site/ab0600e5db484974b5d21485a34d4583?v=3090e8271bb845d4a48c25ba61371bf1)  |  [UCC](https://www.youtube.com/watch?v=-wafC3AMRKM)
+  [Notion](https://sunset-offer-934.notion.site/ab0600e5db484974b5d21485a34d4583?v=3090e8271bb845d4a48c25ba61371bf1)  |  [UCC](https://www.youtube.com/watch?v=C0XeNfvq5hs)
 
 </div>
 <br>
