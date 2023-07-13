@@ -1,11 +1,19 @@
 package com.ssafy.happy.user.controller;
 
+import com.ssafy.happy.common.dto.ApiResponse;
+import com.ssafy.happy.user.dto.UserJoinRequest;
+import com.ssafy.happy.user.dto.UserLoginRequest;
+import com.ssafy.happy.user.dto.UserLoginResponse;
+import com.ssafy.happy.user.service.EmailService;
+import com.ssafy.happy.user.service.KakaoService;
+import com.ssafy.happy.user.service.UserService;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -20,78 +28,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.ssafy.happy.user.dto.User;
-import com.ssafy.happy.user.model.service.EmailService;
-import com.ssafy.happy.user.model.service.JwtService;
-import com.ssafy.happy.user.model.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 	private final UserService userService;
-	private final JwtService jwtService;
 	private final EmailService emailService;
+	private final KakaoService kakaoService;
 
-	public UserController(UserService userService, JwtService jwtService, EmailService emailService) {
-		this.userService = userService;
-		this.jwtService = jwtService;
-		this.emailService = emailService;
-	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<String> search(@PathVariable String id) {
-		User searchedUser = userService.search(id);
-		if (searchedUser != null) {
-			return new ResponseEntity<>("success", HttpStatus.OK);
-		}
-		return new ResponseEntity<>("fail", HttpStatus.OK);
-	}
-
-	@PostMapping("/confirmPassword")
-	public ResponseEntity<String> confirmPassword(@RequestBody User user) {
-		log.debug(user.toString());
-		User searchedUser = userService.search(user.getId());
-		if (searchedUser != null && searchedUser.getPassword().equals(user.getPassword())) {
-			return new ResponseEntity<>("success", HttpStatus.OK);
-		}
-		return new ResponseEntity<>("fail", HttpStatus.OK);
+	@PostMapping("/confirm-password/{id}")
+	public ResponseEntity<ApiResponse<String>> confirmPassword(@PathVariable Long id, @RequestBody String password) {
+		userService.confirmPassword(id, password);
+		return new ResponseEntity<>(ApiResponse.ok(true), HttpStatus.OK);
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
-		User searchedUser = userService.search(user.getId());
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status;
-		try {
-			if (searchedUser != null && searchedUser.getPassword().equals(user.getPassword())) {
-				String token = jwtService.createToken("id", searchedUser.getId(), "access-token");
-				log.debug("로그인 토큰정보 : {}", token);
-				resultMap.put("access-token", token);
-				resultMap.put("message", "success");
-			} else {
-				resultMap.put("message", "fail");
-			}
-			status = HttpStatus.ACCEPTED;
-		} catch (Exception e) {
-			log.error("로그인 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<>(resultMap, status);
+	public ResponseEntity<ApiResponse<UserLoginResponse>> login(@RequestBody UserLoginRequest userLoginRequest) {
+		UserLoginResponse userLoginResponse = userService.login(userLoginRequest);
+		return new ResponseEntity<>(ApiResponse.of(true, userLoginResponse, "success"), HttpStatus.OK);
 	}
 
 	@PostMapping("/login/oauth/kakao")
-	public ResponseEntity<?> kakaoCallback(@RequestBody String code) {
-		JsonParser parser = new JsonParser();
-		JsonElement element = parser.parse(code);
-		code = element.getAsJsonObject().get("code").getAsString();
-
-		String access_token = userService.getKakaoAccessToken(code);
-		User user = userService.createKakaoUser(access_token);
-		return new ResponseEntity<>(user, HttpStatus.OK);
+	public ResponseEntity<ApiResponse<UserLoginResponse>> kakaoLogin(@RequestBody String code) {
+		UserLoginResponse userLoginResponse = kakaoService.login(code);
+		return new ResponseEntity<>(ApiResponse.of(true, userLoginResponse, "success"), HttpStatus.OK);
 	}
 
 	@GetMapping("/info/{id}")
@@ -101,8 +66,8 @@ public class UserController {
 		if (jwtService.isUsable(request.getHeader("access-token"))) {
 			log.info("사용 가능한 토큰!!!");
 			try {
-				User user = userService.search(id);
-				resultMap.put("userInfo", user);
+				UserJoinRequest userJoinRequest = userService.search(id);
+				resultMap.put("userInfo", userJoinRequest);
 				resultMap.put("message", "success");
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
@@ -119,9 +84,9 @@ public class UserController {
 	}
 
 	@PostMapping("/")
-	public ResponseEntity<String> join(@RequestBody User user) {
-		log.debug(user.toString());
-		if (userService.register(user) > 0) {
+	public ResponseEntity<String> join(@RequestBody UserJoinRequest userJoinRequest) {
+		log.debug(userJoinRequest.toString());
+		if (userService.register(userJoinRequest) > 0) {
 			return new ResponseEntity<>("success", HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -143,8 +108,8 @@ public class UserController {
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<String> update(@RequestBody User user) {
-		if (userService.updateAccount(user) > 0) {
+	public ResponseEntity<String> update(@RequestBody UserJoinRequest userJoinRequest) {
+		if (userService.updateAccount(userJoinRequest) > 0) {
 
 			return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
 		}
