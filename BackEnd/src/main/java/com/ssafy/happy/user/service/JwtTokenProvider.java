@@ -1,4 +1,4 @@
-package com.ssafy.happy.user.model.service;
+package com.ssafy.happy.user.service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -19,24 +19,27 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
-public class JwtServiceImpl implements JwtService {
-	private static final int EXPIRE_MINUTES = 60;
-	private static final String SALT = "happyHouseSecret";
+@Component
+public class JwtTokenProvider {
+	private static final long VALID_TIME = 60 * 60 * 1000L;
+	private static final String SALT = "dreamHouseSecret";
 
-	@Override
-	public <T> String createToken(String key, T data, String subject) {
-		String jwt = Jwts.builder().setHeaderParam("typ", "JWT").setHeaderParam("regDate", System.currentTimeMillis())
-			.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * EXPIRE_MINUTES)).setSubject(subject)
-			.claim(key, data).signWith(SignatureAlgorithm.HS256, generateKey()).compact();
-		return jwt;
+	public String createToken(String payload) {
+		Claims claims = Jwts.claims().setSubject(payload);
+		Date now = new Date();
+
+		return Jwts.builder()
+				.setClaims(claims)
+				.setIssuedAt(now)
+				.setExpiration(new Date(now.getTime() + VALID_TIME))
+				.signWith(SignatureAlgorithm.HS256, generateKey())
+				.compact();
 	}
 
 	private byte[] generateKey() {
 		return SALT.getBytes(StandardCharsets.UTF_8);
 	}
 
-	@Override
 	public Map<String, Object> get(String key) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes())
 			.getRequest();
@@ -53,7 +56,6 @@ public class JwtServiceImpl implements JwtService {
 		return value;
 	}
 
-	@Override
 	public boolean isUsable(String jwt) {
 		try {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(generateKey()).parseClaimsJws(jwt);

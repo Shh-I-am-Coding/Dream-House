@@ -1,5 +1,6 @@
 package com.ssafy.happy.user.domain;
 
+import com.ssafy.happy.user.dto.UserModifyRequest;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,4 +30,16 @@ public class User {
     private String phone;
 
     private String authority;
+
+
+    public void update(UserModifyRequest userModifyRequest) {
+        this.password = userModifyRequest.getPassword();
+        this.password = userModifyRequest.getPassword();
+        this.nickname = userModifyRequest.getNickname();
+        this.phone = userModifyRequest.getPhone();
+    }
+
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
+    }
 }

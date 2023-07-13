@@ -1,5 +1,12 @@
-package com.ssafy.happy.user.model.service;
+package com.ssafy.happy.user.service;
 
+import com.ssafy.happy.user.domain.User;
+import com.ssafy.happy.user.dto.UserJoinRequest;
+import com.ssafy.happy.user.dto.UserLoginRequest;
+import com.ssafy.happy.user.dto.UserLoginResponse;
+import com.ssafy.happy.user.dto.UserModifyRequest;
+import com.ssafy.happy.user.dto.UserResponse;
+import com.ssafy.happy.user.repository.UserRepository;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,18 +15,20 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.ssafy.happy.user.dto.User;
-import com.ssafy.happy.user.model.repo.UserRepo;
 
 @Service
-public class UserServiceImpl implements UserService {
-	private final UserRepo userRepo;
+@RequiredArgsConstructor
+@Transactional
+public class UserService {
+	private final UserRepository userRepository;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	@Value("${oauth2.kakao.restApiKey}")
 	private String kakao_restApiKey;
@@ -27,44 +36,38 @@ public class UserServiceImpl implements UserService {
 	@Value("${oauth2.kakao.redirectUri}")
 	private String kakao_redirectUri;
 
-	public UserServiceImpl(UserRepo userRepo) {
-		this.userRepo = userRepo;
+
+	public void join(UserJoinRequest userJoinRequest) {
+		userRepository.save(userJoinRequest.toEntity());
 	}
 
-	@Override
+	@Transactional(readOnly = true)
+	public UserResponse findUser(Long id) {
+		return UserResponse.of(userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")));
+	}
+
+	public void delete(Long id) {
+		userRepository.delete(userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")));
+	}
+
 	@Transactional
-	public int register(User user) {
-		return userRepo.insert(user);
+	public void updateAccount(Long id, UserModifyRequest userModifyRequest) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+		user.update(userModifyRequest);
+		userRepository.save(user);
 	}
 
-	@Override
-	public User search(String id) {
-		return userRepo.select(id);
-	}
+//	public String findPasswordByPhone(String id, String name, String phone) {
+//		return userRepository.findPasswordByPhone(id, name, phone);
+//	}
+//
+//	public String findPasswordByEmail(String id, String name, String email) {
+//		return userRepository.findPasswordByEmail(id, name, email);
+//	}
 
-	@Override
-	@Transactional
-	public int deleteAccount(String id) {
-		return userRepo.delete(id);
-	}
-
-	@Override
-	@Transactional
-	public int updateAccount(User user) {
-		return userRepo.update(user);
-	}
-
-	@Override
-	public String findPasswordByPhone(String id, String name, String phone) {
-		return userRepo.findPasswordByPhone(id, name, phone);
-	}
-
-	@Override
-	public String findPasswordByEmail(String id, String name, String email) {
-		return userRepo.findPasswordByEmail(id, name, email);
-	}
-
-	@Override
 	public String getKakaoAccessToken(String code) {
 		String access_Token = "";
 		String refresh_Token = "";
@@ -103,8 +106,7 @@ public class UserServiceImpl implements UserService {
 			System.out.println("response body : " + result);
 
 			//Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-			JsonParser parser = new JsonParser();
-			JsonElement element = parser.parse(result.toString());
+			JsonElement element = JsonParser.parseString(result.toString());
 
 			access_Token = element.getAsJsonObject().get("access_token").getAsString();
 			refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
@@ -120,8 +122,7 @@ public class UserServiceImpl implements UserService {
 		return access_Token;
 	}
 
-	@Override
-	public User createKakaoUser(String token) {
+	public void createKakaoUser(String token) {
 		String reqURL = "https://kapi.kakao.com/v2/user/me";
 
 		//access_token을 이용하여 사용자 정보 조회
@@ -148,8 +149,7 @@ public class UserServiceImpl implements UserService {
 			System.out.println("response body : " + result);
 
 			//Gson 라이브러리로 JSON파싱
-			JsonParser parser = new JsonParser();
-			JsonElement element = parser.parse(result.toString());
+			JsonElement element = JsonParser.parseString(result.toString());
 
 			String nickname = element.getAsJsonObject()
 				.get("properties")
@@ -166,12 +166,38 @@ public class UserServiceImpl implements UserService {
 				email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
 			}
 
-			User user = new User("", "", nickname, email, "");
+			join(new UserJoinRequest(email, null, nickname, "", "user"));
 			br.close();
-			return user;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+	}
+
+	@Transactional(readOnly = true)
+	public void confirmPassword(Long id, String password) {
+		boolean confirmed = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")).checkPassword(password);
+		if(!confirmed) {
+			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+		}
+	}
+
+	public UserLoginResponse login(UserLoginRequest userLoginRequest) {
+		User user = userRepository.findByEmail(userLoginRequest.getEmail())
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+		if(!user.checkPassword(userLoginRequest.getPassword())) {
+			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+		}
+		return UserLoginResponse.of(user, generateJwtToken(user.getId()));
+	}
+
+	private String generateJwtToken(Long id) {
+		String accessToken;
+		try {
+			accessToken = jwtTokenProvider.createToken(String.valueOf(id));
+		} catch (Exception e) {
+			throw new IllegalArgumentException("JWT 토큰 생성에 실패하였습니다.");
+		}
+		return accessToken;
 	}
 }

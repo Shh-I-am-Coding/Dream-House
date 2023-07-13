@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.ssafy.happy.user.exception.UnauthorizedException;
-import com.ssafy.happy.user.model.service.JwtService;
 
 import lombok.extern.slf4j.Slf4j;
 
