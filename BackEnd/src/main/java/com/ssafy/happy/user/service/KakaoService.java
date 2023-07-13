@@ -6,6 +6,7 @@ import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
 import com.ssafy.happy.user.repository.UserRepository;
+import com.ssafy.happy.common.util.JwtTokenProvider;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;

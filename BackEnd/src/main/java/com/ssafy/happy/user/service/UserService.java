@@ -1,5 +1,7 @@
 package com.ssafy.happy.user.service;
 
+import com.google.gson.JsonParser;
+import com.ssafy.happy.common.util.EmailSender;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginRequest;
@@ -7,6 +9,8 @@ import com.ssafy.happy.user.dto.UserLoginResponse;
 import com.ssafy.happy.user.dto.UserModifyRequest;
 import com.ssafy.happy.user.dto.UserResponse;
 import com.ssafy.happy.user.repository.UserRepository;
+import com.ssafy.happy.common.util.JwtTokenProvider;
+import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
-
+	private final EmailSender emailSender;
 
 	public void join(UserJoinRequest userJoinRequest) {
 		userRepository.save(userJoinRequest.toEntity());
@@ -68,4 +72,15 @@ public class UserService {
 		return UserLoginResponse.of(user, jwtTokenProvider.createToken(String.valueOf(user.getId())));
 	}
 
+	public String sendEmail(String email) {
+		email = JsonParser.parseString(email).getAsJsonObject().get("email").getAsString().trim();
+
+		String certifiedCode;
+		try {
+			certifiedCode = emailSender.sendMail(email);
+		} catch (MessagingException e) {
+			throw new IllegalArgumentException("이메일을 보내는 데 실패했습니다.");
+		}
+		return certifiedCode;
+	}
 }
