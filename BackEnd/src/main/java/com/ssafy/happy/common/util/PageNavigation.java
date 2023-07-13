@@ -1,4 +1,4 @@
-package com.ssafy.happy.util;
+package com.ssafy.happy.common.util;
 
 public class PageNavigation {
 	/** PageNation에서 보여줄 페이지 목록의 시작 번호 */

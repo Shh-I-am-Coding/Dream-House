@@ -1,4 +1,4 @@
-package com.ssafy.happy.user.service;
+package com.ssafy.happy.common.util;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

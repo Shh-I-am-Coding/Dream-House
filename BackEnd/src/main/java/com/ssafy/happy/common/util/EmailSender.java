@@ -1,18 +1,16 @@
-package com.ssafy.happy.user.service;
+package com.ssafy.happy.common.util;
 
 import java.util.Random;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class EmailService {
+public class EmailSender {
 	private final JavaMailSender javaMailSender;
 
 	public String sendMail(String toEmail) throws MessagingException {
