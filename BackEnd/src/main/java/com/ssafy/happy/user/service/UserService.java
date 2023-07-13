@@ -33,36 +33,7 @@ public class UserService {
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")));
 	}
 
-	public void delete(Long id) {
-		userRepository.delete(userRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")));
-	}
-
-	@Transactional
-	public void updateAccount(Long id, UserModifyRequest userModifyRequest) {
-		User user = userRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-		user.update(userModifyRequest);
-		userRepository.save(user);
-	}
-
-//	public String findPasswordByPhone(String id, String name, String phone) {
-//		return userRepository.findPasswordByPhone(id, name, phone);
-//	}
-//
-//	public String findPasswordByEmail(String id, String name, String email) {
-//		return userRepository.findPasswordByEmail(id, name, email);
-//	}
-
 	@Transactional(readOnly = true)
-	public void confirmPassword(Long id, String password) {
-		boolean confirmed = userRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")).checkPassword(password);
-		if(!confirmed) {
-			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
-		}
-	}
-
 	public UserLoginResponse login(UserLoginRequest userLoginRequest) {
 		User user = userRepository.findByEmail(userLoginRequest.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
@@ -70,6 +41,18 @@ public class UserService {
 			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
 		}
 		return UserLoginResponse.of(user, jwtTokenProvider.createToken(String.valueOf(user.getId())));
+	}
+
+	public void update(Long id, UserModifyRequest userModifyRequest) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+		user.update(userModifyRequest);
+		userRepository.save(user);
+	}
+
+	public void delete(Long id) {
+		userRepository.delete(userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")));
 	}
 
 	public String sendEmail(String email) {
@@ -83,4 +66,21 @@ public class UserService {
 		}
 		return certifiedCode;
 	}
+
+	@Transactional(readOnly = true)
+	public void confirmPassword(Long id, String password) {
+		boolean confirmed = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")).checkPassword(password);
+		if(!confirmed) {
+			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+		}
+	}
+
+	//	public String findPasswordByPhone(String id, String name, String phone) {
+//		return userRepository.findPasswordByPhone(id, name, phone);
+//	}
+//
+//	public String findPasswordByEmail(String id, String name, String email) {
+//		return userRepository.findPasswordByEmail(id, name, email);
+//	}
 }

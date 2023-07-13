@@ -4,6 +4,7 @@ import com.ssafy.happy.common.dto.ApiResponse;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
+import com.ssafy.happy.user.dto.UserModifyRequest;
 import com.ssafy.happy.user.dto.UserResponse;
 import com.ssafy.happy.user.service.KakaoService;
 import com.ssafy.happy.user.service.UserService;
@@ -61,21 +62,16 @@ public class UserController {
 		return new ResponseEntity<>(ApiResponse.of(true, userService.sendEmail(email), "success"), HttpStatus.OK);
 	}
 
-	@PutMapping("/")
-	public ResponseEntity<String> update(@RequestBody UserJoinRequest userJoinRequest) {
-		if (userService.updateAccount(userJoinRequest) > 0) {
-
-			return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
-		}
-		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+	@PutMapping("/{id}")
+	public ResponseEntity<ApiResponse<String>> update(@PathVariable Long id, @RequestBody UserModifyRequest userModifyRequest) {
+		userService.update(id, userModifyRequest);
+		return new ResponseEntity<>(ApiResponse.ok(true), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete(@PathVariable String id) {
-		if (userService.deleteAccount(id) > 0) {
-			return new ResponseEntity<>("success", HttpStatus.ACCEPTED);
-		}
-		return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id) {
+		userService.delete(id);
+		return new ResponseEntity<>(ApiResponse.ok(true), HttpStatus.OK);
 	}
 
 //	@PostMapping("/findPasswordByPhone")
