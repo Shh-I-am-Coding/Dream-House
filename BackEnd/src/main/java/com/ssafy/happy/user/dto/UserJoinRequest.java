@@ -4,8 +4,7 @@ import com.ssafy.happy.user.domain.User;
 import lombok.*;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class UserJoinRequest {
 	private String email;
 	private String password;
