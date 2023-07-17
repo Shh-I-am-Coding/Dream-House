@@ -2,11 +2,11 @@ package com.ssafy.happy.user.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.ssafy.happy.common.util.JwtTokenProvider;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
 import com.ssafy.happy.user.repository.UserRepository;
-import com.ssafy.happy.common.util.JwtTokenProvider;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -45,7 +45,9 @@ public class KakaoService {
     }
 
     private User join(String email, String nickname) {
-        return userRepository.save(new UserJoinRequest(email, null, nickname, "", "user").toEntity());
+        return userRepository.save(
+                UserJoinRequest.builder().email(email).password(null).nickname(nickname).phone("").authority("user")
+                        .build().toEntity());
     }
 
     private String getKakaoAccessToken(String code) {
