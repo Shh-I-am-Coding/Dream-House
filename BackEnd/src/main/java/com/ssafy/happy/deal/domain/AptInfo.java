@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -36,7 +36,7 @@ public class AptInfo {
 	@NotNull
 	private RoadName roadName;
 
-	@Column(length = 40)
+	@Size(max = 40)
 	@NotNull
 	private String name;
 
@@ -55,15 +55,15 @@ public class AptInfo {
 	@NotNull
 	private Integer bubunCode;
 
-	@Column(length = 15)
+	@Size(max = 15)
 	@NotNull
 	private String jibun;
 
-	@Column(length = 30)
+	@Size(max = 30)
 	@NotNull
 	private String lat;
 
-	@Column(length = 30)
+	@Size(max = 30)
 	@NotNull
 	private String lng;
 
