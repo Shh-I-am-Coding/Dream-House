@@ -31,6 +31,11 @@ public class AptInfo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "road_name_code")
+	@NotNull
+	private RoadName roadName;
+
 	@Column(length = 40)
 	@NotNull
 	private String name;
@@ -62,12 +67,12 @@ public class AptInfo {
 	@NotNull
 	private String lng;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "road_name_code")
-	@NotNull
-	private RoadName roadName;
-
 	@Builder.Default
 	@OneToMany(mappedBy = "aptInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Deal> deals = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(mappedBy = "aptInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<AptHit> aptHits = new ArrayList<>();
+
 }
