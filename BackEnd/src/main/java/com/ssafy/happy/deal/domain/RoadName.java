@@ -2,11 +2,10 @@ package com.ssafy.happy.deal.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,8 +21,12 @@ import lombok.NoArgsConstructor;
 public class RoadName {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long code;
+	private Long id;
 
 	@Column(length = 40)
+	@NotNull
 	private String name;
+
+	@NotNull
+	private Integer code;
 }
