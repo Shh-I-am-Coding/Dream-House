@@ -66,4 +66,8 @@ public class AptInfo {
 	@JoinColumn(name = "road_name_code")
 	@NotNull
 	private RoadName roadName;
+
+	@Builder.Default
+	@OneToMany(mappedBy = "aptInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Deal> deals = new ArrayList<>();
 }
