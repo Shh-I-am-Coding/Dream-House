@@ -5,6 +5,8 @@ import lombok.*;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserJoinRequest {
 	private String email;
 	private String password;
