@@ -21,6 +21,8 @@ dependencies {
     api 'com.google.code.gson:gson:2.10.1'
     api 'org.springframework.boot:spring-boot-starter-mail'
     api 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
@@ -32,7 +34,7 @@ dependencies {
 group = 'com.ssafy'
 version = '0.0.1-SNAPSHOT'
 description = 'happy'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
     compileOnly {
