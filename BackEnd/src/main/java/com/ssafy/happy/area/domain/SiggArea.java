@@ -31,7 +31,7 @@ public class SiggArea {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sido_id")
 	private SidoArea sidoArea;
 
@@ -44,7 +44,6 @@ public class SiggArea {
 	private String code;
 
 	@Builder.Default
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "siggArea")
+	@OneToMany(mappedBy = "siggArea", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<EmdArea> emdAreas = new ArrayList<>();
 }
