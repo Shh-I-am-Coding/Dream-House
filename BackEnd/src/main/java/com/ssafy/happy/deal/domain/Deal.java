@@ -7,7 +7,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -41,6 +40,6 @@ public class Deal {
 	private Integer floor;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "apt_id")
+	@JoinColumn(name = "aptInfo_id")
 	private AptInfo aptInfo;
 }
