@@ -11,7 +11,6 @@ import com.ssafy.happy.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,56 +31,55 @@ public class UserController {
 
     @PostMapping("/confirm-password/{id}")
     @ApiOperation(value = "비밀번호 확인", notes = "비밀번호가 같은 지 확인")
-    public ResponseEntity<ApiResponse<String>> confirmPassword(@PathVariable Long id, @RequestBody String password) {
+    public ResponseEntity<ApiResponse<?>> confirmPassword(@PathVariable Long id, @RequestBody String password) {
         userService.confirmPassword(id, password);
-        return new ResponseEntity<>(ApiResponse.ok(true), HttpStatus.OK);
+        return ApiResponse.successWithNoContent();
     }
 
     @PostMapping("/login")
     @ApiOperation(value = "일반 로그인", notes = "이메일과 비밀번호로 로그인")
     public ResponseEntity<ApiResponse<UserLoginResponse>> login(@RequestBody UserLoginRequest userLoginRequest) {
-        return new ResponseEntity<>(ApiResponse.of(true, userService.login(userLoginRequest), "success"),
-                HttpStatus.OK);
+        return ApiResponse.successWithData(userService.login(userLoginRequest));
     }
 
     @PostMapping("/login/oauth/kakao")
     @ApiOperation(value = "카카오 로그인", notes = "카카오 로그인 api 콜백 함수")
     public ResponseEntity<ApiResponse<UserLoginResponse>> kakaoLogin(@RequestBody String code) {
-        return new ResponseEntity<>(ApiResponse.of(true, kakaoService.login(code), "success"), HttpStatus.OK);
+        return ApiResponse.successWithData(kakaoService.login(code));
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "회원 정보 검색", notes = "회원 정보 반환")
     public ResponseEntity<ApiResponse<UserResponse>> getInfo(@PathVariable Long id) {
-        return new ResponseEntity<>(ApiResponse.of(true, userService.findUser(id), "success"), HttpStatus.OK);
+        return ApiResponse.successWithData(userService.findUser(id));
     }
 
     @PostMapping
     @ApiOperation(value = "회원 가입", notes = "일반 회원 가입")
-    public ResponseEntity<ApiResponse<String>> join(@RequestBody UserJoinRequest userJoinRequest) {
+    public ResponseEntity<ApiResponse<?>> join(@RequestBody UserJoinRequest userJoinRequest) {
         userService.join(userJoinRequest);
-        return new ResponseEntity<>(ApiResponse.ok(true), HttpStatus.OK);
+        return ApiResponse.successWithNoContent();
     }
 
     @PostMapping("/send-email")
     @ApiOperation(value = "이메일 인증 확인", notes = "회원 가입 시 이메일 인증")
     public ResponseEntity<ApiResponse<String>> sendEmail(@RequestBody String email) {
-        return new ResponseEntity<>(ApiResponse.of(true, userService.sendEmail(email), "success"), HttpStatus.OK);
+        return ApiResponse.successWithData(userService.sendEmail(email));
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "회원 정보 수정", notes = "기존 회원의 정보 수정")
-    public ResponseEntity<ApiResponse<String>> update(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<?>> update(@PathVariable Long id,
                                                       @RequestBody UserModifyRequest userModifyRequest) {
         userService.update(id, userModifyRequest);
-        return new ResponseEntity<>(ApiResponse.ok(true), HttpStatus.OK);
+        return ApiResponse.successWithNoContent();
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴로 인한 삭제")
-    public ResponseEntity<ApiResponse<String>> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id) {
         userService.delete(id);
-        return new ResponseEntity<>(ApiResponse.ok(true), HttpStatus.OK);
+        return ApiResponse.successWithNoContent();
     }
 
 //	@PostMapping("/findPasswordByPhone")

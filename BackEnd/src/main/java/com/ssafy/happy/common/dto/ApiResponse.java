@@ -1,30 +1,47 @@
 package com.ssafy.happy.common.dto;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class ApiResponse<T> {
     private boolean success;
     private T data;
     private String message;
 
-    public static <T> ApiResponse<T> ok(boolean success) {
-        return ApiResponse.<T>builder()
-                .success(success)
-                .message("success")
-                .build();
+
+    public static ResponseEntity<ApiResponse<?>> successWithNoContent() {
+        return new ResponseEntity<>(
+                ApiResponse.builder()
+                        .success(true)
+                        .data(null)
+                        .message(null)
+                        .build(), HttpStatus.OK);
     }
-    public static <T> ApiResponse<T> of(boolean success, T data, String message) {
-        return ApiResponse.<T>builder()
-                .success(success)
-                .data(data)
-                .message(message)
-                .build();
+
+    public static <T> ResponseEntity<ApiResponse<T>> successWithData(T data) {
+        return new ResponseEntity<>(
+                ApiResponse.<T>builder()
+                        .success(true)
+                        .data(data)
+                        .message(null)
+                        .build(), HttpStatus.OK);
+    }
+
+    public static ResponseEntity<ApiResponse<?>> error(String message, HttpStatus httpStatus) {
+        return new ResponseEntity<>(
+                ApiResponse.builder()
+                        .success(false)
+                        .data(null)
+                        .message(message)
+                        .build(), httpStatus);
     }
 }
