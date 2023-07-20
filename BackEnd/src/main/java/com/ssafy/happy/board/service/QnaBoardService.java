@@ -6,7 +6,6 @@ import com.ssafy.happy.board.dto.QnaBoardRequest;
 import com.ssafy.happy.board.dto.QnaBoardResponse;
 import com.ssafy.happy.board.dto.QnaBoardSearchRequest;
 import com.ssafy.happy.board.repository.QnaBoardRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,6 +47,9 @@ public class QnaBoardService {
         PageRequest pageRequest = PageRequest.of(qnaBoardSearchRequest.getPageNum(), 10, Direction.DESC, "createdDate");
 
         switch (key) {
+            case "none" :
+                qnaBoardPage = qnaBoardRepository.findAll(pageRequest);
+                break;
             case "title":
                 qnaBoardPage = qnaBoardRepository.findQnaBoardsByTitleContaining(
                         qnaBoardSearchRequest.getWord(), pageRequest);
