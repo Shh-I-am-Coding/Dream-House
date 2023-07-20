@@ -1,15 +1,15 @@
 package com.ssafy.happy.board.dto;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QnaBoardSearchRequest {
     private String key = "none";
     private String word;
-    private int pageNum;
+    private int pageNum = 1;
 }
