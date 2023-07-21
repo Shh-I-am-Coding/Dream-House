@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/board/qna")
 public class QnaBoardController {
     private final QnaBoardService qnaBoardService;
 
