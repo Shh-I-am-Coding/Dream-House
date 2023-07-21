@@ -11,5 +11,5 @@ import lombok.Setter;
 public class QnaBoardSearchRequest {
     private String key = "none";
     private String word;
-    private int pageNum = 1;
+    private int pageNum = 0;
 }
