@@ -6,6 +6,7 @@ import com.ssafy.happy.board.dto.QnaBoardResponse;
 import com.ssafy.happy.board.dto.QnaBoardSearchRequest;
 import com.ssafy.happy.board.service.QnaBoardService;
 import com.ssafy.happy.common.dto.ApiResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,14 @@ public class QnaBoardController {
     private final QnaBoardService qnaBoardService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(@RequestBody QnaBoardRequest qnaBoardRequest) {
+    public ResponseEntity<ApiResponse<?>> create(@RequestBody @Valid QnaBoardRequest qnaBoardRequest) {
         qnaBoardService.create(qnaBoardRequest);
         return ApiResponse.successWithNoContent();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> update(@PathVariable Long id,
-                                                 @RequestBody QnaBoardModifyRequest qnaBoardModifyRequest) {
+                                                 @RequestBody @Valid QnaBoardModifyRequest qnaBoardModifyRequest) {
         qnaBoardService.update(id, qnaBoardModifyRequest);
         return ApiResponse.successWithNoContent();
     }
@@ -51,7 +52,7 @@ public class QnaBoardController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<QnaBoardResponse>>> search(
-            @ModelAttribute QnaBoardSearchRequest qnaBoardSearchRequest) {
+            @ModelAttribute @Valid QnaBoardSearchRequest qnaBoardSearchRequest) {
         return ApiResponse.successWithData(qnaBoardService.findAll(qnaBoardSearchRequest));
     }
 
