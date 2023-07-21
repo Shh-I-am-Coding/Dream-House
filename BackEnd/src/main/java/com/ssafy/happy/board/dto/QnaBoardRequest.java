@@ -19,7 +19,6 @@ public class QnaBoardRequest {
 	private String title;
 	private String content;
 	private int hit;
-	private LocalDateTime createdDate;
 
 	public QnaBoard toEntity() {
 		return QnaBoard.builder()
@@ -27,7 +26,6 @@ public class QnaBoardRequest {
 				.title(title)
 				.content(content)
 				.hit(hit)
-				.createdDate(createdDate)
 				.build();
 	}
 }

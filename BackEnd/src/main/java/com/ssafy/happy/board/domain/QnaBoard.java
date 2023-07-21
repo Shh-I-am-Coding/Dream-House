@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -30,8 +32,10 @@ public class QnaBoard {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @ColumnDefault("0")
     private int hit;
 
+    @CreationTimestamp
     private LocalDateTime createdDate;
 
     public void update(QnaBoardModifyRequest qnaBoardModifyRequest) {
