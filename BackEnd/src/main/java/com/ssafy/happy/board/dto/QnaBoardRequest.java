@@ -18,14 +18,12 @@ public class QnaBoardRequest {
 	private Long userId;
 	private String title;
 	private String content;
-	private int hit;
 
 	public QnaBoard toEntity() {
 		return QnaBoard.builder()
 				.userId(userId)
 				.title(title)
 				.content(content)
-				.hit(hit)
 				.build();
 	}
 }
