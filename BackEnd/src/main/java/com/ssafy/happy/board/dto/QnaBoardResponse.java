@@ -1,6 +1,7 @@
 package com.ssafy.happy.board.dto;
 
 import com.ssafy.happy.board.domain.QnaBoard;
+import com.ssafy.happy.user.dto.UserResponse;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class QnaBoardResponse {
     private Long id;
-    private Long userId;
+    private UserResponse user;
     private String title;
     private String content;
     private int hit;
@@ -20,7 +21,7 @@ public class QnaBoardResponse {
     public static QnaBoardResponse of(QnaBoard qnaBoard) {
         return QnaBoardResponse.builder()
                 .id(qnaBoard.getId())
-                .userId(qnaBoard.getUserId())
+                .user(UserResponse.of(qnaBoard.getUser()))
                 .title(qnaBoard.getTitle())
                 .content(qnaBoard.getContent())
                 .hit(qnaBoard.getHit())

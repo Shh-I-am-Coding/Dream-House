@@ -1,14 +1,12 @@
 package com.ssafy.happy.board.dto;
 
 import com.ssafy.happy.board.domain.QnaBoard;
-import java.time.LocalDateTime;
+import com.ssafy.happy.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Builder
 @Getter
@@ -19,9 +17,9 @@ public class QnaBoardRequest {
 	private String title;
 	private String content;
 
-	public QnaBoard toEntity() {
+	public QnaBoard toEntity(User user) {
 		return QnaBoard.builder()
-				.userId(userId)
+				.user(user)
 				.title(title)
 				.content(content)
 				.build();

@@ -6,6 +6,8 @@ import com.ssafy.happy.board.dto.QnaBoardRequest;
 import com.ssafy.happy.board.dto.QnaBoardResponse;
 import com.ssafy.happy.board.dto.QnaBoardSearchRequest;
 import com.ssafy.happy.board.repository.QnaBoardRepository;
+import com.ssafy.happy.user.domain.User;
+import com.ssafy.happy.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,9 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class QnaBoardService {
     private final QnaBoardRepository qnaBoardRepository;
+    private final UserRepository userRepository;
 
     public void create(QnaBoardRequest qnaBoardRequest) {
-        qnaBoardRepository.save(qnaBoardRequest.toEntity());
+        User user = userRepository.findById(qnaBoardRequest.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        qnaBoardRepository.save(qnaBoardRequest.toEntity(user));
     }
 
     public void update(Long id, QnaBoardModifyRequest qnaBoardModifyRequest) {
