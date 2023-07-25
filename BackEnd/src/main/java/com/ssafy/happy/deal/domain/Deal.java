@@ -1,6 +1,6 @@
 package com.ssafy.happy.deal.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +31,7 @@ public class Deal {
 	private Long dealAmount;
 
 	@NotNull
-	private Date dealDate;
+	private LocalDateTime dealDate;
 
 	@NotNull
 	private Double area;
