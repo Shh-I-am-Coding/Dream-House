@@ -1,18 +1,23 @@
 package com.ssafy.happy.user.dto;
 
 import com.ssafy.happy.user.domain.User;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserResponse {
-    private final Long id;
-    private final String email;
-    private final String password;
-    private final String nickname;
-    private final String phone;
-    private final String authority;
+    private Long id;
+    private String email;
+    private String password;
+    private String nickname;
+    private String phone;
+    private String authority;
 
     public static UserResponse of(User user) {
         return UserResponse.builder()

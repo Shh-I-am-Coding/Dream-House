@@ -8,8 +8,11 @@
 <div align="center">
  <h3><b>꿈의집 🏡</b></h3>
 아파트 매매 관련 정보 제공 웹사이트<br><br>
-  2022.05.18 ~ 2022.05.27
+  - 싸피 프로젝트 : 22.05.18 ~ 22.05.27
+  <br>
+  - 리팩토링 : 23.07.06 ~ 진행중
   <br><br>
+  
 
   [Notion](https://sunset-offer-934.notion.site/a78ec6ad886b40d8b37154e7d8479a05?pvs=4)  |  [UCC](https://www.youtube.com/watch?v=C0XeNfvq5hs)
 
