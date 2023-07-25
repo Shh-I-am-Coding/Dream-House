@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.ssafy.happy.deal.domain.Deal;
+import com.ssafy.happy.deal.domain.AptInfo;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -44,5 +44,5 @@ public class EmdArea {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "emdArea", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Deal> deals = new ArrayList<>();
+	private List<AptInfo> aptInfos = new ArrayList<>();
 }

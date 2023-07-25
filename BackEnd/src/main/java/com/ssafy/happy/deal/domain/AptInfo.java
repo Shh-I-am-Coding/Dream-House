@@ -11,8 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.ssafy.happy.area.domain.EmdArea;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -69,4 +72,7 @@ public class AptInfo {
 	@OneToMany(mappedBy = "aptInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<AptHit> aptHits = new ArrayList<>();
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "emd_area_id")
+	private EmdArea emdArea;
 }

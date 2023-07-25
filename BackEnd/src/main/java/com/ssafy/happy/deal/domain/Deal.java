@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.ssafy.happy.area.domain.EmdArea;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,8 +42,4 @@ public class Deal {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "aptInfo_id")
 	private AptInfo aptInfo;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "emd_area_id")
-	private EmdArea emdArea;
 }
