@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,38 +32,33 @@ public class AptInfo {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "road_name_code")
-	@NotNull
 	private RoadName roadName;
 
-	@Size(max = 40)
-	@NotNull
+	@Column(length = 40, nullable = false)
 	private String name;
 
-	@NotNull
+	@Column(nullable = false)
 	private Integer buildYear;
 
-	@NotNull
+	@Column(nullable = false)
 	private Integer roadNameBonbunCode;
 
-	@NotNull
+	@Column(nullable = false)
 	private Integer roadNameBubunCode;
 
-	@NotNull
+	@Column(nullable = false)
 	private Integer bonbunCode;
 
-	@NotNull
+	@Column(nullable = false)
 	private Integer bubunCode;
 
-	@Size(max = 15)
-	@NotNull
+	@Column(length = 15, nullable = false)
 	private String jibun;
 
-	@Size(max = 30)
-	@NotNull
+	@Column(length = 30, nullable = false)
 	private String lat;
 
-	@Size(max = 30)
-	@NotNull
+	@Column(length = 30, nullable = false)
 	private String lng;
 
 	@Builder.Default

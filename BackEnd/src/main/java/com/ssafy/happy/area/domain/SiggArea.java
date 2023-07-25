@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,12 +34,10 @@ public class SiggArea {
 	@JoinColumn(name = "sido_id")
 	private SidoArea sidoArea;
 
-	@NotNull
-	@Size(max = 50)
+	@Column(length = 50, nullable = false)
 	private String name;
 
-	@NotNull
-	@Size(max = 5)
+	@Column(length = 5, nullable = false)
 	private String code;
 
 	@Builder.Default

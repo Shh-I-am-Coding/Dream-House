@@ -1,5 +1,6 @@
 package com.ssafy.happy.area.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,11 +29,9 @@ public class EmdArea {
 	@JoinColumn(name = "sigg_area_id")
 	private SiggArea siggArea;
 
-	@NotNull
-	@Size(max = 50)
+	@Column(length = 50, nullable = false)
 	private String name;
 
-	@NotNull
-	@Size(max = 10)
+	@Column(length = 10, nullable = false)
 	private String code;
 }
