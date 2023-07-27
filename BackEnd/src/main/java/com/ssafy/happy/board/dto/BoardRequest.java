@@ -20,7 +20,7 @@ public class BoardRequest {
 	@NotNull
 	private Long userId;
 
-	@NotBlank
+	@NotNull
 	private Category category;
 
 	@NotBlank
