@@ -29,20 +29,19 @@ public class BoardService {
     }
 
     public void update(Long id, BoardModifyRequest boardModifyRequest) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
         board.update(boardModifyRequest);
     }
 
     public void delete(Long id) {
-        boardRepository.delete(boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다.")));
+        boardRepository.delete(
+                boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다.")));
     }
 
     @Transactional(readOnly = true)
     public BoardResponse findOne(Long id) {
-        return BoardResponse.of(boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다.")));
+        return BoardResponse.of(
+                boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다.")));
     }
 
     @Transactional(readOnly = true)
@@ -52,19 +51,19 @@ public class BoardService {
         PageRequest pageRequest = PageRequest.of(boardSearchRequest.getPageNum(), 10, Direction.DESC, "createdDate");
 
         switch (key) {
-            case "none" :
-                boardPage = boardRepository.findAll(pageRequest);
+            case "none":
+                boardPage = boardRepository.findAllByCategory(boardSearchRequest.getCategory(), pageRequest);
                 break;
             case "title":
-                boardPage = boardRepository.findQnaBoardsByTitleContaining(
+                boardPage = boardRepository.findBoardsByCategoryAndContentContaining(boardSearchRequest.getCategory(),
                         boardSearchRequest.getWord(), pageRequest);
                 break;
             case "userId":
-                boardPage = boardRepository.findQnaBoardsByUserId(
+                boardPage = boardRepository.findBoardsByCategoryAndUserId(boardSearchRequest.getCategory(),
                         Long.parseLong(boardSearchRequest.getWord()), pageRequest);
                 break;
             case "content":
-                boardPage = boardRepository.findQnaBoardsByContentContaining(
+                boardPage = boardRepository.findBoardsByCategoryAndTitleContaining(boardSearchRequest.getCategory(),
                         boardSearchRequest.getWord(), pageRequest);
                 break;
             default:

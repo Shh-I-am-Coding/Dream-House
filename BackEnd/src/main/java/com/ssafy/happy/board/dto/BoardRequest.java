@@ -1,6 +1,7 @@
 package com.ssafy.happy.board.dto;
 
 import com.ssafy.happy.board.domain.Board;
+import com.ssafy.happy.board.domain.Category;
 import com.ssafy.happy.user.domain.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,9 @@ public class BoardRequest {
 	private Long userId;
 
 	@NotBlank
+	private Category category;
+
+	@NotBlank
 	@Size(min = 1, max = 100)
 	private String title;
 
@@ -29,6 +33,7 @@ public class BoardRequest {
 	public Board toEntity(User user) {
 		return Board.builder()
 				.user(user)
+				.category(category)
 				.title(title)
 				.content(content)
 				.build();

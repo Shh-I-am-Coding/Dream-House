@@ -1,6 +1,7 @@
 package com.ssafy.happy.board.repository;
 
 import com.ssafy.happy.board.domain.Board;
+import com.ssafy.happy.board.domain.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -10,18 +11,18 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
     @EntityGraph(attributePaths = {"user"}, type = EntityGraphType.FETCH)
-    @Query("select board from Board board left join board.user")
-    Page<Board> findAll(Pageable pageable);
+    @Query("select board from Board board left join board.user where board.category = :category")
+    Page<Board> findAllByCategory(Category category, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"}, type = EntityGraphType.FETCH)
-    @Query("select board from Board board left join board.user where board.content like concat('%',:content,'%')")
-    Page<Board> findQnaBoardsByContentContaining(String content, Pageable pageable);
+    @Query("select board from Board board left join board.user where board.category = :category and board.content like concat('%',:content,'%')")
+    Page<Board> findBoardsByCategoryAndContentContaining(Category category, String content, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"}, type = EntityGraphType.FETCH)
-    @Query("select board from Board board left join board.user where board.user.id = :userId")
-    Page<Board> findQnaBoardsByUserId(Long userId, Pageable pageable);
+    @Query("select board from Board board left join board.user where board.category = :category and board.user.id = :userId")
+    Page<Board> findBoardsByCategoryAndUserId(Category category, Long userId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"}, type = EntityGraphType.FETCH)
-    @Query("select board from Board board left join board.user where board.title like concat('%',:title,'%')")
-    Page<Board> findQnaBoardsByTitleContaining(String title, Pageable pageable);
+    @Query("select board from Board board left join board.user where board.category = :category and board.title like concat('%',:title,'%')")
+    Page<Board> findBoardsByCategoryAndTitleContaining(Category category, String title, Pageable pageable);
 }
