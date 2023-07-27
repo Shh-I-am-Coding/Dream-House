@@ -1,7 +1,7 @@
 package com.ssafy.happy.board.dto;
 
 import com.ssafy.happy.board.domain.Board;
-import com.ssafy.happy.board.domain.Category;
+import com.ssafy.happy.board.constant.Category;
 import com.ssafy.happy.user.domain.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

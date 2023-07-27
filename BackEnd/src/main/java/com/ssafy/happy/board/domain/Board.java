@@ -1,5 +1,6 @@
 package com.ssafy.happy.board.domain;
 
+import com.ssafy.happy.board.constant.Category;
 import com.ssafy.happy.board.dto.BoardModifyRequest;
 import com.ssafy.happy.user.domain.User;
 import java.time.LocalDateTime;

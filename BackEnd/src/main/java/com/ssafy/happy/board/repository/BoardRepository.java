@@ -1,7 +1,7 @@
 package com.ssafy.happy.board.repository;
 
 import com.ssafy.happy.board.domain.Board;
-import com.ssafy.happy.board.domain.Category;
+import com.ssafy.happy.board.constant.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

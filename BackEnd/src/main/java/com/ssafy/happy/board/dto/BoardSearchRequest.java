@@ -1,6 +1,7 @@
 package com.ssafy.happy.board.dto;
 
-import com.ssafy.happy.board.domain.Category;
+import com.ssafy.happy.board.constant.Category;
+import com.ssafy.happy.board.constant.SearchKey;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
@@ -15,7 +16,7 @@ public class BoardSearchRequest {
     @NotNull
     private Category category;
 
-    private String key = "none";
+    private SearchKey searchKey = SearchKey.NONE;
 
     private String word;
 
