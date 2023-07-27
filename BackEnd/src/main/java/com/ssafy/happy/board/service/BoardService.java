@@ -46,29 +46,8 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Page<BoardResponse> findAll(BoardSearchRequest boardSearchRequest) {
-        String key = boardSearchRequest.getKey();
-        Page<Board> boardPage;
         PageRequest pageRequest = PageRequest.of(boardSearchRequest.getPageNum(), 10, Direction.DESC, "createdDate");
-
-        switch (key) {
-            case "none":
-                boardPage = boardRepository.findAllByCategory(boardSearchRequest.getCategory(), pageRequest);
-                break;
-            case "title":
-                boardPage = boardRepository.findBoardsByCategoryAndContentContaining(boardSearchRequest.getCategory(),
-                        boardSearchRequest.getWord(), pageRequest);
-                break;
-            case "userId":
-                boardPage = boardRepository.findBoardsByCategoryAndUserId(boardSearchRequest.getCategory(),
-                        Long.parseLong(boardSearchRequest.getWord()), pageRequest);
-                break;
-            case "content":
-                boardPage = boardRepository.findBoardsByCategoryAndTitleContaining(boardSearchRequest.getCategory(),
-                        boardSearchRequest.getWord(), pageRequest);
-                break;
-            default:
-                throw new IllegalArgumentException("유효하지 않은 검색 키워드입니다.");
-        }
+        Page<Board> boardPage = boardSearchRequest.getSearchKey().search(boardRepository, boardSearchRequest, pageRequest);
         return boardPage.map(BoardResponse::of);
     }
 }
