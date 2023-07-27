@@ -1,10 +1,10 @@
 package com.ssafy.happy.board.controller;
 
-import com.ssafy.happy.board.dto.QnaBoardModifyRequest;
-import com.ssafy.happy.board.dto.QnaBoardRequest;
-import com.ssafy.happy.board.dto.QnaBoardResponse;
-import com.ssafy.happy.board.dto.QnaBoardSearchRequest;
-import com.ssafy.happy.board.service.QnaBoardService;
+import com.ssafy.happy.board.dto.BoardModifyRequest;
+import com.ssafy.happy.board.dto.BoardRequest;
+import com.ssafy.happy.board.dto.BoardResponse;
+import com.ssafy.happy.board.dto.BoardSearchRequest;
+import com.ssafy.happy.board.service.BoardService;
 import com.ssafy.happy.common.dto.ApiResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,38 +22,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/board/qna")
-public class QnaBoardController {
-    private final QnaBoardService qnaBoardService;
+@RequestMapping("/board")
+public class BoardController {
+    private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(@RequestBody @Valid QnaBoardRequest qnaBoardRequest) {
-        qnaBoardService.create(qnaBoardRequest);
+    public ResponseEntity<ApiResponse<?>> create(@RequestBody @Valid BoardRequest boardRequest) {
+        boardService.create(boardRequest);
         return ApiResponse.successWithNoContent();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> update(@PathVariable Long id,
-                                                 @RequestBody @Valid QnaBoardModifyRequest qnaBoardModifyRequest) {
-        qnaBoardService.update(id, qnaBoardModifyRequest);
+                                                 @RequestBody @Valid BoardModifyRequest boardModifyRequest) {
+        boardService.update(id, boardModifyRequest);
         return ApiResponse.successWithNoContent();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id) {
-        qnaBoardService.delete(id);
+        boardService.delete(id);
         return ApiResponse.successWithNoContent();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<QnaBoardResponse>> findBoard(@PathVariable Long id) {
-        return ApiResponse.successWithData(qnaBoardService.findOne(id));
+    public ResponseEntity<ApiResponse<BoardResponse>> findBoard(@PathVariable Long id) {
+        return ApiResponse.successWithData(boardService.findOne(id));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<QnaBoardResponse>>> search(
-            @ModelAttribute @Valid QnaBoardSearchRequest qnaBoardSearchRequest) {
-        return ApiResponse.successWithData(qnaBoardService.findAll(qnaBoardSearchRequest));
+    public ResponseEntity<ApiResponse<Page<BoardResponse>>> search(
+            @ModelAttribute @Valid BoardSearchRequest boardSearchRequest) {
+        return ApiResponse.successWithData(boardService.findAll(boardSearchRequest));
     }
 
 }

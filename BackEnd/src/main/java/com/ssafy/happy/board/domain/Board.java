@@ -1,10 +1,12 @@
 package com.ssafy.happy.board.domain;
 
-import com.ssafy.happy.board.dto.QnaBoardModifyRequest;
+import com.ssafy.happy.board.dto.BoardModifyRequest;
 import com.ssafy.happy.user.domain.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +26,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QnaBoard {
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,6 +34,9 @@ public class QnaBoard {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -45,9 +50,9 @@ public class QnaBoard {
     @CreationTimestamp
     private LocalDateTime createdDate;
 
-    public void update(QnaBoardModifyRequest qnaBoardModifyRequest) {
-        title = qnaBoardModifyRequest.getTitle();
-        content = qnaBoardModifyRequest.getContent();
-        hit = qnaBoardModifyRequest.getHit();
+    public void update(BoardModifyRequest boardModifyRequest) {
+        title = boardModifyRequest.getTitle();
+        content = boardModifyRequest.getContent();
+        hit = boardModifyRequest.getHit();
     }
 }

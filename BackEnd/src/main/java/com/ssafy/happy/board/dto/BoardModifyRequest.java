@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class QnaBoardModifyRequest {
+public class BoardModifyRequest {
     @NotBlank
     @Size(min = 1, max = 100)
     private String title;

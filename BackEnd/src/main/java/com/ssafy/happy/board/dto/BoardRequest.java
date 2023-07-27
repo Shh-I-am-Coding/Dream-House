@@ -1,6 +1,6 @@
 package com.ssafy.happy.board.dto;
 
-import com.ssafy.happy.board.domain.QnaBoard;
+import com.ssafy.happy.board.domain.Board;
 import com.ssafy.happy.user.domain.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class QnaBoardRequest {
+public class BoardRequest {
 	@NotNull
 	private Long userId;
 
@@ -26,8 +26,8 @@ public class QnaBoardRequest {
 	@NotBlank
 	private String content;
 
-	public QnaBoard toEntity(User user) {
-		return QnaBoard.builder()
+	public Board toEntity(User user) {
+		return Board.builder()
 				.user(user)
 				.title(title)
 				.content(content)

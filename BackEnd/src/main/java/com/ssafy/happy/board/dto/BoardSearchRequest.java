@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class QnaBoardSearchRequest {
+public class BoardSearchRequest {
     private String key = "none";
     private String word;
 
