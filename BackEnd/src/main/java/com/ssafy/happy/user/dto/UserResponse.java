@@ -1,5 +1,6 @@
 package com.ssafy.happy.user.dto;
 
+import com.ssafy.happy.user.constant.Authority;
 import com.ssafy.happy.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class UserResponse {
     private String password;
     private String nickname;
     private String phone;
-    private String authority;
+    private Authority authority;
 
     public static UserResponse of(User user) {
         return UserResponse.builder()

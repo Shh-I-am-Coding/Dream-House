@@ -3,6 +3,7 @@ package com.ssafy.happy.user.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.happy.common.util.JwtTokenProvider;
+import com.ssafy.happy.user.constant.Authority;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
@@ -46,7 +47,7 @@ public class KakaoService {
 
     private User join(String email, String nickname) {
         return userRepository.save(
-                UserJoinRequest.builder().email(email).password(null).nickname(nickname).phone("").authority("user")
+                UserJoinRequest.builder().email(email).password(null).nickname(nickname).phone("").authority(Authority.MEMBER)
                         .build().toEntity());
     }
 
