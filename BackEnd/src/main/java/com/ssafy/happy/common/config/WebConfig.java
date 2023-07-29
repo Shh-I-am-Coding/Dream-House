@@ -1,4 +1,4 @@
-package com.ssafy.happy.config;
+package com.ssafy.happy.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
