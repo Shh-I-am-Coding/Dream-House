@@ -5,6 +5,7 @@ import com.ssafy.happy.board.dto.BoardModifyRequest;
 import com.ssafy.happy.board.dto.BoardRequest;
 import com.ssafy.happy.board.dto.BoardResponse;
 import com.ssafy.happy.board.dto.BoardSearchRequest;
+import com.ssafy.happy.board.exception.NotExistBoardException;
 import com.ssafy.happy.board.repository.BoardRepository;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.repository.UserRepository;
@@ -29,19 +30,19 @@ public class BoardService {
     }
 
     public void update(Long id, BoardModifyRequest boardModifyRequest) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        Board board = boardRepository.findById(id).orElseThrow(NotExistBoardException::new);
         board.update(boardModifyRequest);
     }
 
     public void delete(Long id) {
-        boardRepository.delete(
-                boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다.")));
+        boardRepository.delete(boardRepository.findById(id)
+                .orElseThrow(NotExistBoardException::new));
     }
 
     @Transactional(readOnly = true)
     public BoardResponse findOne(Long id) {
         return BoardResponse.of(
-                boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다.")));
+                boardRepository.findById(id).orElseThrow(NotExistBoardException::new));
     }
 
     @Transactional(readOnly = true)
