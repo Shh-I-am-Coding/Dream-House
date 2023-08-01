@@ -73,7 +73,7 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public void confirmPassword(Long id, String password) {
 		boolean confirmed = userRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")).checkPassword(password);
+				.orElseThrow(NotExistUserException::new).checkPassword(password);
 		if(!confirmed) {
 			throw new WrongPasswordException();
 		}
