@@ -7,6 +7,8 @@ import com.ssafy.happy.user.constant.Authority;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
+import com.ssafy.happy.user.exception.FailedKakaoAccessTokenException;
+import com.ssafy.happy.user.exception.FailedKakaoUserInfoException;
 import com.ssafy.happy.user.repository.UserRepository;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -77,7 +79,7 @@ public class KakaoService {
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String line = "";
+                String line;
                 StringBuilder result = new StringBuilder();
 
                 while ((line = br.readLine()) != null) {
@@ -89,12 +91,11 @@ public class KakaoService {
 
                 br.close();
             } else {
-                throw new IllegalArgumentException("카카오 로그인에 실패하였습니다.");
+                throw new FailedKakaoAccessTokenException();
             }
-
             bw.close();
         } catch (IOException e) {
-            throw new IllegalArgumentException("카카오 로그인에 실패하였습니다.");
+            throw new FailedKakaoAccessTokenException();
         }
         return accessToken;
     }
@@ -132,7 +133,7 @@ public class KakaoService {
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String line = "";
+                String line;
                 StringBuilder result = new StringBuilder();
 
                 while ((line = br.readLine()) != null) {
@@ -142,10 +143,10 @@ public class KakaoService {
                 element = JsonParser.parseString(result.toString());
                 br.close();
             } else {
-                throw new IllegalArgumentException("카카오에서 정보를 가져오는 데 실패하였습니다.");
+                throw new FailedKakaoUserInfoException();
             }
         } catch (IOException e) {
-            throw new IllegalArgumentException("카카오에서 정보를 가져오는 데 실패하였습니다.");
+            throw new FailedKakaoUserInfoException();
         }
         return element;
     }
