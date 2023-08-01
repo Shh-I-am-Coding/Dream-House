@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AptInfoResponse {
     private String name;
-    private long average;
+    private double average;
     private String lat;
     private String lng;
 }
