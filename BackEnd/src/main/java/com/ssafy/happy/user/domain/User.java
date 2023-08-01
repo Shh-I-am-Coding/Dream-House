@@ -1,7 +1,11 @@
 package com.ssafy.happy.user.domain;
 
+import com.ssafy.happy.user.constant.Authority;
 import com.ssafy.happy.user.dto.UserModifyRequest;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Builder
@@ -21,15 +26,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 50, nullable = false)
     private String email;
 
+    @Column(length = 40, nullable = false)
     private String password;
 
+    @Column(length = 20, nullable = false)
     private String nickname;
 
+    @Column(length = 30, nullable = false)
     private String phone;
 
-    private String authority;
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
 
     public void update(UserModifyRequest userModifyRequest) {

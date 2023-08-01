@@ -1,7 +1,8 @@
 package com.ssafy.happy.common.aop;
 
-import com.ssafy.happy.board.exception.NotExistBoardException;
 import com.ssafy.happy.common.dto.ApiResponse;
+import com.ssafy.happy.common.exception.BadRequestException;
+import com.ssafy.happy.common.exception.InternalServerErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -16,7 +17,12 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ApiResponse<?>> notExistBoardException(NotExistBoardException exception) {
+    public ResponseEntity<ApiResponse<?>> badRequestException(BadRequestException exception) {
         return ApiResponse.error(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiResponse<?>> internalServerException(InternalServerErrorException exception) {
+        return ApiResponse.error(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
