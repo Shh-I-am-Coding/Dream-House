@@ -8,6 +8,7 @@ import com.ssafy.happy.board.dto.BoardSearchRequest;
 import com.ssafy.happy.board.exception.NotExistBoardException;
 import com.ssafy.happy.board.repository.BoardRepository;
 import com.ssafy.happy.user.domain.User;
+import com.ssafy.happy.user.exception.NotExistUserException;
 import com.ssafy.happy.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,7 @@ public class BoardService {
 
     public void create(BoardRequest boardRequest) {
         User user = userRepository.findById(boardRequest.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NotExistUserException::new);
         boardRepository.save(boardRequest.toEntity(user));
     }
 

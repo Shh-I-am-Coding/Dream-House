@@ -8,6 +8,8 @@ import com.ssafy.happy.user.dto.UserLoginRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
 import com.ssafy.happy.user.dto.UserModifyRequest;
 import com.ssafy.happy.user.dto.UserResponse;
+import com.ssafy.happy.user.exception.NotExistUserException;
+import com.ssafy.happy.user.exception.WrongPasswordException;
 import com.ssafy.happy.user.repository.UserRepository;
 import com.ssafy.happy.common.util.JwtTokenProvider;
 import javax.mail.MessagingException;
@@ -30,29 +32,29 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public UserResponse findUser(Long id) {
 		return UserResponse.of(userRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")));
+				.orElseThrow(NotExistUserException::new));
 	}
 
 	@Transactional(readOnly = true)
 	public UserLoginResponse login(UserLoginRequest userLoginRequest) {
 		User user = userRepository.findByEmail(userLoginRequest.getEmail())
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+				.orElseThrow(NotExistUserException::new);
 		if(!user.checkPassword(userLoginRequest.getPassword())) {
-			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+			throw new WrongPasswordException();
 		}
 		return UserLoginResponse.of(user, jwtTokenProvider.createToken(String.valueOf(user.getId())));
 	}
 
 	public void update(Long id, UserModifyRequest userModifyRequest) {
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+				.orElseThrow(NotExistUserException::new);
 		user.update(userModifyRequest);
 		userRepository.save(user);
 	}
 
 	public void delete(Long id) {
 		userRepository.delete(userRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")));
+				.orElseThrow(NotExistUserException::new));
 	}
 
 	public String sendEmail(String email) {
@@ -72,7 +74,7 @@ public class UserService {
 		boolean confirmed = userRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다.")).checkPassword(password);
 		if(!confirmed) {
-			throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+			throw new WrongPasswordException();
 		}
 	}
 
