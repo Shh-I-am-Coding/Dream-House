@@ -64,13 +64,12 @@ public class AptInfo {
 	@Column(length = 30, nullable = false)
 	private String lng;
 
-	@Builder.Default
-	@OneToMany(mappedBy = "aptInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Deal> deals = new ArrayList<>();
+	@Column(nullable = false)
+	private Integer aptHit;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "aptInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<AptHit> aptHits = new ArrayList<>();
+	private List<Deal> deals = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "emd_area_id")
