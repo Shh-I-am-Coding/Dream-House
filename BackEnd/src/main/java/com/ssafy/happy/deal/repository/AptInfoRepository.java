@@ -14,7 +14,7 @@ public interface AptInfoRepository extends JpaRepository<AptInfo, Long> {
 
     @EntityGraph(attributePaths = {"deal"}, type = EntityGraphType.FETCH)
     @Query("select new com.ssafy.happy.deal.dto.AptInfoResponse(a.name, avg(d.dealAmount), a.lat, a.lng) "
-        + "from AptInfo a left join a.deals d "
+        + "from AptInfo a left join a.dealList d "
         + "where a.emdArea.code = :code "
         + "group by a.id")
     List<AptInfoResponse> getAptInfoByEmdArea(String code);

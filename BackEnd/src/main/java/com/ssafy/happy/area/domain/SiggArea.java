@@ -42,5 +42,5 @@ public class SiggArea {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "siggArea", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<EmdArea> emdAreas = new ArrayList<>();
+	private List<EmdArea> emdAreaList = new ArrayList<>();
 }

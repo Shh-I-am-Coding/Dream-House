@@ -44,5 +44,5 @@ public class EmdArea {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "emdArea", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<AptInfo> aptInfos = new ArrayList<>();
+	private List<AptInfo> aptInfoList = new ArrayList<>();
 }

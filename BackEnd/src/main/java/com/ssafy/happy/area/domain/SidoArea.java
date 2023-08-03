@@ -36,5 +36,5 @@ public class SidoArea {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "sidoArea", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<SiggArea> siggAreas = new ArrayList<>();
+	private List<SiggArea> siggAreaList = new ArrayList<>();
 }

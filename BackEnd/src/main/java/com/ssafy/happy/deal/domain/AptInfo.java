@@ -69,7 +69,7 @@ public class AptInfo {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "aptInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Deal> deals = new ArrayList<>();
+	private List<Deal> dealList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "emd_area_id")
