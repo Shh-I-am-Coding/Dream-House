@@ -18,8 +18,9 @@ public class DealService {
 	private AptInfoRepository aptInfoRepository;
 
 	@Transactional(readOnly = true)
-	public List<AptInfoResponse> getAptInfoList(String code) {
+	public List<AptInfoResponse> searchAptByEmdCode(String code) {
 		List<AptInfoResponse> aptInfoResponseList = aptInfoRepository.getAptInfoByEmdArea(code);
+		// todo : Redis 캐싱 처리 추가
 		return aptInfoResponseList;
 	}
 }
