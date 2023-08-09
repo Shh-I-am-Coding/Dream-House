@@ -33,6 +33,9 @@ public class AptInfo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
+	private String aptCode;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "road_name_code")
 	private RoadName roadName;
