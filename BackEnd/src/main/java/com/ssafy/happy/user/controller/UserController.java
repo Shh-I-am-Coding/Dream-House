@@ -1,6 +1,7 @@
 package com.ssafy.happy.user.controller;
 
 import com.ssafy.happy.common.dto.ApiResponse;
+import com.ssafy.happy.user.dto.UserAccount;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
@@ -12,9 +13,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,10 +30,11 @@ public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
 
-    @PostMapping("/confirm-password/{id}")
+    @PostMapping("/confirm-password")
     @ApiOperation(value = "비밀번호 확인", notes = "비밀번호가 같은 지 확인")
-    public ResponseEntity<ApiResponse<?>> confirmPassword(@PathVariable Long id, @RequestBody String password) {
-        userService.confirmPassword(id, password);
+    public ResponseEntity<ApiResponse<?>> confirmPassword(@AuthenticationPrincipal UserAccount account,
+                                                          @RequestBody String password) {
+        userService.confirmPassword(account, password);
         return ApiResponse.successWithNoContent();
     }
 
@@ -48,10 +50,10 @@ public class UserController {
         return ApiResponse.successWithData(kakaoService.login(code));
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "회원 정보 검색", notes = "회원 정보 반환")
-    public ResponseEntity<ApiResponse<UserResponse>> getInfo(@PathVariable Long id) {
-        return ApiResponse.successWithData(userService.findUser(id));
+    @GetMapping
+    @ApiOperation(value = "현재 로그인된 회원 정보 반환", notes = "회원 정보 반환")
+    public ResponseEntity<ApiResponse<UserResponse>> getInfo(@AuthenticationPrincipal UserAccount account) {
+        return ApiResponse.successWithData(UserResponse.of(account.getUser()));
     }
 
     @PostMapping
@@ -67,18 +69,18 @@ public class UserController {
         return ApiResponse.successWithData(userService.sendEmail(email));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     @ApiOperation(value = "회원 정보 수정", notes = "기존 회원의 정보 수정")
-    public ResponseEntity<ApiResponse<?>> update(@PathVariable Long id,
-                                                      @RequestBody UserModifyRequest userModifyRequest) {
-        userService.update(id, userModifyRequest);
+    public ResponseEntity<ApiResponse<?>> update(@AuthenticationPrincipal UserAccount account,
+                                                 @RequestBody UserModifyRequest userModifyRequest) {
+        userService.update(account, userModifyRequest);
         return ApiResponse.successWithNoContent();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴로 인한 삭제")
-    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id) {
-        userService.delete(id);
+    public ResponseEntity<ApiResponse<?>> delete(@AuthenticationPrincipal UserAccount account) {
+        userService.delete(account);
         return ApiResponse.successWithNoContent();
     }
 
