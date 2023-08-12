@@ -6,11 +6,13 @@ import com.ssafy.happy.board.dto.BoardResponse;
 import com.ssafy.happy.board.dto.BoardSearchRequest;
 import com.ssafy.happy.board.service.BoardService;
 import com.ssafy.happy.common.dto.ApiResponse;
+import com.ssafy.happy.user.dto.UserAccount;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,23 +31,24 @@ public class BoardController {
 
     @PostMapping
     @ApiOperation(value = "게시판 글 생성")
-    public ResponseEntity<ApiResponse<?>> create(@RequestBody @Valid BoardRequest boardRequest) {
-        boardService.create(boardRequest);
+    public ResponseEntity<ApiResponse<?>> create(@AuthenticationPrincipal UserAccount account,
+                                                 @RequestBody @Valid BoardRequest boardRequest) {
+        boardService.create(account, boardRequest);
         return ApiResponse.successWithNoContent();
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "게시판 글 수정")
-    public ResponseEntity<ApiResponse<?>> update(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<?>> update(@PathVariable Long id, @AuthenticationPrincipal UserAccount account,
                                                  @RequestBody @Valid BoardModifyRequest boardModifyRequest) {
-        boardService.update(id, boardModifyRequest);
+        boardService.update(id, account, boardModifyRequest);
         return ApiResponse.successWithNoContent();
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "게시판 글 삭제")
-    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id) {
-        boardService.delete(id);
+    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id, @AuthenticationPrincipal UserAccount account) {
+        boardService.delete(id, account);
         return ApiResponse.successWithNoContent();
     }
 
