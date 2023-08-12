@@ -35,13 +35,19 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 .and()
                 .authorizeHttpRequests()
                 .antMatchers("/users/confirm-password").authenticated()
                 .antMatchers(HttpMethod.GET,"/users").authenticated()
                 .antMatchers(HttpMethod.PUT,"/users").hasAuthority("MEMBER")
                 .antMatchers(HttpMethod.DELETE,"/users").hasAnyAuthority("MEMBER", "ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/boards").authenticated()
+                .antMatchers(HttpMethod.PUT, "/boards/*").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/boards/*").authenticated()
                 .anyRequest().permitAll()
+
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider));
         return http.build();
