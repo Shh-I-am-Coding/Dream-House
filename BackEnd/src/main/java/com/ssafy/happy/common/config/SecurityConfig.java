@@ -5,6 +5,7 @@ import com.ssafy.happy.common.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,7 +37,10 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-//                .antMatchers("/users/**").authenticated()
+                .antMatchers("/users/confirm-password").authenticated()
+                .antMatchers(HttpMethod.GET,"/users").authenticated()
+                .antMatchers(HttpMethod.PUT,"/users").hasAuthority("MEMBER")
+                .antMatchers(HttpMethod.DELETE,"/users").hasAnyAuthority("MEMBER", "ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider));
