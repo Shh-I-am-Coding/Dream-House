@@ -1,4 +1,4 @@
-package com.ssafy.happy.deal.domain;
+package com.ssafy.happy.area.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
