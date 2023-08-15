@@ -1,5 +1,6 @@
 package com.ssafy.happy.user.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserLoginRequest {
+    @Email
     @NotBlank
     @Size(max = 30)
     private String email;
