@@ -44,7 +44,7 @@ public class KakaoService {
         String nickname = getNickname(element);
         User user = userRepository.findByEmail(email).orElseGet(() -> join(email, nickname));
 
-        return UserLoginResponse.of(user, jwtTokenProvider.createToken(String.valueOf(user.getId())));
+        return UserLoginResponse.of(user, jwtTokenProvider.createTokens(email));
     }
 
     private User join(String email, String nickname) {

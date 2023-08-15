@@ -18,9 +18,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BoardRequest {
 	@NotNull
-	private Long userId;
-
-	@NotNull
 	private Category category;
 
 	@NotBlank

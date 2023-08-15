@@ -1,68 +1,95 @@
 package com.ssafy.happy.common.util;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.ssafy.happy.user.exception.UnauthorizedException;
-
+import com.ssafy.happy.user.service.SecurityService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Base64;
+import java.util.Date;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
-	private static final long VALID_TIME = 60 * 60 * 1000L;
-	private static final String SALT = "dreamHouseSecret";
+    private static final int TOKEN_START_IDX = 7;
+    private static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 1000L;  //1시간
+    private static final long REFRESH_TOKEN_VALID_TIME = 14 * 24 * 60 * 1000L; //2주
+    private static final String TOKEN_PREFIX = "Bearer ";
 
-	public String createToken(String payload) {
-		Claims claims = Jwts.claims().setSubject(payload);
-		Date now = new Date();
+    @Value("${spring.jwt.secretKey}")
+    private String secretKey;
+    private final SecurityService securityService;
 
-		return Jwts.builder()
-				.setClaims(claims)
-				.setIssuedAt(now)
-				.setExpiration(new Date(now.getTime() + VALID_TIME))
-				.signWith(SignatureAlgorithm.HS256, generateKey())
-				.compact();
-	}
+    @PostConstruct
+    protected void init() {
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
 
-	private byte[] generateKey() {
-		return SALT.getBytes(StandardCharsets.UTF_8);
-	}
+    public String createTokens(String payload) {
+        String accessToken = createAccessToken(payload);
+        //String refreshToken = createRefreshToken(payload);
+        return accessToken;
 
-	public Map<String, Object> get(String key) {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes())
-			.getRequest();
-		String jwt = request.getHeader("access-token");
-		Jws<Claims> claims = null;
-		try {
-			claims = Jwts.parser().setSigningKey(SALT.getBytes("UTF-8")).parseClaimsJws(jwt);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new UnauthorizedException();
-		}
-		Map<String, Object> value = claims.getBody();
-		log.info("value : {}", value);
-		return value;
-	}
+    }
 
-	public boolean isUsable(String jwt) {
-		try {
-			Jws<Claims> claims = Jwts.parser().setSigningKey(generateKey()).parseClaimsJws(jwt);
-			return true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			return false;
-		}
-	}
+    private String createAccessToken(String payload) {
+        return createJwtToken(payload, ACCESS_TOKEN_VALID_TIME);
+    }
+
+    private String createRefreshToken(String payload) {
+        return createJwtToken(payload, REFRESH_TOKEN_VALID_TIME);
+    }
+
+    private String createJwtToken(String payload, long tokenValidTime) {
+        Claims claims = Jwts.claims().setSubject(payload);
+        Date now = new Date();
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + tokenValidTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = securityService.loadUserByUsername(getMemberEmail(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+                userDetails.getAuthorities());
+    }
+
+    private String getMemberEmail(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String resolveToken(HttpServletRequest httpServletRequest) {
+        String auth;
+        try {
+            auth = httpServletRequest.getHeader("Authorization").substring(TOKEN_START_IDX);
+        } catch (Exception e) {
+            return null;
+        }
+        return auth;
+    }
+
+    public boolean validateToken(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -8,6 +8,7 @@ import com.ssafy.happy.board.dto.BoardSearchRequest;
 import com.ssafy.happy.board.exception.NotExistBoardException;
 import com.ssafy.happy.board.repository.BoardRepository;
 import com.ssafy.happy.user.domain.User;
+import com.ssafy.happy.user.dto.UserAccount;
 import com.ssafy.happy.user.exception.NotExistUserException;
 import com.ssafy.happy.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,18 +25,16 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
-    public void create(BoardRequest boardRequest) {
-        User user = userRepository.findById(boardRequest.getUserId())
-                .orElseThrow(NotExistUserException::new);
-        boardRepository.save(boardRequest.toEntity(user));
+    public void create(UserAccount account, BoardRequest boardRequest) {
+        boardRepository.save(boardRequest.toEntity(account.getUser()));
     }
 
-    public void update(Long id, BoardModifyRequest boardModifyRequest) {
+    public void update(Long id, UserAccount account, BoardModifyRequest boardModifyRequest) {
         Board board = boardRepository.findById(id).orElseThrow(NotExistBoardException::new);
         board.update(boardModifyRequest);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id, UserAccount account) {
         boardRepository.delete(boardRepository.findById(id)
                 .orElseThrow(NotExistBoardException::new));
     }

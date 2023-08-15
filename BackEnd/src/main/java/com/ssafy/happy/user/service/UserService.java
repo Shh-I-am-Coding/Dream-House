@@ -2,7 +2,9 @@ package com.ssafy.happy.user.service;
 
 import com.google.gson.JsonParser;
 import com.ssafy.happy.common.util.EmailSender;
+import com.ssafy.happy.common.util.JwtTokenProvider;
 import com.ssafy.happy.user.domain.User;
+import com.ssafy.happy.user.dto.UserAccount;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
@@ -12,7 +14,6 @@ import com.ssafy.happy.user.exception.FailedSendEmailException;
 import com.ssafy.happy.user.exception.NotExistUserException;
 import com.ssafy.happy.user.exception.WrongPasswordException;
 import com.ssafy.happy.user.repository.UserRepository;
-import com.ssafy.happy.common.util.JwtTokenProvider;
 import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,19 +44,15 @@ public class UserService {
 		if(!user.checkPassword(userLoginRequest.getPassword())) {
 			throw new WrongPasswordException();
 		}
-		return UserLoginResponse.of(user, jwtTokenProvider.createToken(String.valueOf(user.getId())));
+		return UserLoginResponse.of(user, jwtTokenProvider.createTokens(user.getEmail()));
 	}
 
-	public void update(Long id, UserModifyRequest userModifyRequest) {
-		User user = userRepository.findById(id)
-				.orElseThrow(NotExistUserException::new);
-		user.update(userModifyRequest);
-		userRepository.save(user);
+	public void update(UserAccount account, UserModifyRequest userModifyRequest) {
+		account.getUser().update(userModifyRequest);
 	}
 
-	public void delete(Long id) {
-		userRepository.delete(userRepository.findById(id)
-				.orElseThrow(NotExistUserException::new));
+	public void delete(UserAccount account) {
+		userRepository.delete(account.getUser());
 	}
 
 	public String sendEmail(String email) {
@@ -71,10 +68,8 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public void confirmPassword(Long id, String password) {
-		boolean confirmed = userRepository.findById(id)
-				.orElseThrow(NotExistUserException::new).checkPassword(password);
-		if(!confirmed) {
+	public void confirmPassword(UserAccount account, String password) {
+		if(!account.getUser().checkPassword(password)) {
 			throw new WrongPasswordException();
 		}
 	}
