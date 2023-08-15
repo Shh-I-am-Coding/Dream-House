@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.ssafy.happy.area.domain.EmdArea;
+import com.ssafy.happy.area.domain.RoadName;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

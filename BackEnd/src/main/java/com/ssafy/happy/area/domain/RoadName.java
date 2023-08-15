@@ -28,5 +28,8 @@ public class RoadName {
 	private String name;
 
 	@Column(nullable = false)
-	private Integer code;
+	private Integer bonbun;
+
+	@Column(nullable = false)
+	private Integer bubun;
 }
