@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class DealService {
 
-	private AptInfoRepository aptInfoRepository;
+	private final AptInfoRepository aptInfoRepository;
 
 	@Transactional(readOnly = true)
 	public List<AptInfoResponse> searchAptByEmdCode(String code) {

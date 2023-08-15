@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/deals")
 public class DealController {
-	private DealService dealService;
+	private final DealService dealService;
 
 	@GetMapping("/searchAptByEmdCode")
 	@ApiOperation(value = "동별 아파트 리스트 검색", notes = "동의 거래내역이 있는 모든 아파트 조회")
