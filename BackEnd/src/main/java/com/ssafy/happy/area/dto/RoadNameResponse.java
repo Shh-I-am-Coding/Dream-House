@@ -15,15 +15,13 @@ import lombok.NoArgsConstructor;
 public class RoadNameResponse {
 	private long id;
 	private String name;
-	private int bonbun;
-	private int bubun;
+	private int code;
 
 	public static RoadNameResponse of(RoadName roadName) {
 		return RoadNameResponse.builder()
 			.id(roadName.getId())
 			.name(roadName.getName())
-			.bonbun(roadName.getBonbun())
-			.bubun(roadName.getBubun())
+			.code(roadName.getCode())
 			.build();
 	}
 }
