@@ -18,4 +18,10 @@ public interface AptInfoRepository extends JpaRepository<AptInfo, Long> {
         + "where a.emdArea.code = :code "
         + "group by a.id")
     List<AptInfoResponse> getAptInfoByEmdArea(String code);
+
+    @EntityGraph(attributePaths = {"deal, roadName, emdArea"}, type = EntityGraphType.FETCH)
+    @Query("select a "
+        + "from AptInfo a left join a.dealList d "
+        + "where a.id = :id ")
+    AptInfo getAptInfoById(Long id);
 }
