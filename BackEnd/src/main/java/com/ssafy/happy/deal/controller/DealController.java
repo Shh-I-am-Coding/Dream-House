@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DealController {
 	private final DealService dealService;
 
-	@GetMapping("/searchAptByEmdCode")
+	@GetMapping("/search")
 	@ApiOperation(value = "동별 아파트 리스트 검색", notes = "동의 거래내역이 있는 모든 아파트 조회")
 	public ResponseEntity<ApiResponse<List<AptInfoResponse>>> searchAptByEmdCode(@RequestParam String emdCode) {
 		return ApiResponse.successWithData(dealService.searchAptByEmdCode(emdCode));
