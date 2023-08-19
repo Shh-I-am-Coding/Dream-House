@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happy.common.dto.ApiResponse;
@@ -25,9 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 public class DealController {
 	private final DealService dealService;
 
-	@GetMapping("/search")
+	@GetMapping("/{emdCode}")
 	@ApiOperation(value = "동별 아파트 리스트 검색", notes = "동의 거래내역이 있는 모든 아파트 조회")
-	public ResponseEntity<ApiResponse<List<AptInfoResponse>>> searchAptByEmdCode(@RequestParam String emdCode) {
+	public ResponseEntity<ApiResponse<List<AptInfoResponse>>> searchAptByEmdCode(@PathVariable String emdCode) {
 		return ApiResponse.successWithData(dealService.searchAptByEmdCode(emdCode));
 	}
 
