@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.ssafy.happy.deal.domain.AptInfo;
 import com.ssafy.happy.deal.dto.AptInfoResponse;
+import com.ssafy.happy.deal.dto.DealAverageResponse;
 
 public interface DealRepository extends JpaRepository<AptInfo, Long> {
 
@@ -27,4 +28,11 @@ public interface DealRepository extends JpaRepository<AptInfo, Long> {
         + "from AptInfo a left join a.dealList d "
         + "where a.id = :id ")
     Optional<AptInfo> getAptInfoById(Long id);
+
+    @Query(
+        "SELECT new com.ssafy.happy.deal.dto.DealAverageResponse(year(d.dealDate), avg(d.dealAmount), avg(d.dealAmount / d.area)) "
+            + "FROM AptInfo a left join a.dealList d "
+            + "WHERE a.id = :id "
+            + "GROUP BY year(d.dealDate)")
+    List<DealAverageResponse> getDealAverageById(Long id);
 }
