@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.happy.deal.domain.AptInfo;
 import com.ssafy.happy.deal.dto.AptInfoDetailResponse;
 import com.ssafy.happy.deal.dto.AptInfoResponse;
+import com.ssafy.happy.deal.dto.DealAverageResponse;
 import com.ssafy.happy.deal.exception.NotExistAptInfoException;
 import com.ssafy.happy.deal.exception.NotExistEmdCodeException;
 import com.ssafy.happy.deal.repository.DealRepository;
@@ -36,5 +37,14 @@ public class DealService {
 		AptInfo aptInfo = aptInfoRepository.getAptInfoById(id)
 			.orElseThrow(NotExistAptInfoException::new);
 		return AptInfoDetailResponse.of(aptInfo);
+	}
+
+	@Transactional(readOnly = true)
+	public List<DealAverageResponse> getDealAverageResponse(Long id) {
+		List<DealAverageResponse> dealAverageResponseList = aptInfoRepository.getDealAverageById(id);
+		if (dealAverageResponseList.isEmpty()) {
+			throw new NotExistAptInfoException();
+		}
+		return dealAverageResponseList;
 	}
 }
