@@ -9,7 +9,7 @@ import com.ssafy.happy.deal.domain.AptInfo;
 import com.ssafy.happy.deal.dto.AptInfoDetailResponse;
 import com.ssafy.happy.deal.dto.AptInfoResponse;
 import com.ssafy.happy.deal.exception.NotExistAptInfoException;
-import com.ssafy.happy.deal.repository.AptInfoRepository;
+import com.ssafy.happy.deal.repository.DealRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class DealService {
 
-	private final AptInfoRepository aptInfoRepository;
+	private final DealRepository aptInfoRepository;
 
 	@Transactional(readOnly = true)
 	public List<AptInfoResponse> searchAptByEmdCode(String code) {

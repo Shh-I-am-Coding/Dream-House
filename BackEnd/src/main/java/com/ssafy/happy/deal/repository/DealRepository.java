@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.ssafy.happy.deal.domain.AptInfo;
 import com.ssafy.happy.deal.dto.AptInfoResponse;
 
-public interface AptInfoRepository extends JpaRepository<AptInfo, Long> {
+public interface DealRepository extends JpaRepository<AptInfo, Long> {
 
     // todo: EntityGraph 자세히 알아보기
 
