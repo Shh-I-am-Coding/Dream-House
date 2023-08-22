@@ -9,6 +9,7 @@ import com.ssafy.happy.deal.domain.AptInfo;
 import com.ssafy.happy.deal.dto.AptInfoDetailResponse;
 import com.ssafy.happy.deal.dto.AptInfoResponse;
 import com.ssafy.happy.deal.exception.NotExistAptInfoException;
+import com.ssafy.happy.deal.exception.NotExistEmdCodeException;
 import com.ssafy.happy.deal.repository.DealRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,9 @@ public class DealService {
 	public List<AptInfoResponse> searchAptByEmdCode(String code) {
 		List<AptInfoResponse> aptInfoResponseList = aptInfoRepository.getAptInfoByEmdArea(code);
 		// todo : Redis 캐싱 처리 추가
+		if (aptInfoResponseList.isEmpty()) {
+			throw new NotExistEmdCodeException();
+		}
 		return aptInfoResponseList;
 	}
 
