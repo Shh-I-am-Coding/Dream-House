@@ -47,4 +47,11 @@ public class DealService {
 		}
 		return dealAverageResponseList;
 	}
+
+	@Transactional(readOnly = true)
+	public List<AptInfoResponse> getTopAptInfo() {
+		List<AptInfoResponse> aptInfoResponseList = aptInfoRepository.getTop4AptInfo();
+		// todo: Redis 캐싱처리 추가
+		return aptInfoResponseList;
+	}
 }
