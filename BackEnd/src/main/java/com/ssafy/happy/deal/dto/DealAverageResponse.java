@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DealAverageResponse {
 	private int dealYear;
-	private long dealAverage;
-	private long pricePerArea;
+	private double dealAverage;
+	private double pricePerArea;
 }
