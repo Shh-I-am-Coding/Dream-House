@@ -35,4 +35,9 @@ public interface DealRepository extends JpaRepository<AptInfo, Long> {
             + "WHERE a.id = :id "
             + "GROUP BY year(d.dealDate)")
     List<DealAverageResponse> getDealAverageById(Long id);
+
+    @Query("SELECT new com.ssafy.happy.deal.dto.AptInfoResponse() "
+        + "FROM AptInfo a LEFT JOIN a.dealList d "
+        + "ORDER BY a.aptHit DESC")
+    List<AptInfoResponse> getTop4AptInfo();
 }
