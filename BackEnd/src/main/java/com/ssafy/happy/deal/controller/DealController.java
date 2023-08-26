@@ -43,7 +43,7 @@ public class DealController {
 		return ApiResponse.successWithData(dealService.getDealAverageResponse(id));
 	}
 
-	@GetMapping("/tophits")
+	@GetMapping("/top-hits")
 	@ApiOperation(value = "조회수 상위 아파트 조회", notes = "아파트 조회수 상위 4개 조회")
 	public ResponseEntity<ApiResponse<List<AptInfoResponse>>> getTopHitAptInfo() {
 		return ApiResponse.successWithData(dealService.getTopAptInfo());
