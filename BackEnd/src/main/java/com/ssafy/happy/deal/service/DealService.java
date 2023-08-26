@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.happy.area.repository.EmdAreaRepository;
 import com.ssafy.happy.deal.domain.AptInfo;
 import com.ssafy.happy.deal.dto.AptInfoDetailResponse;
 import com.ssafy.happy.deal.dto.AptInfoResponse;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class DealService {
 
 	private final DealRepository aptInfoRepository;
+	private final EmdAreaRepository areaRepository;
 
 	@Transactional(readOnly = true)
 	public List<AptInfoResponse> searchAptByEmdCode(String code) {

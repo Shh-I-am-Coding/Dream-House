@@ -1,14 +1,16 @@
 package com.ssafy.happy.area.service;
 
-import com.ssafy.happy.area.repository.AreaRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.ssafy.happy.area.repository.EmdAreaRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class AreaService {
 
-    private final AreaRepository areaRepository;
+    private final EmdAreaRepository areaRepository;
 }
