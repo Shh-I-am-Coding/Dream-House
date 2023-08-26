@@ -32,7 +32,7 @@ public class DealController {
 	}
 
 	@GetMapping("/detail/{id}")
-	@ApiOperation(value = "아파트 상세정보 조회", notes = "아파트 전체 정보 조회")
+	@ApiOperation(value = "아파트 상세정보 조회", notes = "특정 아파트의 전체 정보 조회")
 	public ResponseEntity<ApiResponse<AptInfoDetailResponse>> getAptInfoDetailById(@PathVariable Long id) {
 		return ApiResponse.successWithData(dealService.getAptInfoDetail(id));
 	}
