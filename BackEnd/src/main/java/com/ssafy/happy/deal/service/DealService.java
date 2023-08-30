@@ -26,11 +26,11 @@ public class DealService {
 
 	@Transactional(readOnly = true)
 	public List<AptInfoResponse> searchAptByEmdCode(String code) {
-		List<AptInfoResponse> aptInfoResponseList = aptInfoRepository.getAptInfoByEmdArea(code);
-		// todo : Redis 캐싱 처리 추가
-		if (aptInfoResponseList.isEmpty()) {
+		if (areaRepository.existsEmdAreaByCode(code)) {
 			throw new NotExistEmdCodeException();
 		}
+		List<AptInfoResponse> aptInfoResponseList = aptInfoRepository.getAptInfoByEmdArea(code);
+		// todo : Redis 캐싱 처리 추가
 		return aptInfoResponseList;
 	}
 
