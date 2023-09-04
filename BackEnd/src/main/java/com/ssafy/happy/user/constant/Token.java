@@ -1,5 +1,6 @@
 package com.ssafy.happy.user.constant;
 
+import com.ssafy.happy.user.domain.RefreshToken;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,5 +8,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Token {
     private String accessToken;
-    private String refreshToken;
+    private RefreshToken refreshToken;
 }
