@@ -10,6 +10,7 @@ import com.ssafy.happy.user.dto.UserResponse;
 import com.ssafy.happy.user.service.KakaoService;
 import com.ssafy.happy.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperation(value = "일반 로그인", notes = "이메일과 비밀번호로 로그인")
-    public ResponseEntity<ApiResponse<UserLoginResponse>> login(@RequestBody UserLoginRequest userLoginRequest) {
+    public ResponseEntity<ApiResponse<UserLoginResponse>> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
         return ApiResponse.successWithData(userService.login(userLoginRequest));
     }
 
@@ -58,7 +59,7 @@ public class UserController {
 
     @PostMapping
     @ApiOperation(value = "회원 가입", notes = "일반 회원 가입")
-    public ResponseEntity<ApiResponse<?>> join(@RequestBody UserJoinRequest userJoinRequest) {
+    public ResponseEntity<ApiResponse<?>> join(@RequestBody @Valid UserJoinRequest userJoinRequest) {
         userService.join(userJoinRequest);
         return ApiResponse.successWithNoContent();
     }
@@ -72,7 +73,7 @@ public class UserController {
     @PutMapping
     @ApiOperation(value = "회원 정보 수정", notes = "기존 회원의 정보 수정")
     public ResponseEntity<ApiResponse<?>> update(@AuthenticationPrincipal UserAccount account,
-                                                 @RequestBody UserModifyRequest userModifyRequest) {
+                                                 @RequestBody @Valid UserModifyRequest userModifyRequest) {
         userService.update(account, userModifyRequest);
         return ApiResponse.successWithNoContent();
     }
