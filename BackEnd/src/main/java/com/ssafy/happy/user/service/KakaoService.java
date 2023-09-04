@@ -4,11 +4,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.happy.common.util.JwtTokenProvider;
 import com.ssafy.happy.user.constant.Authority;
+import com.ssafy.happy.user.constant.Token;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
 import com.ssafy.happy.user.exception.FailedKakaoAccessTokenException;
 import com.ssafy.happy.user.exception.FailedKakaoUserInfoException;
+import com.ssafy.happy.user.repository.RefreshTokenRepository;
 import com.ssafy.happy.user.repository.UserRepository;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class KakaoService {
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${oauth2.kakao.restApiKey}")
@@ -44,7 +47,9 @@ public class KakaoService {
         String nickname = getNickname(element);
         User user = userRepository.findByEmail(email).orElseGet(() -> join(email, nickname));
 
-        return UserLoginResponse.of(user, jwtTokenProvider.createTokens(email));
+        Token token = jwtTokenProvider.createTokens(user.getEmail());
+        refreshTokenRepository.save(token.getRefreshToken());
+        return UserLoginResponse.of(user, token.getAccessToken());
     }
 
     private User join(String email, String nickname) {

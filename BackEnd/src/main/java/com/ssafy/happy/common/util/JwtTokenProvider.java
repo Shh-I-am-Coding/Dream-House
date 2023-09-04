@@ -1,5 +1,7 @@
 package com.ssafy.happy.common.util;
 
+import com.ssafy.happy.user.constant.Token;
+import com.ssafy.happy.user.domain.RefreshToken;
 import com.ssafy.happy.user.service.SecurityService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -35,19 +37,18 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createTokens(String payload) {
+    public Token createTokens(String payload) {
         String accessToken = createAccessToken(payload);
-        //String refreshToken = createRefreshToken(payload);
-        return accessToken;
-
+        RefreshToken refreshToken = createRefreshToken(payload);
+        return new Token(accessToken, refreshToken);
     }
 
     private String createAccessToken(String payload) {
         return createJwtToken(payload, ACCESS_TOKEN_VALID_TIME);
     }
 
-    private String createRefreshToken(String payload) {
-        return createJwtToken(payload, REFRESH_TOKEN_VALID_TIME);
+    private RefreshToken createRefreshToken(String payload) {
+        return new RefreshToken(createJwtToken(payload, REFRESH_TOKEN_VALID_TIME), payload);
     }
 
     private String createJwtToken(String payload, long tokenValidTime) {

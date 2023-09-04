@@ -3,6 +3,7 @@ package com.ssafy.happy.user.service;
 import com.google.gson.JsonParser;
 import com.ssafy.happy.common.util.EmailSender;
 import com.ssafy.happy.common.util.JwtTokenProvider;
+import com.ssafy.happy.user.constant.Token;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.UserAccount;
 import com.ssafy.happy.user.dto.UserJoinRequest;
@@ -13,6 +14,7 @@ import com.ssafy.happy.user.dto.UserResponse;
 import com.ssafy.happy.user.exception.FailedSendEmailException;
 import com.ssafy.happy.user.exception.NotExistUserException;
 import com.ssafy.happy.user.exception.WrongPasswordException;
+import com.ssafy.happy.user.repository.RefreshTokenRepository;
 import com.ssafy.happy.user.repository.UserRepository;
 import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
 	private final UserRepository userRepository;
+	private final RefreshTokenRepository refreshTokenRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final EmailSender emailSender;
 
@@ -44,7 +47,9 @@ public class UserService {
 		if(!user.checkPassword(userLoginRequest.getPassword())) {
 			throw new WrongPasswordException();
 		}
-		return UserLoginResponse.of(user, jwtTokenProvider.createTokens(user.getEmail()));
+		Token token = jwtTokenProvider.createTokens(user.getEmail());
+		refreshTokenRepository.save(token.getRefreshToken());
+		return UserLoginResponse.of(user, token.getAccessToken());
 	}
 
 	public void update(UserAccount account, UserModifyRequest userModifyRequest) {
