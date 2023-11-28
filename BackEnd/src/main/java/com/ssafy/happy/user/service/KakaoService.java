@@ -38,6 +38,7 @@ public class KakaoService {
     @Value("${oauth2.kakao.redirectUri}")
     private String kakao_redirectUri;
 
+    @Transactional(readOnly = true)
     public UserLoginResponse login(String code) {
         code = JsonParser.parseString(code).getAsJsonObject().get("code").getAsString();
         String accessToken = getKakaoAccessToken(code);
@@ -46,10 +47,14 @@ public class KakaoService {
         String email = getEmail(element);
         String nickname = getNickname(element);
         User user = userRepository.findByEmail(email).orElseGet(() -> join(email, nickname));
+        return UserLoginResponse.of(user);
+    }
 
-        Token token = jwtTokenProvider.createTokens(user.getEmail());
-        refreshTokenRepository.save(token.getRefreshToken());
-        return UserLoginResponse.of(user, token.getAccessToken());
+    @Transactional
+    public String createToken(UserLoginResponse userLoginResponse) {
+        Token token = jwtTokenProvider.createTokens(userLoginResponse.getEmail());
+        userLoginResponse.setAccessToken(token.getAccessToken());
+        return refreshTokenRepository.save(token.getRefreshToken()).getRefreshToken();
     }
 
     private User join(String email, String nickname) {

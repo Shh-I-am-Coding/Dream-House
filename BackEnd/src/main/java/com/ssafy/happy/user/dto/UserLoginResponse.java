@@ -21,7 +21,7 @@ public class UserLoginResponse {
     private Authority authority;
     private String accessToken;
 
-    public static UserLoginResponse of(User user, String accessToken) {
+    public static UserLoginResponse of(User user) {
         return UserLoginResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -29,7 +29,10 @@ public class UserLoginResponse {
                 .nickname(user.getNickname())
                 .phone(user.getPhone())
                 .authority(user.getAuthority())
-                .accessToken(accessToken)
                 .build();
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

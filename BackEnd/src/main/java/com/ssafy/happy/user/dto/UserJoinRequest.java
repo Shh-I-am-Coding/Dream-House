@@ -30,6 +30,7 @@ public class UserJoinRequest {
 	@Size(max = 30)
 	private String phone;
 
+	@Builder.Default
 	private Authority authority = Authority.MEMBER;
 
 	public User toEntity() {

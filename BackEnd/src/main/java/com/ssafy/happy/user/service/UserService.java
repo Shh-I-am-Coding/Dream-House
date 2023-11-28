@@ -47,9 +47,14 @@ public class UserService {
 		if(!user.checkPassword(userLoginRequest.getPassword())) {
 			throw new WrongPasswordException();
 		}
-		Token token = jwtTokenProvider.createTokens(user.getEmail());
-		refreshTokenRepository.save(token.getRefreshToken());
-		return UserLoginResponse.of(user, token.getAccessToken());
+		return UserLoginResponse.of(user);
+	}
+
+	@Transactional
+	public String createToken(UserLoginResponse userLoginResponse) {
+		Token token = jwtTokenProvider.createTokens(userLoginResponse.getEmail());
+		userLoginResponse.setAccessToken(token.getAccessToken());
+		return refreshTokenRepository.save(token.getRefreshToken()).getRefreshToken();
 	}
 
 	public void update(UserAccount account, UserModifyRequest userModifyRequest) {

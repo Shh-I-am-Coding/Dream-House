@@ -10,6 +10,8 @@ import com.ssafy.happy.user.dto.UserResponse;
 import com.ssafy.happy.user.service.KakaoService;
 import com.ssafy.happy.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,14 +43,27 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperation(value = "일반 로그인", notes = "이메일과 비밀번호로 로그인")
-    public ResponseEntity<ApiResponse<UserLoginResponse>> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
-        return ApiResponse.successWithData(userService.login(userLoginRequest));
+    public ResponseEntity<ApiResponse<UserLoginResponse>> login(@RequestBody @Valid UserLoginRequest userLoginRequest,
+                                                                HttpServletResponse httpServletResponse) {
+        UserLoginResponse userLoginResponse = userService.login(userLoginRequest);
+        setRefreshTokenCookie(userService.createToken(userLoginResponse), httpServletResponse);
+        return ApiResponse.successWithData(userLoginResponse);
     }
 
     @PostMapping("/login/oauth/kakao")
     @ApiOperation(value = "카카오 로그인", notes = "카카오 로그인 api 콜백 함수")
-    public ResponseEntity<ApiResponse<UserLoginResponse>> kakaoLogin(@RequestBody String code) {
-        return ApiResponse.successWithData(kakaoService.login(code));
+    public ResponseEntity<ApiResponse<UserLoginResponse>> kakaoLogin(@RequestBody String code,
+                                                                     HttpServletResponse httpServletResponse) {
+        UserLoginResponse userLoginResponse = kakaoService.login(code);
+        setRefreshTokenCookie(kakaoService.createToken(userLoginResponse), httpServletResponse);
+        return ApiResponse.successWithData(userLoginResponse);
+    }
+
+    private void setRefreshTokenCookie(String refreshToken, HttpServletResponse httpServletResponse) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        httpServletResponse.addCookie(cookie);
     }
 
     @GetMapping
