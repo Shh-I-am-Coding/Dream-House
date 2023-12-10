@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +29,7 @@ public class AreaController {
 
     @GetMapping("/sigg")
     @ApiOperation(value = "시군구 조회", notes = "시군구 코드, 이름 조회")
-    public ResponseEntity<ApiResponse<List<SiggAreaResponse>>> getSiggArea(@PathVariable Long code) {
+    public ResponseEntity<ApiResponse<List<SiggAreaResponse>>> getSiggArea(Long code) {
         return ApiResponse.successWithData(areaService.getSiggArea(code));
     }
 }
