@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SidoAreaRepository extends JpaRepository<SidoArea, Long> {
-    List<SidoArea> findall();
+    List<SidoArea> findAll();
 
     SidoArea findSidoAreaById(Long code);
 }
