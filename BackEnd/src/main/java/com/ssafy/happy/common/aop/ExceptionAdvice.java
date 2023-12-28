@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionAdvice {
     @ExceptionHandler
-    public ResponseEntity<ApiResponse<?>> bindException(BindException exception) {
+    public ResponseEntity<ApiResponse<Void>> bindException(BindException exception) {
         return ApiResponse.error(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ApiResponse<?>> badRequestException(BadRequestException exception) {
+    public ResponseEntity<ApiResponse<Void>> badRequestException(BadRequestException exception) {
         return ApiResponse.error(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ApiResponse<?>> internalServerException(InternalServerErrorException exception) {
+    public ResponseEntity<ApiResponse<Void>> internalServerException(InternalServerErrorException exception) {
         return ApiResponse.error(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
