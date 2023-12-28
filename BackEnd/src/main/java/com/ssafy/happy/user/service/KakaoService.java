@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.happy.common.util.JwtTokenProvider;
 import com.ssafy.happy.user.constant.Authority;
-import com.ssafy.happy.user.constant.Token;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.UserJoinRequest;
 import com.ssafy.happy.user.dto.UserLoginResponse;
@@ -48,13 +47,6 @@ public class KakaoService {
         String nickname = getNickname(element);
         User user = userRepository.findByEmail(email).orElseGet(() -> join(email, nickname));
         return UserLoginResponse.of(user);
-    }
-
-    @Transactional
-    public String createToken(UserLoginResponse userLoginResponse) {
-        Token token = jwtTokenProvider.createTokens(userLoginResponse.getEmail());
-        userLoginResponse.setAccessToken(token.getAccessToken());
-        return refreshTokenRepository.save(token.getRefreshToken()).getRefreshToken();
     }
 
     private User join(String email, String nickname) {

@@ -12,4 +12,8 @@ public class RefreshToken {
     @Id
     private String refreshToken;
     private String email;
+
+    public boolean isSameUser(String email) {
+        return this.email.equals(email);
+    }
 }

@@ -23,12 +23,11 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String accessToken = jwtTokenProvider.resolveToken(request);
-        if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
+        String accessToken = jwtTokenProvider.resolveAccessToken(request);
+        if (accessToken != null && jwtTokenProvider.validateAccessToken(accessToken)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
         filterChain.doFilter(request, response);
     }
 }

@@ -1,7 +1,7 @@
 package com.ssafy.happy.common.util;
 
-import com.ssafy.happy.user.constant.Token;
 import com.ssafy.happy.user.domain.RefreshToken;
+import com.ssafy.happy.user.dto.TokenResponse;
 import com.ssafy.happy.user.service.SecurityService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -37,10 +37,10 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public Token createTokens(String payload) {
+    public TokenResponse createTokens(String payload) {
         String accessToken = createAccessToken(payload);
         RefreshToken refreshToken = createRefreshToken(payload);
-        return new Token(accessToken, refreshToken);
+        return new TokenResponse(accessToken, refreshToken);
     }
 
     private String createAccessToken(String payload) {
@@ -63,17 +63,17 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = securityService.loadUserByUsername(getMemberEmail(token));
+    public Authentication getAuthentication(String accessToken) {
+        UserDetails userDetails = securityService.loadUserByUsername(getMemberEmail(accessToken));
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
                 userDetails.getAuthorities());
     }
 
-    private String getMemberEmail(String token) {
+    public String getMemberEmail(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest httpServletRequest) {
+    public String resolveAccessToken(HttpServletRequest httpServletRequest) {
         String auth;
         try {
             auth = httpServletRequest.getHeader("Authorization").substring(TOKEN_START_IDX);
@@ -83,11 +83,11 @@ public class JwtTokenProvider {
         return auth;
     }
 
-    public boolean validateToken(String jwtToken) {
+    public boolean validateAccessToken(String accessToken) {
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey)
-                    .parseClaimsJws(jwtToken);
+                    .parseClaimsJws(accessToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
