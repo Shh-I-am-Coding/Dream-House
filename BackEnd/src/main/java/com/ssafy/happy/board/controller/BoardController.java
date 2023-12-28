@@ -31,7 +31,7 @@ public class BoardController {
 
     @PostMapping
     @ApiOperation(value = "게시판 글 생성")
-    public ResponseEntity<ApiResponse<?>> create(@AuthenticationPrincipal UserAccount account,
+    public ResponseEntity<ApiResponse<Void>> create(@AuthenticationPrincipal UserAccount account,
                                                  @RequestBody @Valid BoardRequest boardRequest) {
         boardService.create(account, boardRequest);
         return ApiResponse.successWithNoContent();
@@ -39,7 +39,7 @@ public class BoardController {
 
     @PutMapping("/{id}")
     @ApiOperation(value = "게시판 글 수정")
-    public ResponseEntity<ApiResponse<?>> update(@PathVariable Long id, @AuthenticationPrincipal UserAccount account,
+    public ResponseEntity<ApiResponse<Void>> update(@PathVariable Long id, @AuthenticationPrincipal UserAccount account,
                                                  @RequestBody @Valid BoardModifyRequest boardModifyRequest) {
         boardService.update(id, account, boardModifyRequest);
         return ApiResponse.successWithNoContent();
@@ -47,7 +47,7 @@ public class BoardController {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "게시판 글 삭제")
-    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id, @AuthenticationPrincipal UserAccount account) {
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id, @AuthenticationPrincipal UserAccount account) {
         boardService.delete(id, account);
         return ApiResponse.successWithNoContent();
     }
