@@ -18,9 +18,9 @@ public class ApiResponse<T> {
     private String message;
 
 
-    public static ResponseEntity<ApiResponse<?>> successWithNoContent() {
+    public static <T> ResponseEntity<ApiResponse<T>> successWithNoContent() {
         return new ResponseEntity<>(
-                ApiResponse.builder()
+                ApiResponse.<T>builder()
                         .success(true)
                         .data(null)
                         .message(null)
@@ -36,9 +36,9 @@ public class ApiResponse<T> {
                         .build(), HttpStatus.OK);
     }
 
-    public static ResponseEntity<ApiResponse<?>> error(String message, HttpStatus httpStatus) {
+    public static <T> ResponseEntity<ApiResponse<T>> error(String message, HttpStatus httpStatus) {
         return new ResponseEntity<>(
-                ApiResponse.builder()
+                ApiResponse.<T>builder()
                         .success(false)
                         .data(null)
                         .message(message)
