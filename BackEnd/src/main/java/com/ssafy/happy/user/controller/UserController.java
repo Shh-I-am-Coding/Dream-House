@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -73,6 +74,7 @@ public class UserController {
     @PostMapping("/reissue")
     @ApiOperation(value = "JWT 액세스 토큰 재발행", notes = "리프레시 토큰을 이용해 재발행")
     public ResponseEntity<ApiResponse<String>> reissueToken(
+            @RequestHeader(value="Authorization", required = false) String accessToken,
             @CookieValue(value = "refreshToken", required = false) String refreshToken,
             HttpServletResponse httpServletResponse) {
         if (securityService.validateRefreshToken(refreshToken)) {
@@ -80,7 +82,7 @@ public class UserController {
             setRefreshTokenCookie(token.getRefreshToken().getRefreshToken(), httpServletResponse);
             return ApiResponse.successWithData(token.getAccessToken());
         }
-        throw securityService.logout();
+        throw securityService.logout(accessToken);
     }
 
     @GetMapping

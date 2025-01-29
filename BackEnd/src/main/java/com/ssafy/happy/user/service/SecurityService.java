@@ -1,12 +1,14 @@
 package com.ssafy.happy.user.service;
 
 import com.ssafy.happy.common.util.JwtTokenProvider;
+import com.ssafy.happy.user.domain.AccessTokenBlackList;
 import com.ssafy.happy.user.domain.User;
 import com.ssafy.happy.user.dto.TokenResponse;
 import com.ssafy.happy.user.dto.UserAccount;
 import com.ssafy.happy.user.dto.UserLoginResponse;
 import com.ssafy.happy.user.exception.NotExistUserException;
 import com.ssafy.happy.user.exception.UnauthorizedException;
+import com.ssafy.happy.user.repository.AccessTokenBlackListRepository;
 import com.ssafy.happy.user.repository.RefreshTokenRepository;
 import com.ssafy.happy.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SecurityService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final AccessTokenBlackListRepository accessTokenBlackListRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -53,8 +56,14 @@ public class SecurityService implements UserDetailsService {
                         .orElse(false);
     }
 
-    public UnauthorizedException logout() {
-        //ToDo logout 로직 작성. 액세스/리프레시 토큰 삭제
+    public UnauthorizedException logout(String accessToken) {
+        //ToDo logout 로직 작성. 액세스 토큰 블랙리스트에 추가, 리프레시 토큰 삭제
+        accessToken = accessToken.substring(7);
+
+        //TODO 액세스토큰블랙리스트 유효기간 동적으로 지정하려면 redis template 사용해야함
+        accessTokenBlackListRepository.save(new AccessTokenBlackList(accessToken));
+        //refreshTokenRepository.save()
+
         return new UnauthorizedException();
     }
 }
